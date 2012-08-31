@@ -4,6 +4,7 @@ defaultproperties
 {
 	DefaultPawnClass=class'StealthPawn'
     PlayerControllerClass=class'StealthGamePlayerController'
+	bDelayedStart=false
 }
 
 event PostLogin( PlayerController NewPlayer )

@@ -6,6 +6,15 @@ var float RegenTime;
 
 event Tick(float DeltaTime)
 {
+	local StealthPawn_NPC victim;
+
+	foreach OverlappingActors(class 'StealthPawn_NPC', victim, 500)
+	{
+		if( victim != Instigator)
+		{
+			victim.TakeDamage(100, Controller, victim.Location, vect(0,0,1), class'DamageType');
+		}
+	}
   //calculate elapsed time
   ElapsedRegenTime += DeltaTime;
   
