@@ -12,7 +12,7 @@ event Tick(float DeltaTime)
 	{
 		if( victim != Instigator)
 		{
-			victim.TakeDamage(100, Controller, victim.Location, vect(0,0,1), class'DamageType');
+			//victim.TakeDamage(100, Controller, victim.Location, vect(0,0,1), class'DamageType');
 		}
 	}
   //calculate elapsed time

@@ -3,7 +3,12 @@ class StealthGame extends UTGame;
 defaultproperties
 {
 	DefaultPawnClass=class'StealthPawn'
+
     PlayerControllerClass=class'StealthGamePlayerController'
+
+	HUDType=class'StealthGame.StealthHUD'
+	bUseClassicHUD=true
+
 	bDelayedStart=false
 }
 
