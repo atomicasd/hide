@@ -108,7 +108,7 @@ function RenderThreeDeeCircle(Pawn target)
 		if(playerFound)
 		{
 			`log("Player found");
-			//pawns.AddItem(victim); 
+			//pawns.AddItem(victim);  
 			
 		}
 	}
