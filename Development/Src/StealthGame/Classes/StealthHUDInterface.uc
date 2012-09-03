@@ -1,1 +1,1 @@
-interface StealthHUDInterface;
+interface StealthHUDInterface; 

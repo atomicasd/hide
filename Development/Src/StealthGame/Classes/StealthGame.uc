@@ -7,7 +7,7 @@ defaultproperties
     PlayerControllerClass=class'StealthGamePlayerController'
 
 	HUDType=class'StealthGame.StealthHUD'
-	bUseClassicHUD=true
+	bUseClassicHUD=true 
 
 	bDelayedStart=false
 }
