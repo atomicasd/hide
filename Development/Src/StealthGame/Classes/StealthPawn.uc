@@ -1,36 +1,52 @@
 class StealthPawn extends UTPawn;
 
-var float ElapsedRegenTime;
-var float RegenAmount;
-var float RegenTime;
+var PlayerController PC;
 
-event Tick(float DeltaTime)
+simulated event PostBeginPlay()
 {
-	local StealthPawn_NPC victim;
-
-	foreach OverlappingActors(class 'StealthPawn_NPC', victim, 500)
-	{
-		if( victim != Instigator)
-		{
-			//victim.TakeDamage(100, Controller, victim.Location, vect(0,0,1), class'DamageType');
-		}
-	}
-  //calculate elapsed time
-  ElapsedRegenTime += DeltaTime;
-  
-  //has enough time elapsed?
-  if(ElapsedRegenTime >= RegenTime)
-  {
-    //heal the Pawn and reset elapsed time
-    HealDamage(RegenAmount, Controller, class'DamageType');
-    ElapsedRegenTime = 0.0f;
-  }
+	super.PostBeginPlay();
+	PC = GetALocalPlayerController();
 }
+
+/*
+simulated event Suicide()
+{
+	super.Suicide();
+	Dead();
+}
+*/
+
+exec function KillYourself()
+{
+	Suicide();
+}
+
+exec function WalkPressed()
+{
+	GroundSpeed = 150;
+}
+
+exec function WalkReleased()
+{
+	GroundSpeed = 300;
+}
+
+function Dead()
+{
+	local vector Position;
+	
+	Position.X = PC.Location.X;
+	Position.Y = PC.Location.Y;
+	Position.Z = PC.Location.Z - 50;
+
+	`Log("Spawning new DeadClone");
+	
+	Spawn(class'StealthDeadBodyClone',,,Position,,,false);
+}
+
 
 defaultproperties
 {
-  //set defaults for regeneration properties
-  GroundSpeed = 1000;
-  RegenAmount=2
-  RegenTime=1
+	//set defaults for regeneration properties
+	GroundSpeed = 350;
 }

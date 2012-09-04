@@ -2,6 +2,41 @@ class StealthGamePlayerController extends UTPlayerController;
 
 var class<UTFamilyInfo> CharacterClass;
 
+function pawnDied(Pawn p)
+{
+	local vector Position;
+	local StealthPawn PC;
+	local StealthDeadBodyClone clone;
+
+	PC = StealthPawn(GetALocalPlayerController().Pawn);
+	
+	Position.X = PC.Location.X;
+	Position.Y = PC.Location.Y;
+	Position.Z = PC.Location.Z;
+
+	`Log("Spawning new Dead Clone");
+
+	Spawn(class'StealthDeadBodyClone',,,Position,,,false);
+
+	super.PawnDied(p);
+}
+state() Dead
+{
+	function SpawnDeadClone()
+	{
+		local vector Position;
+		//PC = GetALocalPlayerController();
+	
+		Position.X = Location.X;
+		Position.Y = Location.Y;
+		Position.Z = Location.Z;
+
+		`Log("Spawning new DeadClone");
+	
+		Spawn(class'StealthDeadBodyClone',,,Position,,,false);
+	}
+}
+
 simulated event PostBeginPlay()
 {
   super.PostBeginPlay();

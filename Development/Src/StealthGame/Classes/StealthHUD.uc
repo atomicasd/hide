@@ -1,4 +1,4 @@
-class StealthHUD extends UTHUD;
+class StealthHUD extends HUD;
 
 var StealthPawn PlayerPawn;
 var StealthSoundBeacon SoundBeacon;
@@ -54,7 +54,7 @@ function RenderThreeDeeCircle(Pawn target)
 	local Pawn victim;
 	local int i;
 	
-	circleSize += 0.1f;
+	circleSize += 0.15f;
 
 	if (PlayerOwner == None)
 	{
@@ -109,7 +109,7 @@ function RenderThreeDeeCircle(Pawn target)
 
 defaultproperties
 {
-	MaxCircleSize=15;
+	MaxCircleSize=10;
 	circleSize=0.0
 	drawSoundBeaconCircle=false
 }
