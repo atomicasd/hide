@@ -13,8 +13,10 @@ exec function makePulseCircle()
 {
 	local Vector derp;
 
-	drawSoundBeaconCircle=true;
+	PlayerPawn = StealthPawn(GetALocalPlayerController().Pawn);
 
+	drawSoundBeaconCircle=true;
+	
 	// This get the location of the player and add a new Pawn 
 	// to the map with players set location.
 	derp.X = PlayerPawn.Location.X;
@@ -54,7 +56,7 @@ function RenderThreeDeeCircle(Pawn target)
 	local Pawn victim;
 	local int i;
 	
-	circleSize += 0.15f;
+	circleSize += 0.05f;
 
 	if (PlayerOwner == None)
 	{
@@ -73,7 +75,7 @@ function RenderThreeDeeCircle(Pawn target)
 	for (Angle.Yaw = 0; Angle.Yaw < 65536; Angle.Yaw += 4096)
 	{
 		// Calculate the offset
-		Offsets[i] = target.Location + (Radius >> Angle) + Vect(0.f, 0.f, 0.f);
+		Offsets[i] = target.Location + (Radius >> Angle) + Vect(0.f, 0.f, -15.f);
 		i++;
 	}
 		
@@ -93,7 +95,7 @@ function RenderThreeDeeCircle(Pawn target)
 	// Checks if the circle is hitting anything. 
 	foreach target.OverlappingActors(class'Pawn', victim, Radius.X)
 	{
-		if(victim != target)
+		if(victim != target && victim != PlayerPawn)
 		{
 			`log("Ring collision");
 		}
@@ -101,6 +103,7 @@ function RenderThreeDeeCircle(Pawn target)
 
 	if(circleSize >= MaxCircleSize)
 	{
+		`Log("Destroyed: "$SoundBeacon.Destroy());
 		circleSize = 0;
 		drawSoundBeaconCircle=false;
 	}
