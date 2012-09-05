@@ -53,6 +53,7 @@ auto state PlayerWaiting
 	 */
 	exec function StartFire( optional byte FireModeNum )
 	{
+
 		showTargetInfo();
 	}
 }

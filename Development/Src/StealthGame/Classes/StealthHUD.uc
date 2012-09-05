@@ -45,7 +45,7 @@ function RenderThreeDeeCircle(Pawn target)
 	local Vector Radius, Offsets[16];
 	local Box ComponentsBoundingBox;
 	local float Width, Height;
-	local Pawn victim;
+	local SGameListenerPawn victim;
 	local Pawn ArrayItem;
 	local int i;
 	local bool playerFound;
@@ -87,7 +87,7 @@ function RenderThreeDeeCircle(Pawn target)
 		}
 	}
 	
-	foreach PC.OverlappingActors(class'Pawn', victim, Radius.X)
+	foreach PC.OverlappingActors(class'SGameListenerPawn', victim, Radius.X)
 	{
 		if(victim != PC)
 		{
@@ -107,6 +107,7 @@ function RenderThreeDeeCircle(Pawn target)
 		}
 		if(playerFound)
 		{
+			victim.NotifyOnSoundHeared();
 			`log("Player found");
 			//pawns.AddItem(victim);  
 			

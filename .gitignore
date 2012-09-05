@@ -45,7 +45,7 @@ Development/Src/WinDrv
 *.ucproj
 *.user
 *.sln
-
+*.orig
 
 #ignore thumbnails created by windows
 Thumbs.db
