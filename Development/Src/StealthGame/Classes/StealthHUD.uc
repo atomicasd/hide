@@ -9,9 +9,10 @@ var array<Pawn> pawns;
 
 // This runs when the player press the "H" key
 // This is added trough DefaultInput.ini
-exec function makePulseCircle()
+exec function makePulseCircle( float radius)
 {
 	local Vector derp;
+	MaxCircleSize = radius;
 
 	PlayerPawn = StealthPawn(GetALocalPlayerController().Pawn);
 
@@ -32,6 +33,7 @@ simulated event PostBeginPlay()
 	
 	// Sets the player pawn
 	PlayerPawn = StealthPawn(GetALocalPlayerController().Pawn);
+	PlayerPawn.SetHudClass( self );
 }
 
 event PostRender()
@@ -52,11 +54,11 @@ function RenderThreeDeeCircle(Pawn target)
 	local Rotator Angle;
 	local Vector Radius, Offsets[16];
 	local Box ComponentsBoundingBox;
-	local float Width, Height;
+	local float Width;
 	local SGameListenerPawn victim;
 	local int i;
 	
-	circleSize += 0.05f;
+	circleSize += 5.0f;
 
 	if (PlayerOwner == None)
 	{
@@ -65,9 +67,8 @@ function RenderThreeDeeCircle(Pawn target)
 	
 	target.GetComponentsBoundingBox(ComponentsBoundingBox);
 	
-	Width = (ComponentsBoundingBox.Max.X - ComponentsBoundingBox.Min.X) * circleSize;
-	Height = ComponentsBoundingBox.Max.Y - ComponentsBoundingBox.Min.Y;
-	Radius.X = (Width > Height) ? Width : Height;
+	Width = circleSize;
+	Radius.X = Width;
 	
 	i = 0;
 	
@@ -95,7 +96,7 @@ function RenderThreeDeeCircle(Pawn target)
 	// Checks if the circle is hitting anything. 
 	foreach target.OverlappingActors(class'SGameListenerPawn', victim, Radius.X)
 	{
-		`log("Ring collision");
+		victim.NotifyOnSoundHeared(SoundBeacon);
 	}
 
 	if(circleSize >= MaxCircleSize)
@@ -109,7 +110,7 @@ function RenderThreeDeeCircle(Pawn target)
 
 defaultproperties
 {
-	MaxCircleSize=10;
+	MaxCircleSize=100;
 	circleSize=0.0
 	drawSoundBeaconCircle=false
 }

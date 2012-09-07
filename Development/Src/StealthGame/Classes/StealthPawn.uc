@@ -1,6 +1,23 @@
 class StealthPawn extends UTPawn;
 
 var StealthGamePlayerController PC;
+var float nextSoundPulse;
+var float time;
+
+var StealthHUD stealthHud;
+
+defaultproperties
+{
+	//set defaults for regeneration properties
+	GroundSpeed = 350;
+	nextSoundPulse = 0;
+	time = 0;
+}
+
+function SetHudClass(StealthHUD hud)
+{
+	stealthHud = hud;
+}
 
 auto state Walking
 {
@@ -19,6 +36,28 @@ auto state Walking
 	}
 
 	function EndState(name NextStateName)
+{
+	time += deltaTime;
+	if( time > nextSoundPulse )
+	{
+		`Log("Making pulse");
+		if( bIsWalking )
+		{
+			MakeSoundPulse( 200 );
+		}
+		if( bIsMoving )
+		{
+			MakeSoundPulse( 300 );
+		}
+		nextSoundPulse = time + 1;
+	}
+}
+
+function MakeSoundPulse( float radius )
+{
+	stealthHud.makePulseCircle( radius );
+}
+
 	{
 	}
 }
