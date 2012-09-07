@@ -6,13 +6,6 @@ var float time;
 
 var StealthHUD stealthHud;
 
-defaultproperties
-{
-	//set defaults for regeneration properties
-	GroundSpeed = 350;
-	nextSoundPulse = 0;
-	time = 0;
-}
 
 function SetHudClass(StealthHUD hud)
 {
@@ -26,38 +19,20 @@ auto state Walking
 		GroundSpeed = 200;
 	}
 
-	function Tick(float timeDelta)
+	event Tick(float deltaTime)
 	{
-		local SGameListenerPawn foundPawn;
-		foreach OverlappingActors(class'SGameListenerPawn', foundPawn, 500)
+		time += deltaTime;
+		if( time > nextSoundPulse )
 		{
-			`log("Found bot");
+			`Log("Making pulse");
+
+			MakeSoundPulse( 200 );
+
+			nextSoundPulse = time + 1;
 		}
 	}
 
 	function EndState(name NextStateName)
-{
-	time += deltaTime;
-	if( time > nextSoundPulse )
-	{
-		`Log("Making pulse");
-		if( bIsWalking )
-		{
-			MakeSoundPulse( 200 );
-		}
-		if( bIsMoving )
-		{
-			MakeSoundPulse( 300 );
-		}
-		nextSoundPulse = time + 1;
-	}
-}
-
-function MakeSoundPulse( float radius )
-{
-	stealthHud.makePulseCircle( radius );
-}
-
 	{
 	}
 }
@@ -69,15 +44,33 @@ state Running
 		GroundSpeed = 400;
 	}
 
+	event Tick(float deltaTime)
+	{
+		time += deltaTime;
+		if( time > nextSoundPulse )
+		{
+			`Log("Making pulse");
+			
+			MakeSoundPulse( 300 );
+
+			nextSoundPulse = time + 1;
+		}
+	}
+
 	function EndState(name NextStateName)
 	{
 	}
 }
 
+function MakeSoundPulse( float radius )
+{
+	stealthHud.makePulseCircle( radius );
+}
+
 simulated event PostBeginPlay()
 {
 	super.PostBeginPlay();
-	PC = GetALocalPlayerController();
+	PC = StealthGamePlayerController(GetALocalPlayerController());
 }
 
 exec function KillYourself()
@@ -97,6 +90,8 @@ exec function WalkReleased()
 
 defaultproperties
 {
-	//set defaults for regeneration properties
+	GroundSpeed = 350;
+	nextSoundPulse = 0;
+	time = 0;
 	GroundSpeed = 200;
 }
