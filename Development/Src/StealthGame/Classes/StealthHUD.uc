@@ -1,22 +1,19 @@
 class StealthHUD extends HUD;
 
-var StealthPawn PlayerPawn;
-var StealthSoundBeacon SoundBeacon;
-var float circleSize;
-var float MaxCircleSize;
-var bool drawSoundBeaconCircle;
-var array<Pawn> pawns;
+var     StealthPawn                 PlayerPawn;
+var     float                       circleSize;
+var     float                       MaxCircleSize;
+var     bool                        drawSoundBeaconCircle;
+var     array<StealthSoundBeacon>   Beacons;
 
 // This runs when the player press the "H" key
 // This is added trough DefaultInput.ini
-exec function makePulseCircle( float radius)
+exec function makePulseCircle( float radius )
 {
 	local Vector derp;
-	MaxCircleSize = radius;
+	local StealthSoundBeacon SoundBeacon;
 
 	PlayerPawn = StealthPawn(GetALocalPlayerController().Pawn);
-
-	drawSoundBeaconCircle=true;
 	
 	// This get the location of the player and add a new Pawn 
 	// to the map with players set location.
@@ -24,6 +21,8 @@ exec function makePulseCircle( float radius)
 	derp.Y = PlayerPawn.Location.Y;
 	derp.Z = PlayerPawn.Location.Z;
 	SoundBeacon = Spawn(class'StealthGame.StealthSoundBeacon',,,derp);
+	SoundBeacon.MaxCircleSize = radius;
+	Beacons.AddItem(SoundBeacon);
 }
 
 // Runs right before the game starts.
@@ -38,27 +37,27 @@ simulated event PostBeginPlay()
 
 event PostRender()
 {
+	local StealthSoundBeacon arrayItem;
 	super.PostRender();
 	
 	// This will render the beacon
-	if(drawSoundBeaconCircle)
+	foreach Beacons(arrayItem)
 	{
-		RenderThreeDeeCircle(SoundBeacon);
+		RenderThreeDeeCircle(arrayitem);
 	}
 }
 
 // Renders a pulsing circle around the Targets Pawn
 // This will also check if anything is inside this circle.
-function RenderThreeDeeCircle(Pawn target)
+function RenderThreeDeeCircle(StealthSoundBeacon target)
 {
 	local Rotator Angle;
 	local Vector Radius, Offsets[16];
 	local Box ComponentsBoundingBox;
-	local float Width;
 	local SGameListenerPawn victim;
 	local int i;
 	
-	circleSize += 5.0f;
+	target.CircleSize += 5;
 
 	if (PlayerOwner == None)
 	{
@@ -67,8 +66,7 @@ function RenderThreeDeeCircle(Pawn target)
 	
 	target.GetComponentsBoundingBox(ComponentsBoundingBox);
 	
-	Width = circleSize;
-	Radius.X = Width;
+	Radius.X = target.CircleSize;
 	
 	i = 0;
 	
@@ -96,21 +94,18 @@ function RenderThreeDeeCircle(Pawn target)
 	// Checks if the circle is hitting anything. 
 	foreach target.OverlappingActors(class'SGameListenerPawn', victim, Radius.X)
 	{
-		victim.NotifyOnSoundHeared(SoundBeacon);
+		victim.NotifyOnSoundHeared(target);
 	}
 
-	if(circleSize >= MaxCircleSize)
+	if(target.CircleSize >= target.MaxCircleSize)
 	{
-		`Log("Destroyed: "$SoundBeacon.Destroy());
-		circleSize = 0;
-		drawSoundBeaconCircle=false;
+		beacons.RemoveItem(target);
+		target.Destroy();
 	}
-
 }
 
 defaultproperties
 {
 	MaxCircleSize=100;
-	circleSize=0.0
 	drawSoundBeaconCircle=false
 }

@@ -27,7 +27,7 @@ auto state Walking
 		{
 			MakeSoundPulse( 200 );
 
-			nextSoundPulse = time + 1;
+			nextSoundPulse = time + 0.50;
 		}
 	}
 
@@ -50,7 +50,7 @@ state Running
 		{
 			MakeSoundPulse( 300 );
 
-			nextSoundPulse = time + 1;
+			nextSoundPulse = time + 0.35;
 		}
 	}
 
@@ -71,11 +71,21 @@ state Crouching
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			`log("Crouching");
 			MakeSoundPulse( 100 );
 
-			nextSoundPulse = time + 1;
+			nextSoundPulse = time + 0.75;
 		}
+	}
+
+	function EndState(name NextStateName)
+	{
+	}
+}
+
+state Idle
+{
+	function BeginState(name PreviousStateName)
+	{
 	}
 
 	function EndState(name NextStateName)
@@ -111,22 +121,19 @@ exec function WalkReleased()
 
 exec function CrouchPressed()
 {
-	`Log("Crouch");
-	StartCrouch(AdjustHeight);
+	StartCrouch(CrouchHeight);
 	GotoState('Crouching');
 }
 
 exec function CrouchReleased()
 {
-	`Log("Crouch");
-	EndCrouch(AdjustHeight);
+	EndCrouch(CrouchHeight);
 	GoToState('Walking');
 }
 
 defaultproperties
 {
-	AdjustHeight=15;
-	HeightAdjust=AdjustHeight;
+	GroundSpeed=200;
 	nextSoundPulse = 0;
 	time = 0;
 }

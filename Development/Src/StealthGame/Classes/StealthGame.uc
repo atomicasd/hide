@@ -12,6 +12,12 @@ defaultproperties
 	bDelayedStart=false
 }
 
+function AddDefaultInventory(Pawn PlayerPawn)
+{
+	DefaultInventory[0]=class'StealthDefaultWeapon';
+	PlayerPawn.AddDefaultInventory();
+}
+
 event PostLogin( PlayerController NewPlayer )
 {
     super.PostLogin(NewPlayer);

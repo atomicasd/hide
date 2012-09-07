@@ -6,7 +6,6 @@ function pawnDied(Pawn p)
 {
 	local vector Position;
 	local StealthPawn PC;
-	local StealthDeadBodyClone clone;
 
 	PC = StealthPawn(GetALocalPlayerController().Pawn);
 	
