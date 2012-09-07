@@ -3,6 +3,7 @@ class StealthPawn extends UTPawn;
 var StealthGamePlayerController PC;
 var float nextSoundPulse;
 var float time;
+var float AdjustHeight;
 
 var StealthHUD stealthHud;
 
@@ -24,8 +25,6 @@ auto state Walking
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			`Log("Making pulse");
-
 			MakeSoundPulse( 200 );
 
 			nextSoundPulse = time + 1;
@@ -49,9 +48,31 @@ state Running
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			`Log("Making pulse");
-			
 			MakeSoundPulse( 300 );
+
+			nextSoundPulse = time + 1;
+		}
+	}
+
+	function EndState(name NextStateName)
+	{
+	}
+}
+
+state Crouching
+{
+	function BeginState(name PreviuosStateName)
+	{
+		GroundSpeed=100;
+	}
+
+	event Tick(float DeltaTime)
+	{
+		time += deltaTime;
+		if( time > nextSoundPulse )
+		{
+			`log("Crouching");
+			MakeSoundPulse( 100 );
 
 			nextSoundPulse = time + 1;
 		}
@@ -88,10 +109,24 @@ exec function WalkReleased()
 	GotoState('Walking');
 }
 
+exec function CrouchPressed()
+{
+	`Log("Crouch");
+	StartCrouch(AdjustHeight);
+	GotoState('Crouching');
+}
+
+exec function CrouchReleased()
+{
+	`Log("Crouch");
+	EndCrouch(AdjustHeight);
+	GoToState('Walking');
+}
+
 defaultproperties
 {
-	GroundSpeed = 350;
+	AdjustHeight=15;
+	HeightAdjust=AdjustHeight;
 	nextSoundPulse = 0;
 	time = 0;
-	GroundSpeed = 200;
 }
