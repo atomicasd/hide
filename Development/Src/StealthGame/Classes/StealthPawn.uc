@@ -1,20 +1,45 @@
 class StealthPawn extends UTPawn;
 
-var PlayerController PC;
+var StealthGamePlayerController PC;
+
+auto state Walking
+{
+	function BeginState(name PreviousStateName)
+	{
+		GroundSpeed = 200;
+	}
+
+	function Tick(float timeDelta)
+	{
+		local SGameListenerPawn foundPawn;
+		foreach OverlappingActors(class'SGameListenerPawn', foundPawn, 500)
+		{
+			`log("Found bot");
+		}
+	}
+
+	function EndState(name NextStateName)
+	{
+	}
+}
+
+state Running
+{
+	function BeginState(name PreviousStateName)
+	{
+		GroundSpeed = 400;
+	}
+
+	function EndState(name NextStateName)
+	{
+	}
+}
 
 simulated event PostBeginPlay()
 {
 	super.PostBeginPlay();
 	PC = GetALocalPlayerController();
 }
-
-/*
-simulated event Suicide()
-{
-	super.Suicide();
-	Dead();
-}
-*/
 
 exec function KillYourself()
 {
@@ -23,30 +48,16 @@ exec function KillYourself()
 
 exec function WalkPressed()
 {
-	GroundSpeed = 150;
+	GotoState('Running');
 }
 
 exec function WalkReleased()
 {
-	GroundSpeed = 300;
+	GotoState('Walking');
 }
-
-function Dead()
-{
-	local vector Position;
-	
-	Position.X = PC.Location.X;
-	Position.Y = PC.Location.Y;
-	Position.Z = PC.Location.Z - 50;
-
-	`Log("Spawning new DeadClone");
-	
-	Spawn(class'StealthDeadBodyClone',,,Position,,,false);
-}
-
 
 defaultproperties
 {
 	//set defaults for regeneration properties
-	GroundSpeed = 350;
+	GroundSpeed = 200;
 }
