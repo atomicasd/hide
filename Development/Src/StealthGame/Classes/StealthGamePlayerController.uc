@@ -62,7 +62,7 @@ defaultproperties
 function DrawHUD( HUD H )
 {
 	local float CrosshairSize;
-	super.DrawHUD(H);
+	//super.DrawHUD(H);
 
 	H.Canvas.SetDrawColor(0,255,0,255);
 

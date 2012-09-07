@@ -22,29 +22,32 @@ var bool AttAcking;
 
 var () array<NavigationPoint> MyNavigationPoints;
 
+var(NPC) SkeletalMeshComponent NPCMesh;
+var(NPC) class<AIController> NPCController;
+
 DefaultProperties
 {
     Begin Object Name=CollisionCylinder
         CollisionHeight=+44.000000
     End Object
  
-    Begin Object Class=SkeletalMeshComponent Name=SandboxPawnSkeletalMesh
-        SkeletalMesh=SkeletalMesh'CH_IronGuard_Male.Mesh.SK_CH_IronGuard_MaleA'
-        AnimSets(0)=AnimSet'CH_AnimHuman.Anims.K_AnimHuman_BaseMale'
-        AnimTreeTemplate=AnimTree'SandboxContent.Animations.AT_CH_Human'
-        HiddenGame=FALSE
-        HiddenEditor=FALSE
-    End Object
+	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
+		SkeletalMesh=SkeletalMesh'CH_LIAM_Cathode.Mesh.SK_CH_LIAM_Cathode'
+		PhysicsAsset=PhysicsAsset'CH_AnimCorrupt.Mesh.SK_CH_Corrupt_Male_Physics'
+		AnimSets(0)=AnimSet'CH_AnimHuman.Anims.K_AnimHuman_BaseMale'
+		AnimtreeTemplate=AnimTree'CH_AnimHuman_Tree.AT_CH_Human'
+	End Object
+	NPCMesh=NPCMesh0
+	Mesh=NPCMesh0
+	Components.Add(NPCMesh0)
  
-    Mesh=SandboxPawnSkeletalMesh
- 
-    Components.Add(SandboxPawnSkeletalMesh)
     ControllerClass=class'StealthGame.SGameListenerAIController';
    // InventoryManagerClass=class'Sandbox.SandboxInventoryManager'
     bJumpCapable=false
     bCanJump=false
  
-    GroundSpeed=450.0
+    GroundSpeed=200.0
+	PeripheralVision = 0.9;
 }
 
 function NotifyOnSoundHeared()
@@ -75,28 +78,28 @@ function SetAttacking(bool atacar)
 
 
 
-simulated event Tick(float DeltaTime)
+/*simulated event Tick(float DeltaTime)
 {
-	local UTPawn gv;
+	local StealthPawn gv;
 
 	super.Tick(DeltaTime);
 	//MyController.Tick(DeltaTime);
 
 	
 	//foreach CollidingActors(class'UTPawn', gv, 200) 
-	foreach VisibleCollidingActors(class'UTPawn', gv, 100)
+	foreach VisibleCollidingActors(class'StealthPawn', gv, 100)
 	{
-		if(AttAcking && gv != none)
+		if(gv != none)
 		{
-			if(gv.Name == 'MyPawn_0' && gv.Health > 0)
+			if(gv.Health > 0)
 			{
 				//Worldinfo.Game.Broadcast(self, "Colliding with player : " @ gv.Name);
-				gv.Health -= 1;
+				gv.Health -= 5;
 				gv.IsInPain();
 			}
 		}
 	}
-}
+}*/
 
 simulated function SetCharacterClassFromInfo(class<UTFamilyInfo> Info)
 {

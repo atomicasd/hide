@@ -93,13 +93,9 @@ function RenderThreeDeeCircle(Pawn target)
 	}
 	
 	// Checks if the circle is hitting anything. 
-	foreach target.OverlappingActors(class'Pawn', victim, Radius.X)
+	foreach target.OverlappingActors(class'SGameListenerPawn', victim, Radius.X)
 	{
-		if(victim != target && victim != PlayerPawn)
-		{			`log("Ring collision");
-
-			
-		}
+		`log("Ring collision");
 	}
 
 	if(circleSize >= MaxCircleSize)

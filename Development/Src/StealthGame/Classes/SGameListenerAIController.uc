@@ -26,10 +26,14 @@ var bool followingPath;
 var bool noiseHeard;
 var Float IdleInterval;
 
+var Vector lastSoundHearedLocation;
+
 function NotifyOnSoundHeared()
 {
-	GotoState('Follow');
 	Worldinfo.Game.Broadcast(self, "Heard sound");
+	thePlayer = GetALocalPlayerController().Pawn;
+	lastSoundHearedLocation = thePlayer.Location;
+	GotoState('GoToLocation');
 }
 
 function SetPawn(SGameListenerPawn NewPawn)
@@ -68,19 +72,23 @@ function Tick(Float Delta)
 	
 }
 
-state Idle
+auto state Idle
 {
 
-    event SeePlayer(Pawn SeenPlayer)
+    /*event SeePlayer(Pawn SeenPlayer)
 	{
+
 	    thePlayer = SeenPlayer;
         distanceToPlayer = VSize(thePlayer.Location - Pawn.Location);
-        if (distanceToPlayer < perceptionDistance)
-        { 
-        	//Worldinfo.Game.Broadcast(self, "I can see you!!");
-            GotoState('Follow');
-        }
-    }
+
+
+		if (distanceToPlayer < perceptionDistance)
+		{ 
+        	Worldinfo.Game.Broadcast(self, "I can see you1");
+			GotoState('Follow');
+		}
+
+    }*/
 
 Begin:
     Worldinfo.Game.Broadcast(self, "!!!!!!!  idle  !!!!!!!!");
@@ -88,7 +96,7 @@ Begin:
 	Pawn.Acceleration = vect(0,0,0);
 	MyBadguy1.SetAttacking(false);
 
-	Sleep(IdleInterval);
+	//Sleep(IdleInterval);
 
 	Worldinfo.Game.Broadcast(self, "!!!!!!!  Going to FollowPath  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	followingPath = true;
@@ -103,17 +111,42 @@ Begin:
     thePlayer = GetALocalPlayerController().Pawn;
     //Target is an Actor variable defined in my custom AI Controller.
     //Of course, you would normally verify that the Pawn is not None before proceeding.
-	if( thePlayer.Health > 0 )
+	if( thePlayer.Health > 0 && CanSee(thePlayer) )
 	{
-		MoveToward(thePlayer, thePlayer, 128);
+		MoveToward(thePlayer, thePlayer, 0);
+		//FindPat
 	} else
 	{
 		GotoState('Idle');
 	}
- 
     goto 'Begin';
 }
 
+state GoToLocation 
+{
+ Begin:
+
+	MoveTarget = FindPathTo( lastSoundHearedLocation );
+	
+	if(Pawn.ReachedDestination(MoveTarget))
+	{
+		GotoState('Idle');
+	}	
+
+	if (ActorReachable(MoveTarget)) 
+	{
+		MoveToward(MoveTarget, MoveTarget);	
+	}
+	else
+	{
+		MoveTarget = FindPathTo( lastSoundHearedLocation );
+		if (MoveTarget != none)
+		{
+			MoveToward(MoveTarget, MoveTarget);
+		}
+	}
+	goto 'Begin';
+}
 state Chaseplayer
 {
   Begin:
@@ -121,9 +154,9 @@ state Chaseplayer
 	MyBadguy1.SetAttacking(false);
     Pawn.Acceleration = vect(0,0,1);
 	
-    while (Pawn != none && thePlayer.Health > 0)
+    if (Pawn != none && thePlayer.Health > 0)
     {
-		Worldinfo.Game.Broadcast(self, "I can see you!!");
+		//Worldinfo.Game.Broadcast(self, "I can see you!!");
 		
 		if (ActorReachable(thePlayer))
 		{
@@ -131,7 +164,6 @@ state Chaseplayer
 			if (distanceToPlayer < attackDistance)
 			{
 				GotoState('Attack');
-				break;
 			}
 			else //if(distanceToPlayer < 300)
 			{
@@ -139,7 +171,6 @@ state Chaseplayer
 				if(Pawn.ReachedDestination(thePlayer))
 				{
 					GotoState('Attack');
-					break;
 				}
 			}
 		}
@@ -161,12 +192,10 @@ state Chaseplayer
 			else
 			{
 				GotoState('Idle');
-				break;
 			}		
 		}
-
-		Sleep(1);
     }
+	goto 'Begin';
 }
 
 state Attack
@@ -174,6 +203,7 @@ state Attack
  Begin:
 	Pawn.Acceleration = vect(0,0,0);
 	MyBadguy1.SetAttacking(true);
+	Worldinfo.Game.Broadcast(self, "!!!!!!!  ATTACK  !!!!!!!!");
 	while(true && thePlayer.Health > 0)
 	{   
 		//Worldinfo.Game.Broadcast(self, "Attacking Player");
@@ -191,20 +221,18 @@ state Attack
 }
 
 
-auto state FollowPath
+state FollowPath
 {
-	event SeePlayer(Pawn SeenPlayer)
+/*	event SeePlayer(Pawn SeenPlayer)
 	{
 	    thePlayer = SeenPlayer;
         distanceToPlayer = VSize(thePlayer.Location - Pawn.Location);
-        if (distanceToPlayer < perceptionDistance)
-        { 
-        	//Worldinfo.Game.Broadcast(self, "I can see you!!");
-			noiseHeard = true;
-			followingPath = false;
-            GotoState('Chaseplayer');
-        }
-    }
+		if (distanceToPlayer < perceptionDistance)
+		{ 
+        	Worldinfo.Game.Broadcast(self, "I can see you1");
+			GotoState('Follow');
+		}
+    }*/
 
  Begin:
 
@@ -214,7 +242,6 @@ auto state FollowPath
 		
 		if(Pawn.ReachedDestination(MoveTarget))
 		{
-			//WorldInfo.Game.Broadcast(self, "Encontrei o node");
 			actual_node++;
 			
 			if (actual_node >= MyNavigationPoints.Length)
@@ -245,8 +272,7 @@ auto state FollowPath
 				MoveToward(MoveTarget, MoveTarget);
 			}
 		}
-
-		Sleep(0.1);
+		Sleep(1);
 	}
 }
 
