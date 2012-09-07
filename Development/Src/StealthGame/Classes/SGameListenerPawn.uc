@@ -50,9 +50,9 @@ DefaultProperties
 	PeripheralVision = 0.9;
 }
 
-function NotifyOnSoundHeared()
+function NotifyOnSoundHeared(StealthSoundBeacon beacon)
 {
-	MyController.NotifyOnSoundHeared();
+	MyController.NotifyOnSoundHeared(beacon);
 }
 
 simulated function PostBeginPlay()

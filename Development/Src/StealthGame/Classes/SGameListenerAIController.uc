@@ -4,6 +4,7 @@ var SGameListenerPawn MyBadguy1;
 var Pawn thePlayer;
 var Actor theNoiseMaker;
 var Vector noisePos;
+var Pawn theBeacon;
 
 var () array<NavigationPoint> MyNavigationPoints;
 var NavigationPoint MyNextNavigationPoint;
@@ -25,15 +26,20 @@ var bool AttAcking;
 var bool followingPath;
 var bool noiseHeard;
 var Float IdleInterval;
-
+var bool soundHeard;
 var Vector lastSoundHearedLocation;
 
-function NotifyOnSoundHeared()
+function NotifyOnSoundHeared(StealthSoundBeacon beacon)
 {
-	Worldinfo.Game.Broadcast(self, "Heard sound");
-	thePlayer = GetALocalPlayerController().Pawn;
-	lastSoundHearedLocation = thePlayer.Location;
-	GotoState('GoToLocation');
+	if( !soundHeard )
+	{
+		soundHeard = true;
+		Worldinfo.Game.Broadcast(self, "Heard sound");
+		theBeacon = beacon;
+		lastSoundHearedLocation = theBeacon.Location;
+		`Log("Sound Heard");
+		GotoState('GoToLocation');
+	}
 }
 
 function SetPawn(SGameListenerPawn NewPawn)
@@ -65,30 +71,11 @@ function Possess(Pawn aPawn, bool bVehicleTransition)
 
 function Tick(Float Delta)
 {
-	//if(IsInState('Attack'))
-	//{	
-
-	//}
 	
 }
 
 auto state Idle
 {
-
-    /*event SeePlayer(Pawn SeenPlayer)
-	{
-
-	    thePlayer = SeenPlayer;
-        distanceToPlayer = VSize(thePlayer.Location - Pawn.Location);
-
-
-		if (distanceToPlayer < perceptionDistance)
-		{ 
-        	Worldinfo.Game.Broadcast(self, "I can see you1");
-			GotoState('Follow');
-		}
-
-    }*/
 
 Begin:
     Worldinfo.Game.Broadcast(self, "!!!!!!!  idle  !!!!!!!!");
@@ -124,28 +111,32 @@ Begin:
 
 state GoToLocation 
 {
- Begin:
-
-	MoveTarget = FindPathTo( lastSoundHearedLocation );
-	
-	if(Pawn.ReachedDestination(MoveTarget))
-	{
-		GotoState('Idle');
-	}	
-
-	if (ActorReachable(MoveTarget)) 
-	{
-		MoveToward(MoveTarget, MoveTarget);	
-	}
-	else
+Begin:
+	while(soundHeard)
 	{
 		MoveTarget = FindPathTo( lastSoundHearedLocation );
-		if (MoveTarget != none)
+	
+		if(Pawn.ReachedDestination(MoveTarget))
 		{
-			MoveToward(MoveTarget, MoveTarget);
+			soundHeard = false;
+			Worldinfo.Game.Broadcast(self, "Reached sound destination");
+			GotoState('Idle');
+		}	
+
+		if (ActorReachable(MoveTarget)) 
+		{
+			MoveToward(MoveTarget, MoveTarget);	
 		}
+		else
+		{
+			MoveTarget = FindPathTo( lastSoundHearedLocation );
+			if (MoveTarget != none)
+			{
+				MoveToward(MoveTarget, MoveTarget);
+			}
+		}
+		Sleep(1);
 	}
-	goto 'Begin';
 }
 state Chaseplayer
 {
@@ -287,5 +278,7 @@ defaultproperties
 	last_node = 0
 	followingPath = true
 	IdleInterval = 2.5f
+
+	soundHeard = false;
 
 }

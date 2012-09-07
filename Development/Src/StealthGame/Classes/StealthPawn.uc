@@ -1,6 +1,23 @@
 class StealthPawn extends UTPawn;
 
 var PlayerController PC;
+var float nextSoundPulse;
+var float time;
+
+var StealthHUD stealthHud;
+
+defaultproperties
+{
+	//set defaults for regeneration properties
+	GroundSpeed = 350;
+	nextSoundPulse = 0;
+	time = 0;
+}
+
+function SetHudClass(StealthHUD hud)
+{
+	stealthHud = hud;
+}
 
 simulated event PostBeginPlay()
 {
@@ -15,6 +32,29 @@ simulated event Suicide()
 	Dead();
 }
 */
+
+function Tick( float deltaTime )
+{
+	time += deltaTime;
+	if( time > nextSoundPulse )
+	{
+		`Log("Making pulse");
+		if( bIsWalking )
+		{
+			MakeSoundPulse( 200 );
+		}
+		if( bIsMoving )
+		{
+			MakeSoundPulse( 300 );
+		}
+		nextSoundPulse = time + 1;
+	}
+}
+
+function MakeSoundPulse( float radius )
+{
+	stealthHud.makePulseCircle( radius );
+}
 
 exec function KillYourself()
 {
@@ -42,11 +82,4 @@ function Dead()
 	`Log("Spawning new DeadClone");
 	
 	Spawn(class'StealthDeadBodyClone',,,Position,,,false);
-}
-
-
-defaultproperties
-{
-	//set defaults for regeneration properties
-	GroundSpeed = 350;
 }
