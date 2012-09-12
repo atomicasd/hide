@@ -39,6 +39,9 @@ event PostRender()
 {
 	local StealthSoundBeacon arrayItem;
 	super.PostRender();
+
+	PlayerPawn = StealthPawn(GetALocalPlayerController().Pawn);
+	PlayerPawn.SetHudClass( self );
 	
 	// This will render the beacon
 	foreach Beacons(arrayItem)
@@ -102,6 +105,11 @@ function RenderThreeDeeCircle(StealthSoundBeacon target)
 		beacons.RemoveItem(target);
 		target.Destroy();
 	}
+}
+
+function Draw3DLineBetwenTargets(Actor from, Actor target)
+{
+	Draw3DLine(from.Location, target.Location, class'HUD'.default.RedColor);
 }
 
 defaultproperties

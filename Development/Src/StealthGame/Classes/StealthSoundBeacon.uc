@@ -10,6 +10,9 @@ DefaultProperties
 {
 	// Remove collisions, so we can spawn this inside another Actor
 	bBlockActors=false
+	bBlocksNavigation=false
+	bBlocksTeleport=false
+	
 	CircleSize=0
 	MaxCircleSize=0
 }

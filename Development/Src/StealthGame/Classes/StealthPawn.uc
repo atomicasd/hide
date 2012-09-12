@@ -4,6 +4,7 @@ var StealthGamePlayerController PC;
 var float nextSoundPulse;
 var float time;
 var float AdjustHeight;
+var bool buttonPressed;
 
 var StealthHUD stealthHud;
 
@@ -13,7 +14,37 @@ function SetHudClass(StealthHUD hud)
 	stealthHud = hud;
 }
 
-auto state Walking
+auto state Idle
+{
+	function BeginState(name PreviousStateName)
+	{
+	}
+
+	event Tick(float DeltaTime)
+	{
+		time += deltaTime;
+		if( time > nextSoundPulse )
+		{
+			MakeSoundPulse( 250 );
+
+			nextSoundPulse = time + 0.75;
+		}
+
+		if(!buttonPressed){
+			if(vSize(Velocity) != 0){
+				GoToState('Walking');
+				`log("Walking");
+			}
+		}
+	}
+
+
+	function EndState(name NextStateName)
+	{
+	}
+}
+
+state Walking
 {
 	function BeginState(name PreviousStateName)
 	{
@@ -25,9 +56,14 @@ auto state Walking
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			MakeSoundPulse( 200 );
+			MakeSoundPulse( 400 );
 
 			nextSoundPulse = time + 0.50;
+		}
+
+		if(vSize(Velocity) == 0){
+			GotoState('idle');
+			`log("IDLE");
 		}
 	}
 
@@ -48,10 +84,22 @@ state Running
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			MakeSoundPulse( 300 );
+			MakeSoundPulse( 750 );
 
 			nextSoundPulse = time + 0.35;
 		}
+		
+		if(vSize(Velocity) == 0){
+			GotoState('idle');
+			`log("IDLE");
+		}
+
+		if(!buttonPressed){
+			if(vSize(Velocity) != 0){
+				GoToState('Walking');
+				`log("Walking");
+			}
+		}   
 	}
 
 	function EndState(name NextStateName)
@@ -71,21 +119,17 @@ state Crouching
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			MakeSoundPulse( 100 );
+			MakeSoundPulse( 150 );
 
 			nextSoundPulse = time + 0.75;
 		}
-	}
 
-	function EndState(name NextStateName)
-	{
-	}
-}
-
-state Idle
-{
-	function BeginState(name PreviousStateName)
-	{
+		if(!buttonPressed){
+			if(vSize(Velocity) != 0){
+				GoToState('Walking');
+				`log("Walking");
+			}
+		}
 	}
 
 	function EndState(name NextStateName)
@@ -111,24 +155,29 @@ exec function KillYourself()
 
 exec function WalkPressed()
 {
+	buttonPressed=true;
 	GotoState('Running');
+	`log("Running");
 }
 
 exec function WalkReleased()
 {
 	GotoState('Walking');
+	buttonPressed=false;
 }
 
 exec function CrouchPressed()
 {
+	buttonPressed=true;
 	StartCrouch(CrouchHeight);
 	GotoState('Crouching');
+	`log("Crouching");
 }
 
 exec function CrouchReleased()
 {
 	EndCrouch(CrouchHeight);
-	GoToState('Walking');
+	buttonPressed=false;
 }
 
 defaultproperties
@@ -136,4 +185,5 @@ defaultproperties
 	GroundSpeed=200;
 	nextSoundPulse = 0;
 	time = 0;
+	buttonPressed=false
 }
