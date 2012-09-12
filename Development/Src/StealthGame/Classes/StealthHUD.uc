@@ -56,7 +56,11 @@ function RenderThreeDeeCircle(StealthSoundBeacon target)
 	local Box ComponentsBoundingBox;
 	local SGameListenerPawn victim;
 	local int i;
-	
+	local SoundSpot soundSpot;
+	local Vector soundSpotLocation;
+	local bool firstSpawned;
+	firstSpawned = false;
+
 	target.CircleSize += 5;
 
 	if (PlayerOwner == None)
@@ -94,7 +98,13 @@ function RenderThreeDeeCircle(StealthSoundBeacon target)
 	// Checks if the circle is hitting anything. 
 	foreach target.OverlappingActors(class'SGameListenerPawn', victim, Radius.X)
 	{
-		victim.NotifyOnSoundHeared(target);
+		if( !firstSpawned )
+		{
+			soundSpotLocation = target.Location;
+			soundSpot = Spawn(class'StealthGame.SoundSpot',,,soundSpotLocation);
+			firstSpawned = true;
+		}
+		victim.NotifyOnSoundHeared(soundSpot);
 	}
 
 	if(target.CircleSize >= target.MaxCircleSize)

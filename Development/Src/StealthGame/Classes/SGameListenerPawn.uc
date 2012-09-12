@@ -27,7 +27,7 @@ var () array<NavigationPoint> MyNavigationPoints;
 var(NPC) SkeletalMeshComponent NPCMesh;
 var(NPC) class<AIController> NPCController;
 
-function NotifyOnSoundHeared(StealthSoundBeacon beacon)
+function NotifyOnSoundHeared(SoundSpot soundSpot)
 {
 	local vector loc, norm;
 	local TraceHitInfo hitInfo;
@@ -36,16 +36,15 @@ function NotifyOnSoundHeared(StealthSoundBeacon beacon)
 	PC = StealthGamePlayerController( GetALocalPlayerController() );
 
 	// Checks the line of sight between This PawnLocation and PC-Location. Returns the first collidable Pawn.
-	traceHit = trace(loc, norm, PC.Location, Location, true,, hitInfo);
+	traceHit = trace(loc, norm, PC.Location, Location , true,, hitInfo);
 	
-	`log("Hit: "$traceHit);
 	// Still collides with PathNodes in the map. They are WorldInfo too.
 	// Possible solution is to trace from pathnode to player.
 	
 	// It will only notify the enemy if trace has a visible path to the soundbeacon
 	// Walls will return WorldInfo Actor
-	if(traceHit.IsA('StealthSoundBeacon') || traceHit.IsA('StealthPawn')){
-		MyController.NotifyOnSoundHeared(beacon);
+	if( !traceHit.IsA('StealthSoundBeacon') || !traceHit.IsA('StealthPawn')){
+		MyController.NotifyOnSoundHeared(soundSpot);
 	}
 	
 }
@@ -74,6 +73,14 @@ function SetAttacking(bool atacar)
 	AttAcking = atacar;
 }
 
+function Tick(Float Delta)
+{
+	local StealthPawn victim;
+	foreach self.OverlappingActors(class'StealthPawn', victim, 40)
+	{
+		victim.KillYourself();
+	}
+}
 
 
 /*simulated event Tick(float DeltaTime)

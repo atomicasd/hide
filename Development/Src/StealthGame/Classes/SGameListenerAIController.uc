@@ -27,19 +27,19 @@ var bool followingPath;
 var bool noiseHeard;
 var Float IdleInterval;
 var bool soundHeard;
-var Vector lastSoundHearedLocation;
+var SoundSpot lastSoundSpot;
 
-function NotifyOnSoundHeared(StealthSoundBeacon beacon)
+function NotifyOnSoundHeared(SoundSpot soundSpot)
 {
-	if( !soundHeard )
-	{
+	//if( !soundHeard )
+	//{
 		soundHeard = true;
 		Worldinfo.Game.Broadcast(self, "Heard sound");
-		theBeacon = beacon;
-		lastSoundHearedLocation = theBeacon.Location;
-		`Log("Sound Heard");
+		lastSoundSpot.Destroy();
+		lastSoundSpot = soundSpot;
+		//`Log("Sound Heard");
 		GotoState('GoToLocation');
-	}
+	//}
 }
 
 function SetPawn(SGameListenerPawn NewPawn)
@@ -71,7 +71,12 @@ function Possess(Pawn aPawn, bool bVehicleTransition)
 
 function Tick(Float Delta)
 {
-	
+	local StealthPawn victim;
+	foreach self.OverlappingActors(class'StealthPawn', victim, 400)
+	{
+		victim.KillYourself();
+
+	}
 }
 
 auto state Idle
@@ -112,27 +117,33 @@ Begin:
 state GoToLocation 
 {
 Begin:
+
 	while(soundHeard)
 	{
-		MoveTarget = FindPathTo( lastSoundHearedLocation );
-	
-		if(Pawn.ReachedDestination(MoveTarget))
+		MoveTarget = FindPathToward( lastSoundSpot );
+		//Next path node in the path
+		Worldinfo.Game.Broadcast(self, "p");
+		if( Pawn.ReachedDestination( lastSoundSpot ) )
 		{
 			soundHeard = false;
 			Worldinfo.Game.Broadcast(self, "Reached sound destination");
 			GotoState('Idle');
-		}	
-
-		if (ActorReachable(MoveTarget)) 
-		{
-			MoveToward(MoveTarget, MoveTarget);	
 		}
+		
+		MoveTo( lastSoundSpot.Location );
+
+		if( ActorReachable( MoveTarget ) )
+		{
+			Worldinfo.Game.Broadcast(self, "moving toward target");
+			MoveToward(MoveTarget, MoveTarget);	
+		} 
 		else
 		{
-			MoveTarget = FindPathTo( lastSoundHearedLocation );
+			MoveTarget = FindPathToward( lastSoundSpot );
 			if (MoveTarget != none)
 			{
-				MoveToward(MoveTarget, MoveTarget);
+				Worldinfo.Game.Broadcast(self, "moving toward pathnode");
+				MoveToward( MoveTarget, MoveTarget );	
 			}
 		}
 		Sleep(1);
