@@ -25,9 +25,9 @@ auto state Idle
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			MakeSoundPulse( 250 );
+			MakeSoundPulse( 50 );
 
-			nextSoundPulse = time + 0.75;
+			nextSoundPulse = time + 1.0;
 		}
 
 		if(!buttonPressed){
@@ -48,7 +48,7 @@ state Walking
 {
 	function BeginState(name PreviousStateName)
 	{
-		GroundSpeed = 200;
+		GroundSpeed = 100;
 	}
 
 	event Tick(float deltaTime)
@@ -56,7 +56,7 @@ state Walking
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			MakeSoundPulse( 400 );
+			MakeSoundPulse( vSize(Velocity) );
 
 			nextSoundPulse = time + 0.50;
 		}
@@ -76,7 +76,7 @@ state Running
 {
 	function BeginState(name PreviousStateName)
 	{
-		GroundSpeed = 400;
+		GroundSpeed = 210;
 	}
 
 	event Tick(float deltaTime)
@@ -84,7 +84,7 @@ state Running
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			MakeSoundPulse( 750 );
+			MakeSoundPulse( vSize(Velocity) * 2 );
 
 			nextSoundPulse = time + 0.35;
 		}
@@ -119,7 +119,7 @@ state Crouching
 		time += deltaTime;
 		if( time > nextSoundPulse )
 		{
-			MakeSoundPulse( 150 );
+			MakeSoundPulse( vSize(Velocity) );
 
 			nextSoundPulse = time + 0.75;
 		}

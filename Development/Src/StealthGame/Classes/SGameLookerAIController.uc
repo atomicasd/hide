@@ -1,6 +1,6 @@
-class SGameListenerAIController extends AIController;
+class SGameLookerAIController extends AIController;
 
-var SGameListenerPawn MyBadguy1;
+var SGameLookerPawn MyBadguy1;
 var Pawn thePlayer;
 var Actor theNoiseMaker;
 var Vector noisePos;
@@ -24,25 +24,8 @@ var Name AnimSetName;
 
 var bool AttAcking;
 var bool followingPath;
-var bool noiseHeard;
 var Float IdleInterval;
-var bool soundHeard;
-var SoundSpot lastSoundSpot;
-
-function NotifyOnSoundHeared(SoundSpot soundSpot)
-{
-	//if( !soundHeard )
-	//{
-		soundHeard = true;
-		Worldinfo.Game.Broadcast(self, "I heard that");
-		lastSoundSpot.Destroy();
-		lastSoundSpot = soundSpot;
-		//`Log("Sound Heard");
-		GotoState('GoToLocation');
-	//}
-}
-
-function SetPawn(SGameListenerPawn NewPawn)
+function SetPawn(SGameLookerPawn NewPawn)
 {
     MyBadguy1 = NewPawn;
 	Possess(MyBadguy1, false);
@@ -104,37 +87,7 @@ Begin:
     goto 'Begin';
 }
 
-state GoToLocation 
-{
-Begin:
 
-	while(soundHeard)
-	{
-		MoveTarget = FindPathToward( lastSoundSpot );
-		//Next path node in the path
-		if( Pawn.ReachedDestination( lastSoundSpot ) )
-		{
-			soundHeard = false;
-			GotoState('Idle');
-		}
-		
-		MoveTo( lastSoundSpot.Location );
-
-		if( ActorReachable( MoveTarget ) )
-		{
-			MoveToward(MoveTarget, MoveTarget);	
-		} 
-		else
-		{
-			MoveTarget = FindPathToward( lastSoundSpot );
-			if (MoveTarget != none)
-			{
-				MoveToward( MoveTarget, MoveTarget );	
-			}
-		}
-		Sleep(1);
-	}
-}
 state Chaseplayer
 {
   Begin:
@@ -211,16 +164,16 @@ state Attack
 
 state FollowPath
 {
-/*	event SeePlayer(Pawn SeenPlayer)
+	event SeePlayer(Pawn SeenPlayer)
 	{
 	    thePlayer = SeenPlayer;
         distanceToPlayer = VSize(thePlayer.Location - Pawn.Location);
 		if (distanceToPlayer < perceptionDistance)
 		{ 
-        	Worldinfo.Game.Broadcast(self, "I can see you1");
+        	Worldinfo.Game.Broadcast(self, "I can see you!");
 			GotoState('Follow');
 		}
-    }*/
+    }
 
  Begin:
 

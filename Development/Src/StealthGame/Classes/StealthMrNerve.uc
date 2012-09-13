@@ -38,7 +38,7 @@ function PostBeginPlay()
 
 event Tick(float DeltaTime)
 {
-	local float speed;
+	//local float speed;
 	local StealthMrNerveHand target;
 	local vector tempVector;
 	local vector loc, norm;
