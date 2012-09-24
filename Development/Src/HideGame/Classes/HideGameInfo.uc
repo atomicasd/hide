@@ -1,4 +1,5 @@
-class HideGame extends UTGame;
+class HideGameInfo extends UTGame;
+
 
 DefaultProperties
 {
