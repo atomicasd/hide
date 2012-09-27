@@ -17,9 +17,12 @@ DefaultProperties
 	pulseRadius = 1;
 }
 
-function PostBeginPlay()
+simulated event PostBeginPlay()
 {
 	local FogVolumeSphericalDensityInfo A;
+
+	super.PostBeginPlay();
+
 	ForEach WorldInfo.AllActors(class'FogVolumeSphericalDensityInfo', A)
 	{
 		A.DensityComponent.StartDistance = 20000;
