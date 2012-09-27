@@ -13,15 +13,43 @@ DefaultProperties
 	CharacterClass=class'UTFamilyInfo_Liandri_Male'
 
 	pulseMade = false;
-	pulseMaxRadius = 3000;
-	pulseRadius = 0;
+	pulseMaxRadius = 2500;
+	pulseRadius = 1;
+}
 
+function PostBeginPlay()
+{
+	local FogVolumeSphericalDensityInfo A;
+	ForEach WorldInfo.AllActors(class'FogVolumeSphericalDensityInfo', A)
+	{
+		A.DensityComponent.StartDistance = 20000;
+		A.ForceUpdateComponents();
+	}
+
+	super.PostBeginPlay();
+}
+
+function EnablePulse()
+{
+	pulseMade = true;
+	pulseRadius = 0;
+}
+
+function DisablePulse()
+{
+	local FogVolumeSphericalDensityInfo A;
+	ForEach WorldInfo.AllActors(class'FogVolumeSphericalDensityInfo', A)
+	{
+		A.DensityComponent.StartDistance = 20000;
+		A.ForceUpdateComponents();
+	}
+	super.PostBeginPlay();
 }
 
 function PlayerTick(float DeltaTime)
 {
 	local FogVolumeSphericalDensityInfo A;
-
+	local FogVolumeSphericalDensityComponent B;
 	if( pulseMade )
 	{
 		ForEach WorldInfo.AllActors(class'FogVolumeSphericalDensityInfo', A)
@@ -32,10 +60,17 @@ function PlayerTick(float DeltaTime)
 			} else 
 			{
 				A.DensityComponent.StartDistance = pulseRadius;
+				ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
+				{
+					
+					B.MaxDensity = (pulseMaxRadius + 900) / ( pulseMaxRadius/5 * pulseRadius);
+					B.ForceUpdate(true);
+				}
+				
 				A.ForceUpdateComponents();
 			}
 
-			pulseRadius += 30.0f;
+			pulseRadius += 20 - (20 * (pulseRadius/pulseMaxRadius) );
 		}
 	}
 	
@@ -46,6 +81,7 @@ function PlayerTick(float DeltaTime)
 exec function makePulseCircle()
 {
 	pulseMade = true;
-	pulseRadius = 0;
+	pulseRadius = 1;
 	`log("Making pulse effect");
 }
+
