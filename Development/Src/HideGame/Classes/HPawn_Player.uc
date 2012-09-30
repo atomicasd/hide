@@ -8,9 +8,50 @@ enum PlayerWalkingState
 	Run
 };
 
-var bool SneakActivated;
-var bool RunActivated;
-var PlayerWalkingState PlayerState;
+var     class<HInformation_Character>  CharInfo;
+var     bool                        SneakActivated;
+var     bool                        RunActivated;
+var     PlayerWalkingState          PlayerState;
+
+function PossesedBy(Controller C, bool bVehicleTransition)
+{
+	Super.PossessedBy(C, bVehicleTransition);
+	SetCharacterInformation(GetCharInfo());
+}
+
+simulated function class<HInformation_Character> GetCharInfo()
+{
+	local HPlayerController HPC;
+
+	HPC = HPlayerController(Controller);
+
+	if ( HPC != None )
+	{
+		return HPC.hPlayerInfo;
+	}
+
+	return CharInfo;
+}
+
+// Sets CharacterInfo for spawn
+simulated function SetCharacterInformation(class<HInformation_Character> HCharInfo)
+{
+	`log("Setting up charinfo");
+	if(HCharInfo != CharInfo)
+	{
+		Mesh.AnimSets = HCharInfo.default.HAnimSet;
+		Mesh.SetSkeletalMesh(HCharInfo.default.HSkeletalMesh);
+		Mesh.SetPhysicsAsset(HCharInfo.default.HPhysicsAsset);
+		Mesh.SetAnimTreeTemplate(HCharInfo.default.HAnimTreeTemplate);
+
+		CharInfo = HCharInfo;
+	}
+
+	if(HPlayerController(Controller) != None)
+	{
+		HPlayerController(Controller).CreatePlayerInformation();
+	}
+}
 
 // Activate Sneak. This will override Run
 exec function Sneak()
