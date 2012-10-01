@@ -8,13 +8,14 @@ enum PlayerWalkingState
 	Run
 };
 
-var     class<HInformation_Character>  CharInfo;
-var     bool                        SneakActivated;
-var     bool                        RunActivated;
-var     PlayerWalkingState          PlayerState;
+var     class<HInformation_Character>   CharInfo;
+var     PlayerWalkingState              PlayerState;
+var     bool    SneakActivated;
+var     bool	RunActivated;
 
 function PossesedBy(Controller C, bool bVehicleTransition)
 {
+	`log("<<<<<<<<<Setting up charinfo>>>>>>>>>");
 	Super.PossessedBy(C, bVehicleTransition);
 	SetCharacterInformation(GetCharInfo());
 }
@@ -27,7 +28,7 @@ simulated function class<HInformation_Character> GetCharInfo()
 
 	if ( HPC != None )
 	{
-		return HPC.hPlayerInfo;
+		return HPC.HPlayerInfo;
 	}
 
 	return CharInfo;
@@ -36,7 +37,7 @@ simulated function class<HInformation_Character> GetCharInfo()
 // Sets CharacterInfo for spawn
 simulated function SetCharacterInformation(class<HInformation_Character> HCharInfo)
 {
-	`log("Setting up charinfo");
+	
 	if(HCharInfo != CharInfo)
 	{
 		Mesh.AnimSets = HCharInfo.default.HAnimSet;
@@ -122,6 +123,9 @@ function tick( float DeltaTime )
 
 defaultproperties
 {
+	InventoryManagerClass = class'HideGame.HInventoryManager'
+	
+
 	GroundSpeed=250;
 	bStatic = false;
 	bNoDelete = false;

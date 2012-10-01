@@ -7,6 +7,8 @@ var     float	pulseRadius;
 var     class<HInformation_Player>  HPlayerInfo;
 var     HInformation_Player         PlayerInfo;
 
+var     bool    bInEndOfLevel;
+
 function CreatePlayerInformation()
 {
 	Playerinfo = new HPlayerInfo;
@@ -86,10 +88,11 @@ exec function makePulseCircle()
 DefaultProperties
 {
 	HPlayerinfo = class'HideGame.HInformation_Player'
+	InputClass = class'HideGame.HPlayerInput'
 	CameraClass = class'HideGame.HCamera'
 
 	//Points to the UTFamilyInfo class for your custom character
-	CharacterClass=class'UTFamilyInfo_Liandri_Male'
+	//CharacterClass=class'UTFamilyInfo_Liandri_Male'
 
 	pulseMade = false;
 	pulseMaxRadius = 2500;
