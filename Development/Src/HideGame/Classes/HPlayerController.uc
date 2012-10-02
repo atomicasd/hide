@@ -98,7 +98,6 @@ function PlayerTick(float DeltaTime)
 			break;
 		case Sneak:
 			Pawn.GroundSpeed = 150;
-			CheckJumpOrDuck();
 			break;
 		case Run:
 			Pawn.GroundSpeed = 400;

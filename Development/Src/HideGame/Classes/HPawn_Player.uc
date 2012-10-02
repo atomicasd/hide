@@ -55,38 +55,6 @@ simulated function SetCharacterInformation(class<HInformation_Character> HCharIn
 	}
 }
 
-/**
- * Event called from native code when Pawn stops crouching.
- * Called on non owned Pawns through bIsCrouched replication.
- * Network: ALL
- *
- * @param	HeightAdjust	height difference in unreal units between default collision height, and actual crouched cylinder height.
- */
-simulated event EndCrouch(float HeightAdjust)
-{
-	OldZ += HeightAdjust;
-	Super.EndCrouch(HeightAdjust);
-
-	// offset mesh by height adjustment
-	CrouchMeshZOffset = 0.0;
-}
-
-/**
- * Event called from native code when Pawn starts crouching.
- * Called on non owned Pawns through bIsCrouched replication.
- * Network: ALL
- *
- * @param	HeightAdjust	height difference in unreal units between default collision height, and actual crouched cylinder height.
- */
-simulated event StartCrouch(float HeightAdjust)
-{
-	OldZ -= HeightAdjust;
-	Super.StartCrouch(HeightAdjust);
-
-	// offset mesh by height adjustment
-	CrouchMeshZOffset = HeightAdjust;
-}
-
 event Tick(float TimeDelta)
 {
 }
@@ -96,6 +64,7 @@ defaultproperties
 	InventoryManagerClass = class'HideGame.HInventoryManager'
 	
 	//bCanCrouch=true
+	CrouchHeight=45
 	bStatic = false
 	bNoDelete = false
 }

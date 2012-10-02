@@ -6,6 +6,7 @@ var     bool	RunActivated;
 // Activate Sneak. This will override Run
 exec function Sneak()
 {
+	Pawn.StartCrouch(Pawn.CrouchHeight);
 	SneakActivated = true;
 	bChangedState = true;
 }
@@ -13,6 +14,7 @@ exec function Sneak()
 // Deactivate Sneak.
 exec function SneakReleased()
 {
+	Pawn.EndCrouch(Pawn.CrouchHeight);
 	SneakActivated = false;
 	bChangedState=true;
 }
