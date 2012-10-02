@@ -1,9 +1,9 @@
 class HideGameInfo extends UTGame;
 
-
 DefaultProperties
 {
-	PlayerControllerClass=class'HPlayerController';
-	DefaultPawnClass = class'HPawn_Player';
+	PlayerControllerClass=class'HideGame.HPlayerController'
+	DefaultPawnClass = class'HideGame.HPawn_Player'
+	HUDType = class'HideGame.HPlayerHUD'
 }
 

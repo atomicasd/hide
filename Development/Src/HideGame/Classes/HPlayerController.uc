@@ -1,25 +1,25 @@
 class HPlayerController extends UTPlayerController;
 
-var bool pulseMade;
-var float pulseMaxRadius;
-var float pulseRadius;
+var     bool	pulseMade;
+var     float	pulseMaxRadius;
+var     float	pulseRadius;
 
+var     class<HInformation_Player>  HPlayerInfo;
+var     HInformation_Player         PlayerInfo;
 
-DefaultProperties
+var     bool    bInEndOfLevel;
+
+function CreatePlayerInformation()
 {
-	CameraClass = class'HideGame.HCamera';
-
-	//Points to the UTFamilyInfo class for your custom character
-	CharacterClass=class'UTFamilyInfo_Liandri_Male'
-
-	pulseMade = false;
-	pulseMaxRadius = 2500;
-	pulseRadius = 1;
+	Playerinfo = new HPlayerInfo;
 }
 
-function PostBeginPlay()
+simulated event PostBeginPlay()
 {
 	local FogVolumeSphericalDensityInfo A;
+
+	super.PostBeginPlay();
+
 	ForEach WorldInfo.AllActors(class'FogVolumeSphericalDensityInfo', A)
 	{
 		A.DensityComponent.StartDistance = 20000;
@@ -83,5 +83,19 @@ exec function makePulseCircle()
 	pulseMade = true;
 	pulseRadius = 1;
 	`log("Making pulse effect");
+}
+
+DefaultProperties
+{
+	HPlayerinfo = class'HideGame.HInformation_Player'
+	InputClass = class'HideGame.HPlayerInput'
+	CameraClass = class'HideGame.HCamera'
+
+	//Points to the UTFamilyInfo class for your custom character
+	//CharacterClass=class'UTFamilyInfo_Liandri_Male'
+
+	pulseMade = false;
+	pulseMaxRadius = 2500;
+	pulseRadius = 1;
 }
 
