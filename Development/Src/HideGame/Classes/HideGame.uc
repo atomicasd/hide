@@ -1,19 +1,32 @@
 class HideGame extends UTGame;
 
+var bool isMapTransparent;
+
 DefaultProperties
 {
 	PlayerControllerClass=class'HPlayerController';
 	DefaultPawnClass = class'HPawn_Player';
+	isMapTransparent = false;
 }
+
+exec function makePulseCircle()
+{
+	`log("Making map transparent");
+	if( !isMapTransparent )
+		MakeMapTransparent();
+	else
+		MakeMapSolid();
+}
+
 
 function MakeMapTransparent()
 {
-	local Actor actor;
+	local Actor A;
 	local StaticMeshActor smActor;
 	local MaterialInstanceConstant matInstanceConstant;
-	Foreach WorldInfo.AllActors( class'Actor', actor )
+	Foreach WorldInfo.AllActors( class'Actor', A )
 	{
-		smActor = StaticMeshActor(actor);
+		smActor = StaticMeshActor(A);
 		if(smActor == none) 
 			continue; 
 
@@ -21,8 +34,29 @@ function MakeMapTransparent()
         if(matInstanceConstant == none) 
             continue;
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
-		
+		`log("Done");
 	}
+	isMapTransparent = true;
+}
+
+function MakeMapSolid()
+{
+	local Actor A;
+	local StaticMeshActor smActor;
+	local MaterialInstanceConstant matInstanceConstant;
+	Foreach WorldInfo.AllActors( class'Actor', A )
+	{
+		smActor = StaticMeshActor(A);
+		if(smActor == none) 
+			continue; 
+
+        matInstanceConstant = CreateSolidMaterial(smActor);
+        if(matInstanceConstant == none) 
+            continue;
+		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
+		`log("Done");
+	}
+	isMapTransparent = false;
 }
 
 function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smActor) 
@@ -41,18 +75,18 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
 
     //ITA: Creo la trasparenza solo per quelli che hanno "Shader_Base" nel nome del materiale padre ! 
     //ENG: I Create the transparence just for those which have the parent material name containing the string "Shader_Base"! 
-    if(instr(matApp, "Shader_Base") == -1) 
+    if(instr(matApp, "base_shader") == -1) 
         return oldMat; 
 
     matName = matApp.Name;  
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 
     //ENG: my package containing the base materials (shader_base/shader_base_translucent) 
-    packageName = name("TestStanza"); 
-    materialClassName = string(packageName) $ ".Materials." $ string(matName); 
+    packageName = name("HideGameContent"); 
+    materialClassName = string(packageName) $ "." $ string(matName); 
 
-    if(InStr(matName, "_Translucent") == -1) 
+    if(InStr(matName, "_translucent") == -1) 
     { 
-        materialClassName $= "_Translucent"; 
+        materialClassName $= "_translucent"; 
 
         //ITA: Copio dal material tutti i parametri delle texture che ho bisogno... può darsi ci sia un modo migliore per far questo, funziona comunque! 
         //ENG: I copy from the material all texture parameters I need... maybe there's a better way than this, it works anyway! 
@@ -106,11 +140,11 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
     if(opacity < 0.9f) 
         opacity = Lerp(opacity, 1.0f, 0.05f); 
     else 
-    { 
+    {
         matName = matApp.Name;  
-        packageName = Name("TestStanza"); 
-        materialClassName = string(packageName) $ ".Materials." $ string(matName); 
-        materialClassName = Repl(materialClassName, "_Translucent", ""); 
+        packageName = Name("HideGameContent"); 
+        materialClassName = string(packageName) $ "." $ string(matName); 
+        materialClassName = Repl(materialClassName, "_translucent", ""); 
          
         matInstanceConstant = new(none) class'MaterialInstanceConstant'; 
         oldMat.GetTextureParameterValue('Diffuse', textureValue); 
