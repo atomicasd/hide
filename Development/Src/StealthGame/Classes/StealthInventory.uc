@@ -1,1 +1,0 @@
-class StealthInventory extends Inventory;
