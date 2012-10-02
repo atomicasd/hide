@@ -3,6 +3,7 @@ Engine
 Autosaves
 UDKGame/Build
 UDKGame/Cloud
+UDKGame/Config
 UDKGame/Content
 UDKGame/Flash
 UDKGame/Localization
@@ -75,3 +76,4 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+

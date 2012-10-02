@@ -23,7 +23,6 @@ event Touch(Actor Other, PrimitiveComponent OtherComp, vector HitLocation, Vecto
 		if(HPC != None)
 		{
 			HPC.bInEndOfLevel = true;
-			// Change lvl to next
 		}
 	}
 }
@@ -60,7 +59,7 @@ DefaultProperties
 	Components.Add(PickupMesh)
 
 	Begin Object Class=CylinderComponent Name=CollisionCylinder1
-		CollisionRadius=32.0
+		CollisionRadius=64.0
 		CollisionHeight=161.0
 		BlockNonZeroExtent=true
 		BlockZeroExtent=true
@@ -71,7 +70,9 @@ DefaultProperties
 	CollisionCylinder = CollisionCylinder1;
 	Components.Add(CollisionCylinder1);
 
+	bNoEncroachCheck=false
 	bStatic=false
 	bHidden=false
+	bCollideActors = true
 	CollisionType=COLLIDE_TouchAll
 }

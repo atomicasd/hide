@@ -1,13 +1,23 @@
 class HPlayerController extends UTPlayerController;
 
+enum PlayerWalkingState
+{
+	Idle,
+	Walk,
+	Sneak,
+	Run
+};
+
 var     bool	pulseMade;
 var     float	pulseMaxRadius;
 var     float	pulseRadius;
 
 var     class<HInformation_Player>  HPlayerInfo;
 var     HInformation_Player         PlayerInfo;
+var     PlayerWalkingState          WalkState;
 
 var     bool    bInEndOfLevel;
+var     bool    bChangedState;
 
 function CreatePlayerInformation()
 {
@@ -25,6 +35,8 @@ simulated event PostBeginPlay()
 		A.DensityComponent.StartDistance = 20000;
 		A.ForceUpdateComponents();
 	}
+
+	WalkState = Idle;
 
 	super.PostBeginPlay();
 }
@@ -73,6 +85,26 @@ function PlayerTick(float DeltaTime)
 			pulseRadius += 20 - (20 * (pulseRadius/pulseMaxRadius) );
 		}
 	}
+
+	// Player Input to change Walkingstate
+	if(bChangedState)
+	{
+		switch(WalkState)
+		{
+		case Idle: 
+			break;
+		case Walk:
+			Pawn.GroundSpeed = 250;
+			break;
+		case Sneak:
+			Pawn.GroundSpeed = 150;
+			break;
+		case Run:
+			Pawn.GroundSpeed = 400;
+			break;
+		}
+		bChangedState=false;
+	}
 	
         //this line is not need if you add this code to PlayerController.uc
 	Super.PlayerTick(DeltaTime);
@@ -93,7 +125,7 @@ DefaultProperties
 
 	//Points to the UTFamilyInfo class for your custom character
 	//CharacterClass=class'UTFamilyInfo_Liandri_Male'
-
+	
 	pulseMade = false;
 	pulseMaxRadius = 2500;
 	pulseRadius = 1;

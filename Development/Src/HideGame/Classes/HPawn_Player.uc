@@ -1,17 +1,19 @@
 class HPawn_Player extends UTPawn;
 
-enum PlayerWalkingState
-{
-	Idle,
-	Walk,
-	Sneak,
-	Run
-};
-
+var     HPlayerController   HPlayer;
 var     class<HInformation_Character>   CharInfo;
-var     PlayerWalkingState              PlayerState;
-var     bool    SneakActivated;
-var     bool	RunActivated;
+
+simulated function PostBeginPlay()
+{
+	local HPlayerController HPC;
+
+	super.PostBeginPlay();
+	
+	ForEach WorldInfo.AllControllers(class'HPlayerController', HPC)
+	{
+		HPlayer=HPC;
+	}
+}
 
 function PossesedBy(Controller C, bool bVehicleTransition)
 {
@@ -38,7 +40,6 @@ simulated function class<HInformation_Character> GetCharInfo()
 // Sets CharacterInfo for spawn
 simulated function SetCharacterInformation(class<HInformation_Character> HCharInfo)
 {
-	
 	if(HCharInfo != CharInfo)
 	{
 		Mesh.AnimSets = HCharInfo.default.HAnimSet;
@@ -60,79 +61,16 @@ exec function KillYourself()
 	Suicide();
 }
 
-// Activate Sneak. This will override Run
-exec function Sneak()
+event Tick(float TimeDelta)
 {
-	SneakActivated = true;
-}
-
-// Deactivate Sneak.
-exec function SneakReleased()
-{
-	SneakActivated = false;
-}
-
-// Activate Run.
-exec function Run()
-{
-	RunActivated = true;
-}
-
-// Deactivate Run.
-exec function RunReleased()
-{
-	RunActivated = false;
-}
-
-simulated event PostBeginPlay()
-{
-	super.PostBeginPlay();
-
-	PlayerState = Idle;
-}
-
-function tick( float DeltaTime )
-{
-	if(vsize(Velocity) != 0)
-	{
-		if(SneakActivated)
-		{
-			PlayerState = Sneak;
-		}
-		else if(RunActivated)
-		{
-			PlayerState = Run;
-		}
-		else
-		{
-			PlayerState = Walk;
-		}
-	}else{
-		PlayerState = Idle;
-	}
-
-	switch(PlayerState)
-	{
-	case Idle: 
-		break;
-	case Walk:
-		GroundSpeed = 250;
-		break;
-	case Sneak:
-		GroundSpeed = 150;
-		break;
-	case Run:
-		GroundSpeed = 400;
-		break;
-	}
 }
 
 defaultproperties
 {
 	InventoryManagerClass = class'HideGame.HInventoryManager'
 	
-
-	GroundSpeed=250;
-	bStatic = false;
-	bNoDelete = false;
+	//bCanCrouch=true
+	CrouchHeight=45
+	bStatic = false
+	bNoDelete = false
 }
