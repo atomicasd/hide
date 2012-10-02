@@ -1,9 +1,60 @@
 class HideGame extends UTGame;
 
-DefaultProperties
+var      HPlayerController       HPlayer;
+
+auto state SettingGame
 {
-	PlayerControllerClass=class'HPlayerController';
-	DefaultPawnClass = class'HPawn_Player';
+	function BeginState(name PreviousStateName)
+	{
+		GotoState('GameInProgress');
+	}
+
+	function EndState(name NextStateName)
+	{
+	}
+}
+
+state GameInProgress
+{
+	function BeginState(name PreviousStateName)
+	{
+	}
+	
+	function Tick(float DeltaTime)
+	{
+		local HPlayerController HPC;
+
+		if(HPlayer!=None)
+		{
+			if(HPlayer.bInEndOfLevel)
+			{
+				`log("Player reached end of level!");
+				GoToState('LevelCompleted');
+			}
+		}
+		else
+		{
+			ForEach WorldInfo.AllControllers(class'HPlayerController', HPC)
+			{
+				HPlayer=HPC;
+			}
+		}
+	}
+
+	function EndState(name NextStateName)
+	{
+	}
+}
+
+state LevelCompleted
+{
+	function BeginState(name PreviousStateName)
+	{
+	}
+
+	function EndState(name NextStateName)
+	{
+	}
 }
 
 function MakeMapTransparent()
@@ -130,3 +181,13 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 
     return matInstanceConstant; 
 }  
+
+DefaultProperties
+{
+	PlayerControllerClass=class'HideGame.HPlayerController'
+	DefaultPawnClass = class'HideGame.HPawn_Player'
+	HUDType = class'HideGame.HPlayerHUD'
+
+	bDelayedStart=false 
+	bUseClassicHUD=true
+}
