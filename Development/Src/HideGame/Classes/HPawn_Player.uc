@@ -32,6 +32,7 @@ simulated function class<HInformation_Character> GetCharInfo()
 	}
 
 	return CharInfo;
+	
 }
 
 // Sets CharacterInfo for spawn
@@ -52,6 +53,11 @@ simulated function SetCharacterInformation(class<HInformation_Character> HCharIn
 	{
 		HPlayerController(Controller).CreatePlayerInformation();
 	}
+}
+
+exec function KillYourself()
+{
+	Suicide();
 }
 
 // Activate Sneak. This will override Run
