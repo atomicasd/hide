@@ -45,7 +45,7 @@ defaultproperties
 	InventoryManagerClass = class'HideGame.HInventoryManager'
 	HCharacterInfo = class'HideGame.HInformation_Player'
 
-	//bCanCrouch=true
+	GroundSpeed=210.0
 	CrouchHeight=45
 	bStatic = false
 	bNoDelete = false

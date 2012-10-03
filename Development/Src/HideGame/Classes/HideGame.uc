@@ -78,12 +78,14 @@ function MakeMapTransparent()
 	local Actor A;
 	local StaticMeshActor smActor;
 	local MaterialInstanceConstant matInstanceConstant;
+	`log("Making map transparent");
+	HPlayer.EnablePulse();
 	Foreach WorldInfo.AllActors( class'Actor', A )
 	{
 		smActor = StaticMeshActor(A);
 		if(smActor == none) 
 			continue; 
-
+		
         matInstanceConstant = CreateTransparentMaterial(smActor);
         if(matInstanceConstant == none) 
             continue;
@@ -98,12 +100,13 @@ function MakeMapSolid()
 	local Actor A;
 	local StaticMeshActor smActor;
 	local MaterialInstanceConstant matInstanceConstant;
+	`log("Making map solid");
 	Foreach WorldInfo.AllActors( class'Actor', A )
 	{
 		smActor = StaticMeshActor(A);
 		if(smActor == none) 
 			continue; 
-
+	
         matInstanceConstant = CreateSolidMaterial(smActor);
         if(matInstanceConstant == none) 
             continue;
@@ -125,7 +128,7 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     local Texture textureValue; 
 
     matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial(); 
-    oldMat = MaterialInstanceConstant(smActor.StaticMeshComponent.GetMaterial(0)); 
+    oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
 
     //ITA: Creo la trasparenza solo per quelli che hanno "Shader_Base" nel nome del materiale padre ! 
     //ENG: I Create the transparence just for those which have the parent material name containing the string "Shader_Base"! 
@@ -144,7 +147,7 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
 
         //ITA: Copio dal material tutti i parametri delle texture che ho bisogno... può darsi ci sia un modo migliore per far questo, funziona comunque! 
         //ENG: I copy from the material all texture parameters I need... maybe there's a better way than this, it works anyway! 
-        matInstanceConstant = new(none) class'MaterialInstanceConstant'; 
+        matInstanceConstant = new(None) class'MaterialInstanceConstant'; 
         oldMat.GetTextureParameterValue('Diffuse', textureValue); 
         matInstanceConstant.SetTextureParameterValue('Diffuse', textureValue); 
         oldMat.GetTextureParameterValue('Normal', textureValue); 
@@ -169,7 +172,10 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     //ENG: With interpolation we're getting the material to be translucent with a delay 
     opacity = Lerp(opacity, 0.5f, 0.05f); 
     matInstanceConstant.SetScalarParameterValue('Opacity', opacity); 
-
+	if(matInstanceConstant == none)
+	{
+		`log("fewiagfeawigjwagn");
+	}
     return matInstanceConstant; 
 } 
 
@@ -185,43 +191,42 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
     local Texture textureValue; 
 
     matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial(); 
-    oldMat = MaterialInstanceConstant(smActor.StaticMeshComponent.GetMaterial(0)); 
+    oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
+    matInstanceConstant = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0)); 
 
-    matInstanceConstant = MaterialInstanceConstant(smActor.StaticMeshComponent.GetMaterial(0)); 
+
+
     matInstanceConstant.GetScalarParameterValue('Opacity', opacity); 
     //ITA: controllo il valore dell'interpolazione, se ho superato 0.9 allora creerò una nuova istanza con un materiale solido! 
     //ENG: Checking the interpolation value, if I'm past 0.9f I'm gonna create a new instance with a solid material! 
-    if(opacity < 0.9f) 
-        opacity = Lerp(opacity, 1.0f, 0.05f); 
-    else 
-    {
-        matName = matApp.Name;  
-        packageName = Name("HideGameContent"); 
-        materialClassName = string(packageName) $ "." $ string(matName); 
-        materialClassName = Repl(materialClassName, "_translucent", ""); 
-         
-        matInstanceConstant = new(none) class'MaterialInstanceConstant'; 
-        oldMat.GetTextureParameterValue('Diffuse', textureValue); 
-        matInstanceConstant.SetTextureParameterValue('Diffuse', textureValue); 
-        oldMat.GetTextureParameterValue('Normal', textureValue); 
-        matInstanceConstant.SetTextureParameterValue('Normal', textureValue); 
-        oldMat.GetTextureParameterValue('NormalDetail', textureValue); 
-        matInstanceConstant.SetTextureParameterValue('NormalDetail', textureValue); 
-        oldMat.GetTextureParameterValue('Spec', textureValue); 
-        matInstanceConstant.SetTextureParameterValue('Spec', textureValue); 
+	matName = matApp.Name;
 
-        matApp = Material(DynamicLoadObject(materialClassName, class'Material')); 
-        matInstanceConstant.SetParent(matApp); 
-    } 
+	if( InStr(matName, "_translucent") != -1 )
+	{
+		packageName = Name("HideGameContent"); 
+		materialClassName = string(packageName) $ "." $ string(matName); 
+		materialClassName = Repl(materialClassName, "_translucent", ""); 
+        
+		matInstanceConstant = new class'MaterialInstanceConstant'; 
+		oldMat.GetTextureParameterValue('Diffuse', textureValue); 
+		matInstanceConstant.SetTextureParameterValue('Diffuse', textureValue); 
+		oldMat.GetTextureParameterValue('Normal', textureValue); 
+		matInstanceConstant.SetTextureParameterValue('Normal', textureValue); 
+		oldMat.GetTextureParameterValue('NormalDetail', textureValue); 
+		matInstanceConstant.SetTextureParameterValue('NormalDetail', textureValue); 
+		oldMat.GetTextureParameterValue('Spec', textureValue); 
+		matInstanceConstant.SetTextureParameterValue('Spec', textureValue); 
 
-    matInstanceConstant.SetScalarParameterValue('Opacity', opacity); 
+		matApp = Material(DynamicLoadObject(materialClassName, class'Material')); 
+		matInstanceConstant.SetParent(matApp); 
+		matInstanceConstant.SetScalarParameterValue('Opacity', opacity); 
+	}
 
     return matInstanceConstant; 
 }  
 
 exec function makePulseCircle()
 {
-	`log("Making map transparent");
 	if( !isMapTransparent )
 		MakeMapTransparent();
 	else

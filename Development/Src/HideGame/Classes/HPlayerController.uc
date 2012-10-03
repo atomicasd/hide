@@ -76,7 +76,7 @@ function PlayerTick(float DeltaTime)
 				A.ForceUpdateComponents();
 			}
 
-			pulseRadius += 20 - (20 * (pulseRadius/pulseMaxRadius) );
+			pulseRadius += 5 - (5 * (pulseRadius/pulseMaxRadius) );
 		}
 	}
 
