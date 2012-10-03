@@ -1,12 +1,19 @@
-class HideGame extends UTGame;
-var bool isMapTransparent;
-var      HPlayerController       HPlayer;
+class HideGame extends UTGame
+config(Game);
+
+/*
+ * Config variables
+ */
+var     bool                    isMapTransparent;
+var     HPlayerController       HPlayer;
+
+var     bool                    bChangeStateToGameInProgress;
 
 auto state SettingGame
 {
 	function BeginState(name PreviousStateName)
 	{
-		GotoState('GameInProgress');
+		bChangeStateToGameInProgress = true;
 	}
 
 	function EndState(name NextStateName)
@@ -36,6 +43,7 @@ state GameInProgress
 		{
 			ForEach WorldInfo.AllControllers(class'HPlayerController', HPC)
 			{
+				`log("Creating HPC");
 				HPlayer=HPC;
 			}
 		}
@@ -57,6 +65,13 @@ state LevelCompleted
 	}
 }
 
+event Tick(float DeltaTime)
+{
+	if(bChangeStateToGameInProgress){
+		GotoState('GameInProgress');
+		bChangeStateToGameInProgress=false;
+	}
+}
 
 function MakeMapTransparent()
 {
