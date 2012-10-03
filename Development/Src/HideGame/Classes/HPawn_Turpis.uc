@@ -12,7 +12,7 @@ simulated function PostBeginPlay()
 	}
 
 	super.PostBeginPlay();
-	PC = HPlayerController( GetALocalPlayerController() );
+	
 }
 
 DefaultProperties
