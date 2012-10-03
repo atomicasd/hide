@@ -33,7 +33,8 @@ function OnSoundHeard( HSoundSpot spot )
 	soundHeard = true;
 	lastSoundSpot.Destroy();
 	lastSoundSpot = spot;
-	GotoState('GoToSoundSpot');
+	if( canHear )
+		GotoState('GoToSoundSpot');
 }
 
 function SetAttacking(bool isAttacking)

@@ -23,6 +23,11 @@ var(NPC) SkeletalMeshComponent NPCMesh;
 var(NPC) class<AIController> NPCController;
 
 
+function OnSoundHeard( HSoundSpot spot )
+{
+	MyController.OnSoundHeard( spot );
+}
+
 function SetAttacking(bool atacar)
 {
 	AttAcking = atacar;
