@@ -247,7 +247,7 @@ Begin:
 defaultproperties
 {
     attackDistance = 50
-    perceptionDistance = 2000
+    perceptionDistance = 1000
 
 	AnimSetName ="ATTACK"
 	actual_node = 0
