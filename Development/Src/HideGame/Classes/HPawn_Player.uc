@@ -1,5 +1,14 @@
-class HPawn_Player extends UTPawn;
+class HPawn_Player extends HPawn;
 
+var     class<HInformation_Player>  HCharacterInfo;
+var     HInformation_Player         CharacterInfo;
+
+simulated function PostBeginPlay()
+{
+	super.PostBeginPlay();
+	CharacterInfo = new HCharacterInfo;
+	SetCharacterClassInformation(CharacterInfo);
+}
 
 exec function KillYourself()
 {
@@ -13,7 +22,8 @@ event Tick(float TimeDelta)
 defaultproperties
 {
 	InventoryManagerClass = class'HideGame.HInventoryManager'
-	
+	HCharacterInfo = class'HideGame.HInformation_Player'
+
 	//bCanCrouch=true
 	CrouchHeight=45
 	bStatic = false

@@ -19,8 +19,6 @@ simulated function PostBeginPlay()
 {
 	Super.PostBeginPlay();
 
-	`log("Draw hud");
-
 	CreateHud();
 }
 

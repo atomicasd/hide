@@ -5,8 +5,6 @@ var     PhysicsAsset        HPhysicsAsset;
 var     SkeletalMesh        HSkeletalMesh;
 var     AnimTree            HAnimTreeTemplate;
 
-var array < class <Inventory> > StartingInventory;
-
 DefaultProperties
 {
 }

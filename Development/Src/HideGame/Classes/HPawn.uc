@@ -1,7 +1,6 @@
 class HPawn extends UTPawn;
 
 var     HPlayerController   HPlayer;
-var     class<HInformation_Character>   CharInfo;
 
 simulated function PostBeginPlay()
 {
@@ -13,53 +12,22 @@ simulated function PostBeginPlay()
 	{
 		HPlayer=HPC;
 	}
-
-	SetCharacterInformation(GetCharInfo());
-}
-
-/*
-function PossesedBy(Controller C, bool bVehicleTransition)
-{
-	`log("<<<<<<<<<Setting up charinfo>>>>>>>>>");
-	Super.PossessedBy(C, bVehicleTransition);
-}
-*/
-
-/*
- * Returns the information to the pawn.
- */
-simulated function class<HInformation_Character> GetCharInfo()
-{
-	local HPlayerController HPC;
-
-	HPC = HPlayerController(Controller);
-
-	if ( HPC != None )
-	{
-		return HPC.HPlayerInfo;
-	}
-
-	return CharInfo;
 }
 
 /*
  * Sets CharacterInfo for spawn
  */
-simulated function SetCharacterInformation(class<HInformation_Character> HCharInfo)
+simulated function SetCharacterClassInformation(HInformation_Character charInfo)
 {
-	if(HCharInfo != CharInfo)
+	if(charInfo != None)
 	{
-		Mesh.AnimSets = HCharInfo.default.HAnimSet;
-		Mesh.SetSkeletalMesh(HCharInfo.default.HSkeletalMesh);
-		Mesh.SetPhysicsAsset(HCharInfo.default.HPhysicsAsset);
-		Mesh.SetAnimTreeTemplate(HCharInfo.default.HAnimTreeTemplate);
-
-		CharInfo = HCharInfo;
-	}
-
-	if(HPlayerController(Controller) != None)
-	{
-		HPlayerController(Controller).CreatePlayerInformation();
+		`Log("Setting up character information");
+		Mesh.AnimSets = charInfo.default.HAnimSet;
+		Mesh.SetSkeletalMesh(charInfo.default.HSkeletalMesh);
+		Mesh.SetPhysicsAsset(charInfo.default.HPhysicsAsset);
+		Mesh.SetAnimTreeTemplate(charInfo.default.HAnimTreeTemplate);
+	}else{
+		`Log("---->Pawn information class not set<----");
 	}
 }
 

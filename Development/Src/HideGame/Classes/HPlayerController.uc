@@ -8,6 +8,8 @@ enum PlayerWalkingState
 	Run
 };
 
+var     bool    bInEndOfLevel;
+var     bool    bChangedState;
 var     bool	pulseMade;
 var     float	pulseMaxRadius;
 var     float	pulseRadius;
@@ -15,14 +17,6 @@ var     float	pulseRadius;
 var     class<HInformation_Player>  HPlayerInfo;
 var     HInformation_Player         PlayerInfo;
 var     PlayerWalkingState          WalkState;
-
-var     bool    bInEndOfLevel;
-var     bool    bChangedState;
-
-function CreatePlayerInformation()
-{
-	Playerinfo = new HPlayerInfo;
-}
 
 simulated event PostBeginPlay()
 {
