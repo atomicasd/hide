@@ -1,10 +1,10 @@
 class HAIController extends AIController;
 
 var HPawn_Monster   aiPawn; //The pawn we're controlling
-var Pawn    playerPawn; //The player pawn
+var Pawn            playerPawn; //The player pawn
 
 var () array<NavigationPoint> MyNavigationPoints;
-var NavigationPoint MyNextNavigationPoint;
+
 var int actual_node;
 var int last_node;
 
@@ -34,19 +34,11 @@ function OnSoundHeard( HSoundSpot spot )
 	lastSoundSpot.Destroy();
 	lastSoundSpot = spot;
 	GotoState('GoToSoundSpot');
-
 }
 
-function SetAttacking(bool attacking)
+function SetAttacking(bool isAttacking)
 {
-	AttAcking = attacking;
-}
-
-function SetPawn(HPawn_Monster NewPawn)
-{
-    aiPawn = NewPawn;
-	Possess(aiPawn, false);
-	MyNavigationPoints = aiPawn.MyNavigationPoints;
+	AttAcking = isAttacking;
 }
 
 function Possess(Pawn aPawn, bool bVehicleTransition)
@@ -60,6 +52,10 @@ function Possess(Pawn aPawn, bool bVehicleTransition)
 	else
 	{
 		Super.Possess(aPawn, bVehicleTransition);
+
+		aiPawn = HPawn_Monster(Pawn);
+		MyNavigationPoints = aiPawn.MyNavigationPoints;
+
 		Pawn.SetMovementPhysics();
 
 		if (Pawn.Physics == PHYS_Walking)
@@ -71,10 +67,20 @@ function Possess(Pawn aPawn, bool bVehicleTransition)
 
 auto state Idle
 {
-	
+	event SeePlayer(Pawn SeenPlayer)
+	{
+		if( canSee )
+		{
+			playerPawn = SeenPlayer;
+			distanceToPlayer = VSize(playerPawn.Location - Pawn.Location);
+			if (distanceToPlayer < perceptionDistance)
+			{ 
+				Worldinfo.Game.Broadcast(self, "I can see you!");
+				GotoState('ChasePlayer');
+			}
+		}
+    }
 Begin:
-    Worldinfo.Game.Broadcast(self, "!!!!!!!  idle  !!!!!!!!");
-
 	Pawn.Acceleration = vect(0,0,0);
 	aiPawn.SetAttacking(false);
 
@@ -146,7 +152,7 @@ state FollowPath
 				MoveToward(MoveTarget, MoveTarget);
 			}
 		}
-		Sleep(1);
+		Sleep(0.1);
 	}
 }
 
@@ -165,14 +171,14 @@ state Chaseplayer
 			distanceToPlayer = VSize(playerPawn.Location - Pawn.Location);
 			if (distanceToPlayer < attackDistance)
 			{
-				GotoState('Attack');
+				//GotoState('Attack');
 			}
 			else //if(distanceToPlayer < 300)
 			{
-				MoveToward(playerPawn, playerPawn, 20.0f);
+				MoveToward(playerPawn, playerPawn, 10.0f);
 				if(Pawn.ReachedDestination(playerPawn))
 				{
-					GotoState('Attack');
+					//GotoState('Attack');
 				}
 			}
 		}
@@ -186,9 +192,9 @@ state Chaseplayer
 
 				distanceToPlayer = VSize(MoveTarget.Location - Pawn.Location);
 				if (distanceToPlayer < 100)
-					MoveToward(MoveTarget, playerPawn, 20.0f);
+					MoveToward(MoveTarget, playerPawn, 10.0f);
 				else
-					MoveToward(MoveTarget, MoveTarget, 20.0f);	
+					MoveToward(MoveTarget, MoveTarget, 10.0f);	
 
 				//MoveToward(MoveTarget, MoveTarget);
 			}
@@ -240,9 +246,7 @@ Begin:
 defaultproperties
 {
     attackDistance = 50
-    attackDamage = 10
     perceptionDistance = 2000
-	attackDistance = 50
 
 	AnimSetName ="ATTACK"
 	actual_node = 0

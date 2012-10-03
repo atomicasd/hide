@@ -1,5 +1,4 @@
-class HPawn_Monster extends UTPawn
-	abstract;
+class HPawn_Monster extends UTPawn;
 
 var HPlayerController PC;
 
@@ -19,6 +18,10 @@ var AnimNodeSequence MyAnimPlayControl;
 var bool AttAcking;
 
 var () array<NavigationPoint> MyNavigationPoints;
+
+var(NPC) SkeletalMeshComponent NPCMesh;
+var(NPC) class<AIController> NPCController;
+
 
 function SetAttacking(bool atacar)
 {

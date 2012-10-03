@@ -1,22 +1,23 @@
-class HPawn_Obesus extends HPawn_Monster;
+class HPawn_Obesus extends HPawn_Monster
+	placeable;
 
 simulated function PostBeginPlay()
 {
-	super.PostBeginPlay();
 
 	SetPhysics(PHYS_Walking);
-	if (MyController == none)
+	if(ControllerClass == none)
 	{
-		MyController = Spawn(class'HideGame.HAIController_Obesus', self);
-		MyController.SetPawn(self);		
+		//set the existing ControllerClass to our new NPCController class
+		ControllerClass = class'HideGame.HAIController_Obesus';
 	}
 
+	super.PostBeginPlay();
 	PC = HPlayerController( GetALocalPlayerController() );
 }
 
 DefaultProperties
 {
-	ControllerClass = class'HAIController_Obesus';
+	ControllerClass = class'HideGame.HAIController_Obesus';
 }
 
 
