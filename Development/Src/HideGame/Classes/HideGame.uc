@@ -36,6 +36,7 @@ state GameInProgress
 		{
 			ForEach WorldInfo.AllControllers(class'HPlayerController', HPC)
 			{
+				`log("Creating HPC");
 				HPlayer=HPC;
 			}
 		}
