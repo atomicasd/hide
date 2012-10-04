@@ -24,6 +24,13 @@ DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Turpis';
 	HCharacterInfo = class'HideGame.HInformation_Monster_Turpis'
+
+	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
+		SkeletalMesh=SkeletalMesh'CH_LIAM_Cathode.Mesh.SK_CH_LIAM_Cathode'
+	End Object
+
+	NPCMesh=NPCMesh0
+	Components.Add(NPCMesh0)
 }
 
 
