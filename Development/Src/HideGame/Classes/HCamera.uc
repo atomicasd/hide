@@ -1,8 +1,3 @@
-class HCamera extends GamePlayerCamera;
+class HCamera extends Camera;
 
 var PostProcessSettings ppSettings;
-
-DefaultProperties
-{
-
-}
