@@ -5,9 +5,10 @@ config(Game);
  * Config variables
  */
 var     bool                    isMapTransparent;
+var     float                   mapOpacity;
 var     HPlayerController       HPlayer;
-
 var     bool                    bChangeStateToGameInProgress;
+
 
 auto state SettingGame
 {
@@ -47,6 +48,20 @@ state GameInProgress
 				HPlayer=HPC;
 			}
 		}
+
+		if( isMapTransparent )
+		{
+			if( mapOpacity >= 1.0 )
+			{
+				mapOpacity = 1.0;
+				MakeMapSolid();
+				isMapTransparent = false;
+			} else {
+				mapOpacity += 0.003;
+				FadeMapTransparancy(mapOpacity);
+			}
+		}
+
 	}
 
 	function EndState(name NextStateName)
@@ -73,13 +88,32 @@ event Tick(float DeltaTime)
 	}
 }
 
+function FadeMapTransparancy(float opacity)
+{
+	local Actor A;
+	local StaticMeshActor smActor;
+	local Material matApp;
+	local MaterialInstanceConstant MIC;
+	Foreach WorldInfo.AllActors( class'Actor', A )
+	{
+		smActor = StaticMeshActor(A);
+		if(smActor == none) 
+			continue;
+
+		matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
+
+		MIC = new class'MaterialInstanceConstant';
+		MIC.SetScalarParameterValue('Opacity', opacity);
+		MIC.SetParent(matApp);
+		smActor.StaticMeshComponent.SetMaterial(0, MIC);
+	}
+}
+
 function MakeMapTransparent()
 {
 	local Actor A;
 	local StaticMeshActor smActor;
 	local MaterialInstanceConstant matInstanceConstant;
-	`log("Making map transparent");
-	HPlayer.EnablePulse();
 	Foreach WorldInfo.AllActors( class'Actor', A )
 	{
 		smActor = StaticMeshActor(A);
@@ -92,7 +126,7 @@ function MakeMapTransparent()
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
 		`log("Done");
 	}
-	isMapTransparent = true;
+	mapOpacity = 0.5;
 }
 
 function MakeMapSolid()
@@ -113,7 +147,6 @@ function MakeMapSolid()
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
 		`log("Done");
 	}
-	isMapTransparent = false;
 }
 
 function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smActor) 
@@ -127,27 +160,25 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     local string materialClassName; 
     local Texture textureValue; 
 
-    matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial(); 
+    matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
     oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
-
-    //ITA: Creo la trasparenza solo per quelli che hanno "Shader_Base" nel nome del materiale padre ! 
-    //ENG: I Create the transparence just for those which have the parent material name containing the string "Shader_Base"! 
-    if(instr(matApp, "base_shader") == -1) 
-        return oldMat; 
 
     matName = matApp.Name;  
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 
     //ENG: my package containing the base materials (shader_base/shader_base_translucent) 
     packageName = name("HideGameContent"); 
     materialClassName = string(packageName) $ "." $ string(matName); 
+	
+	if(InStr(matName, "pulsewall") == -1)
+		return none;
 
     if(InStr(matName, "_translucent") == -1) 
     { 
-        materialClassName $= "_translucent"; 
+        materialClassName $= "_translucent";
 
         //ITA: Copio dal material tutti i parametri delle texture che ho bisogno... può darsi ci sia un modo migliore per far questo, funziona comunque! 
         //ENG: I copy from the material all texture parameters I need... maybe there's a better way than this, it works anyway! 
-        matInstanceConstant = new(None) class'MaterialInstanceConstant'; 
+        matInstanceConstant = new(None) class'MaterialInstanceConstant';
         oldMat.GetTextureParameterValue('Diffuse', textureValue); 
         matInstanceConstant.SetTextureParameterValue('Diffuse', textureValue); 
         oldMat.GetTextureParameterValue('Normal', textureValue); 
@@ -156,26 +187,15 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
         matInstanceConstant.SetTextureParameterValue('NormalDetail', textureValue); 
         oldMat.GetTextureParameterValue('Spec', textureValue); 
         matInstanceConstant.SetTextureParameterValue('Spec', textureValue); 
-
         matApp = Material(DynamicLoadObject(materialClassName, class'Material')); 
         //ITA: lo swap effettivo! Baso il material instant constant su uno shader trasparente 
         //ENG: The actual swap! I set the parent of the material instant constant on the transparent shader (shader_base_translucent) 
-        matInstanceConstant.SetParent(matApp); 
-    } 
-    else 
-    { 
-        matInstanceConstant = MaterialInstanceConstant(smActor.StaticMeshComponent.GetMaterial(0)); 
-    } 
-    matInstanceConstant.GetScalarParameterValue('Opacity', opacity); 
 
-    //ITA: con interpolazione ottengo la trasparenza con un ritardo 
-    //ENG: With interpolation we're getting the material to be translucent with a delay 
-    opacity = Lerp(opacity, 0.5f, 0.05f); 
-    matInstanceConstant.SetScalarParameterValue('Opacity', opacity); 
-	if(matInstanceConstant == none)
-	{
-		`log("fewiagfeawigjwagn");
-	}
+		matInstanceConstant.GetScalarParameterValue('Opacity', opacity); 
+		opacity = mapOpacity;
+		matInstanceConstant.SetScalarParameterValue('Opacity', opacity); 
+		matInstanceConstant.SetParent(matApp); 
+    }
     return matInstanceConstant; 
 } 
 
@@ -184,7 +204,6 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
     local MaterialInstanceConstant matInstanceConstant; 
     local MaterialInstanceConstant oldMat; 
     local Material matApp; 
-    local float opacity; 
     local name matName; 
     local name packageName; 
     local string materialClassName; 
@@ -194,9 +213,6 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
     oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
     matInstanceConstant = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0)); 
 
-
-
-    matInstanceConstant.GetScalarParameterValue('Opacity', opacity); 
     //ITA: controllo il valore dell'interpolazione, se ho superato 0.9 allora creerò una nuova istanza con un materiale solido! 
     //ENG: Checking the interpolation value, if I'm past 0.9f I'm gonna create a new instance with a solid material! 
 	matName = matApp.Name;
@@ -216,10 +232,9 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 		matInstanceConstant.SetTextureParameterValue('NormalDetail', textureValue); 
 		oldMat.GetTextureParameterValue('Spec', textureValue); 
 		matInstanceConstant.SetTextureParameterValue('Spec', textureValue); 
-
+		
 		matApp = Material(DynamicLoadObject(materialClassName, class'Material')); 
-		matInstanceConstant.SetParent(matApp); 
-		matInstanceConstant.SetScalarParameterValue('Opacity', opacity); 
+		matInstanceConstant.SetParent(matApp);
 	}
 
     return matInstanceConstant; 
@@ -228,9 +243,13 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 exec function makePulseCircle()
 {
 	if( !isMapTransparent )
+	{
+		`log("Making pulse circle");
+		HPlayer.EnablePulse();
 		MakeMapTransparent();
-	else
-		MakeMapSolid();
+		isMapTransparent = true;
+	}
+
 }
 
 
@@ -245,5 +264,7 @@ DefaultProperties
 	bUseClassicHUD=true
 	
 	isMapTransparent = false;
+
+	mapOpacity = 0.5;
 
 }

@@ -76,7 +76,7 @@ function PlayerTick(float DeltaTime)
 				A.ForceUpdateComponents();
 			}
 
-			pulseRadius += 5 - (5 * (pulseRadius/pulseMaxRadius) );
+			pulseRadius += DeltaTime*2000 - ( (DeltaTime*2000) * (pulseRadius/pulseMaxRadius) );
 		}
 	}
 
@@ -121,7 +121,7 @@ DefaultProperties
 	//CharacterClass=class'UTFamilyInfo_Liandri_Male'
 	
 	pulseMade = false;
-	pulseMaxRadius = 2500;
+	pulseMaxRadius = 5000;
 	pulseRadius = 1;
 }
 
