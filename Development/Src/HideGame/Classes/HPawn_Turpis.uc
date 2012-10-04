@@ -1,6 +1,8 @@
 class HPawn_Turpis extends HPawn_Monster
 	placeable;
 
+var HInformation_Monster_Turpis CharacterInfo;
+
 simulated function PostBeginPlay()
 {
 
@@ -11,6 +13,9 @@ simulated function PostBeginPlay()
 		ControllerClass = class'HideGame.HAIController_Turpis';
 	}
 
+	CharacterInfo = HInformation_Monster_Turpis( new HCharacterInfo );
+	SetCharacterClassInformation(CharacterInfo);
+
 	super.PostBeginPlay();
 	
 }
@@ -18,6 +23,7 @@ simulated function PostBeginPlay()
 DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Turpis';
+	HCharacterInfo = class'HideGame.HInformation_Monster_Turpis'
 }
 
 

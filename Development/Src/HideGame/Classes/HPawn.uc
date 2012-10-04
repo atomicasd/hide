@@ -15,6 +15,11 @@ simulated function PostBeginPlay()
 }
 
 /*
+ * Removing dodge by overriding.
+ */
+function bool Dodge(eDoubleClickDir DoubleClickMove){return false;}
+
+/*
  * Sets CharacterInfo for spawn
  */
 simulated function SetCharacterClassInformation(HInformation_Character charInfo)
@@ -34,4 +39,6 @@ simulated function SetCharacterClassInformation(HInformation_Character charInfo)
 
 DefaultProperties
 {
+	MaxMultiJump=0
+	MultiJumpRemaining=0
 }

@@ -23,14 +23,10 @@ event Tick(float TimeDelta)
 
 	switch(HPlayer.WalkState)
 	{
-	case Idle: soundRadius=150;
-		break;
-	case Walk: soundRadius=600;
-		break;
-	case Sneak: soundRadius=300;
-		break;
-	case Run: soundRadius=1500;
-		break;
+	case Idle:  soundRadius=150;  break;
+	case Walk:  soundRadius=600;  break;
+	case Sneak: soundRadius=300;  break;
+	case Run:   soundRadius=1500; break;
 	}
 
 	foreach OverlappingActors(class'HPawn_Monster', target, soundRadius)
@@ -49,4 +45,5 @@ defaultproperties
 	CrouchHeight=45
 	bStatic = false
 	bNoDelete = false
+	bCanDoubleJump=false
 }
