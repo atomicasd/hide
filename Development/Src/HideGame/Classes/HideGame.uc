@@ -51,6 +51,10 @@ state GameInProgress
 
 		if( isMapTransparent )
 		{
+			if( mapOpacity >= 0.9 )
+			{
+				HPlayer.PulseFadeIn();
+			}
 			if( mapOpacity >= 1.0 )
 			{
 				mapOpacity = 1.0;
