@@ -75,9 +75,15 @@ state GameInProgress
 
 state LevelCompleted
 {
+	local HPawn_Monster p;
 	function BeginState(name PreviousStateName)
 	{
-		ResetLevel();
+		`Log("Resets Level");
+		//ResetLevel();
+		foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
+		{
+			p.Reset();
+		}
 		GoToState('GameInProgress');
 		HPlayer.bInEndOfLevel=false;
 		//ConsoleCommand("Open ?Restart");

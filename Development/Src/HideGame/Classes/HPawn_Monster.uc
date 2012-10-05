@@ -1,5 +1,7 @@
 class HPawn_Monster extends HPawn;
 
+var     Vector                  startingPosition;
+var     Rotator                 startingRotation;
 var     HAIController           MyController;
 var     AnimNodeSequence        MyAnimPlayControl;
 var     class<HInformation_Monster>  HCharacterInfo;
@@ -10,6 +12,13 @@ var     Name                    AnimSetName;
 
 var()       array<NavigationPoint>  MyNavigationPoints;
 var(NPC)    class<AIController>     NPCController;
+
+simulated function PostBeginPlay()
+{
+	startingPosition = Location;
+	startingRotation = Rotation;
+	super.PostBeginPlay();
+}
 
 function OnSoundHeard( HSoundSpot spot )
 {
@@ -30,6 +39,18 @@ function Tick(Float Delta)
 	}
 }
 
+event Reset()
+{
+	MyController = HAIController(Controller);
+	`Log("Reseting monster");
+	SetLocation(startingPosition);
+	SetRotation(startingRotation);
+	MyController.actual_node = 0;
+	MyController.last_node = 0;
+	MyController.GotoState('Idle');
+	super.Reset();
+}
+
 DefaultProperties
 {
     Begin Object Name=CollisionCylinder
@@ -41,5 +62,4 @@ DefaultProperties
  
     GroundSpeed=200.0
 	PeripheralVision = 0.7
-
 }
