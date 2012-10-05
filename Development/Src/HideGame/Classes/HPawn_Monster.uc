@@ -22,7 +22,7 @@ simulated function PostBeginPlay()
 
 function OnSoundHeard( HSoundSpot spot )
 {
-	MyController.OnSoundHeard( spot );
+	HAIController(Controller).OnSoundHeard( spot );
 }
 
 function SetAttacking(bool atacar)

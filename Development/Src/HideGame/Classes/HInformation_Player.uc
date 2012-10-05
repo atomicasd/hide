@@ -1,5 +1,6 @@
 class HInformation_Player extends HInformation_Character;
 
+
 DefaultProperties
 {
 	HAnimSet(0) = AnimSet'CH_AnimHuman.Anims.K_AnimHuman_BaseMale'

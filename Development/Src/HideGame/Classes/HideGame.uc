@@ -51,17 +51,15 @@ state GameInProgress
 
 		if( isMapTransparent )
 		{
-			if( mapOpacity >= 0.9 )
+			if( mapOpacity >= 0.90 )
 			{
 				HPlayer.PulseFadeIn();
-			}
-			if( mapOpacity >= 1.0 )
-			{
 				mapOpacity = 1.0;
 				MakeMapSolid();
 				isMapTransparent = false;
 			} else {
-				mapOpacity += 0.003;
+				mapOpacity += (DeltaTime / 10);
+				HPlayer.pulseDensity = 0.9 - mapOpacity;
 				FadeMapTransparancy(mapOpacity);
 			}
 		}
@@ -138,9 +136,8 @@ function MakeMapTransparent()
         if(matInstanceConstant == none) 
             continue;
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
-		`log("Done");
 	}
-	mapOpacity = 0.5;
+	mapOpacity = 0.0;
 }
 
 function MakeMapSolid()
@@ -159,7 +156,6 @@ function MakeMapSolid()
         if(matInstanceConstant == none) 
             continue;
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
-		`log("Done");
 	}
 }
 
@@ -263,9 +259,9 @@ exec function makePulseCircle()
 		MakeMapTransparent();
 		isMapTransparent = true;
 	}
-
+	RestartGame();
+	
 }
-
 
 
 DefaultProperties
@@ -279,6 +275,6 @@ DefaultProperties
 	
 	isMapTransparent = false;
 
-	mapOpacity = 0.5;
+	mapOpacity = 0.0;
 
 }

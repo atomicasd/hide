@@ -1,5 +1,6 @@
 class HideGameInfo extends UTGame;
 
+
 DefaultProperties
 {
 	PlayerControllerClass=class'HideGame.HPlayerController'
