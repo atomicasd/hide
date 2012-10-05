@@ -1,6 +1,7 @@
 class HPawn extends UTPawn;
 
 var     HPlayerController   HPlayer;
+var(NPC)    SkeletalMeshComponent   NPCMesh;
 
 simulated function PostBeginPlay()
 {
@@ -15,6 +16,11 @@ simulated function PostBeginPlay()
 }
 
 /*
+ * Removing dodge by overriding.
+ */
+function bool Dodge(eDoubleClickDir DoubleClickMove){return false;}
+
+/*
  * Sets CharacterInfo for spawn
  */
 simulated function SetCharacterClassInformation(HInformation_Character charInfo)
@@ -22,6 +28,7 @@ simulated function SetCharacterClassInformation(HInformation_Character charInfo)
 	if(charInfo != None)
 	{
 		`Log("Setting up character information");
+		NPCMesh.SetSkeletalMesh(None);
 		Mesh.AnimSets = charInfo.default.HAnimSet;
 		Mesh.SetSkeletalMesh(charInfo.default.HSkeletalMesh);
 		Mesh.SetPhysicsAsset(charInfo.default.HPhysicsAsset);
@@ -29,9 +36,12 @@ simulated function SetCharacterClassInformation(HInformation_Character charInfo)
 	}else{
 		`Log("---->Pawn information class not set<----");
 	}
+
 }
 
 
 DefaultProperties
 {
+	MaxMultiJump=0
+	MultiJumpRemaining=0
 }

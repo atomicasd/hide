@@ -4,5 +4,4 @@ DefaultProperties
 {
 	canSee = true;
 	shouldFollowPath = true;
-	GroundSpeed=200.0
 }

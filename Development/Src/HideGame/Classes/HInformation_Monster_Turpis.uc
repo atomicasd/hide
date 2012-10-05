@@ -1,4 +1,4 @@
-class HInformation_Player extends HInformation_Character;
+class HInformation_Monster_Turpis extends HInformation_Monster;
 
 DefaultProperties
 {
