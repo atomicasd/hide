@@ -34,6 +34,8 @@ event Tick(float TimeDelta)
 		soundSpot = Spawn(class'HSoundSpot',,, Location,,, true);
 		target.OnSoundHeard(soundSpot);
 	}
+
+	
 }
 
 defaultproperties
@@ -41,15 +43,17 @@ defaultproperties
 	InventoryManagerClass = class'HideGame.HInventoryManager'
 	HCharacterInfo = class'HideGame.HInformation_Player'
 	
+	
 	/*
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
 		SkeletalMesh=SkeletalMesh'CH_IronGuard_Male.Mesh.SK_CH_IronGuard_MaleA'
 	End Object
 	*/
-
+	
 	GroundSpeed=210.0
 	CrouchHeight=45
 	bStatic = false
 	bNoDelete = false
 	bCanDoubleJump=false
+	SpawnSound=None
 }

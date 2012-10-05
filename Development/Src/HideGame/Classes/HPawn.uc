@@ -39,9 +39,11 @@ simulated function SetCharacterClassInformation(HInformation_Character charInfo)
 
 }
 
+function PlayTeleportEffect(bool bOut, bool bSound){}
 
 DefaultProperties
 {
+	SpawnSound=None
 	MaxMultiJump=0
 	MultiJumpRemaining=0
 	bCanCrouch=true

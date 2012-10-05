@@ -34,6 +34,7 @@ simulated event PostBeginPlay()
 		A.DensityComponent.StartDistance = 20000;
 		A.ForceUpdateComponents();
 	}
+	
 	SpawnPlayerCamera();
 	WalkState = Idle;
 }
@@ -119,6 +120,7 @@ DefaultProperties
 	HPlayerinfo = class'HideGame.HInformation_Player'
 	InputClass = class'HideGame.HPlayerInput'
 	CameraClass = class'HideGame.HCamera'
+	StartSpot
 
 	//Points to the UTFamilyInfo class for your custom character
 	//CharacterClass=class'UTFamilyInfo_Liandri_Male'

@@ -76,15 +76,23 @@ state LevelCompleted
 	local HPawn_Monster p;
 	function BeginState(name PreviousStateName)
 	{
+		local HPlayerStart PlayerStartActor;
 		`Log("Resets Level");
-		//ResetLevel();
+		//Reset all monster on map to default settings.
 		foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
 		{
 			p.Reset();
 		}
 		GoToState('GameInProgress');
 		HPlayer.bInEndOfLevel=false;
-		//ConsoleCommand("Open ?Restart");
+	
+		// Resets Spawnpoint
+		foreach WorldInfo.AllActors(class'HPlayerStart', PlayerStartActor)
+		{
+			PlayerStartActor.SetLocation(PlayerStartActor.defaultLocation);
+			`log("Checkpoint Location: "$PlayerStartActor.Location);
+		}
+		//ConsoleCommand("Open LEVELNAME");
 	}
 
 	function EndState(name NextStateName)
