@@ -9,7 +9,6 @@ var     bool                    bplayed;
 var     Name                    AnimSetName;
 
 var()       array<NavigationPoint>  MyNavigationPoints;
-var(NPC)    SkeletalMeshComponent   NPCMesh;
 var(NPC)    class<AIController>     NPCController;
 
 function OnSoundHeard( HSoundSpot spot )
@@ -37,15 +36,6 @@ DefaultProperties
         CollisionHeight=+44.000000
     End Object
 	
-	/*
-	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh=SkeletalMesh'CH_LIAM_Cathode.Mesh.SK_CH_LIAM_Cathode'
-	End Object
-
-	NPCMesh=NPCMesh0
-	Components.Add(NPCMesh0)
-	*/
- 
     bJumpCapable=false
     bCanJump=false
  

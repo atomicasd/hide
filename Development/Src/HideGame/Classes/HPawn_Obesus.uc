@@ -24,11 +24,12 @@ DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Obesus'
 	HCharacterInfo = class'HideGame.HInformation_Monster_Obesus'
-
+	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
 		SkeletalMesh=SkeletalMesh'CH_IronGuard_Male.Mesh.SK_CH_IronGuard_MaleA'
+		HiddenGame=true
 	End Object
-
+	
 	NPCMesh=NPCMesh0
 	Components.Add(NPCMesh0)
 }
