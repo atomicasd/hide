@@ -16,6 +16,7 @@ var     bool    pulseFadeOut; //If the pulse should go outwards or towards the p
 var     float	pulseMaxRadius;
 var     float	pulseRadius;
 var     float   fadeOutStart;
+var     float   pulseTime;
 
 var     class<HInformation_Player>  
 	HPlayerInfo;
@@ -42,6 +43,7 @@ function EnablePulse()
 	pulseMade = true;
 	pulseRadius = 0.0f;
 	pulseFadeOut = true;
+	fadeOutStart = 0.0f;
 }
 
 function PulseFadeIn()
@@ -68,7 +70,8 @@ function PlayerTick(float DeltaTime)
 					ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
 					{
 					
-						B.MaxDensity = (pulseMaxRadius + 900) / ( pulseMaxRadius/5 * pulseRadius);
+						//B.MaxDensity = (pulseMaxRadius + 900) / ( pulseMaxRadius/5 * pulseRadius);
+						B.MaxDensity = 1.0f;
 						B.ForceUpdate(true);
 					}
 				
@@ -103,7 +106,7 @@ function PlayerTick(float DeltaTime)
 					ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
 					{
 					
-						B.MaxDensity = (pulseMaxRadius + 900) / ( pulseMaxRadius/5 * pulseRadius);
+						B.MaxDensity = 1.0f;
 						B.ForceUpdate(true);
 					}
 				
@@ -146,6 +149,7 @@ exec function makePulseCircle()
 	pulseMade = true;
 	pulseRadius = 1;
 	pulseFadeOut = true;
+	fadeOutStart = 0.0f;
 	`log("Making pulse effect");
 }
 
@@ -163,5 +167,6 @@ DefaultProperties
 	pulseRadius = 1;
 	pulseFadeOut = true;
 	fadeOutStart = 0.5f;
+	pulseTime = 5.0f;
 }
 
