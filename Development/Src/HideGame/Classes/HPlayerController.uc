@@ -19,8 +19,7 @@ var     float   fadeOutStart;
 var     float   pulseTime;
 var     float   pulseDensity;
 
-var     class<HInformation_Player>  
-	HPlayerInfo;
+var     class<HInformation_Player>  HPlayerInfo;
 var     HInformation_Player         PlayerInfo;
 var     PlayerWalkingState          WalkState;
 
@@ -99,8 +98,7 @@ function PlayerTick(float DeltaTime)
 			Pawn.GroundSpeed = 400;
 			break;
 		}
-		bChangedState=false;
-	
+		bChangedState=false;	
 	}
 	
 	//this line is not need if you add this code to PlayerController.uc

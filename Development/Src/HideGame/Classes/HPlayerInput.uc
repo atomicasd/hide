@@ -6,31 +6,27 @@ var     bool	RunActivated;
 // Activate Sneak. This will override Run
 exec function Sneak()
 {
-	Pawn.StartCrouch(-Pawn.CrouchHeight);
+	//Pawn.StartCrouch(-Pawn.CrouchHeight);
 	SneakActivated = true;
-	bChangedState = true;
 }
 
 // Deactivate Sneak.
 exec function SneakReleased()
 {
-	Pawn.EndCrouch(-Pawn.CrouchHeight);
+	//Pawn.EndCrouch(-Pawn.CrouchHeight);
 	SneakActivated = false;
-	bChangedState=true;
 }
 
 // Activate Run.
 exec function Run()
 {
 	RunActivated = true;
-	bChangedState=true;
 }
 
 // Deactivate Run.
 exec function RunReleased()
 {
 	RunActivated = false;
-	bChangedState=true;
 }
 
 /*
@@ -38,26 +34,26 @@ exec function RunReleased()
  */
 function Tick( float DeltaTime )
 {
-	if(bChangedState)
+	if(vsize(GetALocalPlayerController().Pawn.Velocity) != 0)
 	{
-		if(vsize(GetALocalPlayerController().Pawn.Velocity) != 0 || SneakActivated)
+		bChangedState=true;
+		if(SneakActivated)
 		{
-			if(SneakActivated)
-			{
-				WalkState = Sneak;
-			}
-			else if(RunActivated)
-			{
-				WalkState = Run;
-			}
-			else
-			{
-				WalkState = Walk;
-			}
-		}else{
-			WalkState = Idle;
+			WalkState = Sneak;
 		}
+		else if(RunActivated)
+		{
+			WalkState = Run;
+		}
+		else
+		{
+			WalkState = Walk;
+		}
+	}else{
+		bChangedState=true;
+		WalkState = Idle;
 	}
+
 }
 
 DefaultProperties

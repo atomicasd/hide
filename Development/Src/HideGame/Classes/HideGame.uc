@@ -75,6 +75,10 @@ state LevelCompleted
 {
 	function BeginState(name PreviousStateName)
 	{
+		ResetLevel();
+		GoToState('GameInProgress');
+		HPlayer.bInEndOfLevel=false;
+		//ConsoleCommand("Open ?Restart");
 	}
 
 	function EndState(name NextStateName)

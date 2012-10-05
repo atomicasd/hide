@@ -21,7 +21,7 @@ event Tick(float TimeDelta)
 	local HSoundSpot soundSpot;
 	local HPawn_Monster target;
 
-	switch(HPlayer.WalkState)
+	switch(HPlayer.WalkState)   
 	{
 	case Idle:  soundRadius=150;  break;
 	case Walk:  soundRadius=600;  break;
