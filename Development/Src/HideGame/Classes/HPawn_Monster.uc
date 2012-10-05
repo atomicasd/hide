@@ -13,7 +13,7 @@ var(NPC)    class<AIController>     NPCController;
 
 function OnSoundHeard( HSoundSpot spot )
 {
-	MyController.OnSoundHeard( spot );
+	HAIController(Controller).OnSoundHeard( spot );
 }
 
 function SetAttacking(bool atacar)

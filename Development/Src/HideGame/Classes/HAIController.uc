@@ -5,8 +5,8 @@ var Pawn            playerPawn; //The player pawn
 
 var () array<NavigationPoint> MyNavigationPoints;
 
-var int actual_node;
-var int last_node;
+var     int         actual_node;
+var     int         last_node;
 
 var float           perceptionDistance;
 
@@ -31,7 +31,10 @@ var HSoundSpot lastSoundSpot;
 function OnSoundHeard( HSoundSpot spot )
 {
 	soundHeard = true;
-	lastSoundSpot.Destroy();
+	if(lastSoundSpot != none)
+	{
+		lastSoundSpot.Destroy();
+	}
 	lastSoundSpot = spot;
 	if( canHear )
 		GotoState('GoToSoundSpot');
@@ -76,7 +79,6 @@ auto state Idle
 			distanceToPlayer = VSize(playerPawn.Location - Pawn.Location);
 			if (distanceToPlayer < perceptionDistance)
 			{ 
-				Worldinfo.Game.Broadcast(self, "I can see you!");
 				GotoState('ChasePlayer');
 			}
 		}
@@ -85,10 +87,9 @@ Begin:
 	Pawn.Acceleration = vect(0,0,0);
 	aiPawn.SetAttacking(false);
 
-
 	if(shouldFollowPath)
 	{
-		Worldinfo.Game.Broadcast(self, "!!!!!!!  Going to FollowPath  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		//Worldinfo.Game.Broadcast(self, "!!!!!!!  Going to FollowPath  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		followingPath = true;
 		actual_node = last_node;
 		GotoState('FollowPath');
@@ -109,7 +110,6 @@ state FollowPath
 			distanceToPlayer = VSize(playerPawn.Location - Pawn.Location);
 			if (distanceToPlayer < perceptionDistance)
 			{ 
-				Worldinfo.Game.Broadcast(self, "I can see you!");
 				GotoState('ChasePlayer');
 			}
 		}
@@ -119,6 +119,11 @@ state FollowPath
 
 	while(followingPath)
 	{
+		if(MyNavigationPoints.Length <= 0)
+		{
+			followingPath = false;
+			GotoState('Idle');
+		}
 		MoveTarget = MyNavigationPoints[actual_node];
 
 		if(Pawn.ReachedDestination(MoveTarget))
@@ -136,10 +141,6 @@ state FollowPath
 
 		if (ActorReachable(MoveTarget)) 
 		{
-			//distanceToPlayer = VSize(MoveTarget.Location - Pawn.Location);
-			//if (distanceToPlayer < perceptionDistance / 3)
-			//	MoveToward(MoveTarget, MyNavigationPoints[actual_node + 1]);	
-			//else
 				MoveToward(MoveTarget, MoveTarget);	
 		}
 		else
@@ -148,7 +149,7 @@ state FollowPath
 			if (MoveTarget != none)
 			{
 
-				//SetRotation(RInterpTo(Rotation,Rotator(MoveTarget.Location),Delta,90000,true));
+				SetRotation(RInterpTo(Rotation,Rotator(MoveTarget.Location),1,90000,true));
 
 				MoveToward(MoveTarget, MoveTarget);
 			}

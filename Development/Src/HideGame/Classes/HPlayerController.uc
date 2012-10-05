@@ -17,6 +17,7 @@ var     float	pulseMaxRadius;
 var     float	pulseRadius;
 var     float   fadeOutStart;
 var     float   pulseTime;
+var     float   pulseDensity;
 
 var     class<HInformation_Player>  
 	HPlayerInfo;
@@ -44,6 +45,7 @@ function EnablePulse()
 	pulseRadius = 0.0f;
 	pulseFadeOut = true;
 	fadeOutStart = 0.0f;
+	pulseDensity = 1.0f;
 }
 
 function PulseFadeIn()
@@ -57,66 +59,27 @@ function PlayerTick(float DeltaTime)
 	local FogVolumeSphericalDensityComponent B;
 	if( pulseMade )
 	{
-		if( pulseFadeOut )
+		ForEach WorldInfo.AllActors(class'FogVolumeSphericalDensityInfo', A)
 		{
-			ForEach WorldInfo.AllActors(class'FogVolumeSphericalDensityInfo', A)
+			if( pulseRadius >= pulseMaxRadius )
 			{
-				if( pulseRadius >= pulseMaxRadius )
+				pulseMade = false;
+			} else
+			{
+				A.DensityComponent.StartDistance = pulseRadius;
+				ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
 				{
-					pulseMade = false;
-				} else
-				{
-					A.DensityComponent.StartDistance = pulseRadius;
-					ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
-					{
 					
-						//B.MaxDensity = (pulseMaxRadius + 900) / ( pulseMaxRadius/5 * pulseRadius);
-						B.MaxDensity = 1.0f;
-						B.ForceUpdate(true);
-					}
-				
-					A.ForceUpdateComponents();
+					//B.MaxDensity = (pulseMaxRadius + 900) / ( pulseMaxRadius/5 * pulseRadius);
+					B.MaxDensity = pulseDensity;
+					B.ForceUpdate(true);
 				}
+				
+				A.ForceUpdateComponents();
+			}
 
-				pulseRadius += DeltaTime*2000 - ( (DeltaTime*2000) * (pulseRadius/pulseMaxRadius) );
-			}
-		} else {
-			ForEach WorldInfo.AllActors(class'FogVolumeSphericalDensityInfo', A)
-			{
-				if( pulseRadius <= 1 )
-				{
-					ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
-					{
-						if( fadeOutStart <= 0 )
-						{
-							B.MaxDensity = 0.0f;
-							B.ForceUpdate(true);
-							pulseMade = false;
-							fadeOutStart = 0.5f;
-						} else 
-						{
-							fadeOutStart -= DeltaTime;
-							B.MaxDensity = fadeOutStart;
-							B.ForceUpdate(true);
-						}
-					}
-				} else 
-				{
-					A.DensityComponent.StartDistance = pulseRadius;
-					ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
-					{
-					
-						B.MaxDensity = 1.0f;
-						B.ForceUpdate(true);
-					}
-				
-					A.ForceUpdateComponents();
-					pulseRadius -= DeltaTime*10000 - ( (DeltaTime*10000) * (pulseRadius/pulseMaxRadius) );
-				}
-			}
+			pulseRadius += DeltaTime*2000 - ( (DeltaTime*2000) * (pulseRadius/pulseMaxRadius) );
 		}
-
-
 	}
 
 	// Player Input to change Walkingstate
@@ -168,5 +131,6 @@ DefaultProperties
 	pulseFadeOut = true;
 	fadeOutStart = 0.5f;
 	pulseTime = 5.0f;
+	pulseDensity = 1.0f;
 }
 
