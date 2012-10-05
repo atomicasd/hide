@@ -44,4 +44,5 @@ DefaultProperties
 {
 	MaxMultiJump=0
 	MultiJumpRemaining=0
+	bCanCrouch=true
 }
