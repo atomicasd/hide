@@ -60,7 +60,7 @@ state GameInProgress
 				}
 			} else {
 				mapOpacity += (DeltaTime / 10);
-				FadeMapTransparancy(mapOpacity);
+				//FadeMapTransparancy(mapOpacity);
 			}
 		}
 
@@ -145,7 +145,8 @@ function MakeMapTransparent()
             continue;
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
 	}
-	mapOpacity = 0.0;
+	mapOpacity = 0.1;
+	FadeMapTransparancy(mapOpacity);
 	isMapTransparent = true;
 }
 

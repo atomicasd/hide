@@ -5,7 +5,6 @@ var HInformation_Monster_Obesus CharacterInfo;
 
 simulated function PostBeginPlay()
 {
-	
 	SetPhysics(PHYS_Walking);
 	if(ControllerClass == none)
 	{

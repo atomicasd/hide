@@ -13,6 +13,10 @@ var     Name                    AnimSetName;
 var()       array<NavigationPoint>  MyNavigationPoints;
 var(NPC)    class<AIController>     NPCController;
 
+var ()  float       PawnGroundSpeed;
+
+var ()  float       waitAtNode;
+
 simulated function PostBeginPlay()
 {
 	startingPosition = Location;
@@ -62,4 +66,6 @@ DefaultProperties
  
     GroundSpeed=200.0
 	PeripheralVision = 0.7
+
+	waitAtNode = 0.0f;
 }
