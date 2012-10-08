@@ -50,10 +50,10 @@ defaultproperties
 	End Object
 	*/
 	
+	SpawnSound=SoundCue'A_Ambient_NonLoops.Thunder.Thunder_Distant_Stereo_01_Cue'
 	GroundSpeed=210.0
 	CrouchHeight=45
 	bStatic = false
 	bNoDelete = false
 	bCanDoubleJump=false
-	SpawnSound=None
 }

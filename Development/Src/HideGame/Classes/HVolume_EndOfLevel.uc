@@ -1,8 +1,6 @@
 class HVolume_EndOfLevel extends HVolume
 placeable;
 
-var(CollisionCylinder) CylinderComponent CollisionCylinder;
-
 /*
  * If volume is touched. Load the new Level
  */
@@ -53,22 +51,11 @@ DefaultProperties
 {
 	Begin Object Class=StaticMeshComponent Name=PickupMesh
 		StaticMesh=StaticMesh'UN_SimpleMeshes.TexPropCube_Dup'
-		Scale3D=(X=0.25,Y=0.25,Z=0.5)
+		Scale3D=(X=0.75,Y=0.1,Z=0.75)
+		HiddenGame=true
 	End Object
 
 	Components.Add(PickupMesh)
-
-	Begin Object Class=CylinderComponent Name=CollisionCylinder1
-		CollisionRadius=64.0
-		CollisionHeight=161.0
-		BlockNonZeroExtent=true
-		BlockZeroExtent=true
-		BlockActors=true
-		CollideActors=true
-	End Object
-	
-	CollisionCylinder = CollisionCylinder1;
-	Components.Add(CollisionCylinder1);
 
 	bNoEncroachCheck=false
 	bStatic=false
