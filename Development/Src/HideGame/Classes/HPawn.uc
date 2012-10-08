@@ -27,8 +27,7 @@ simulated function SetCharacterClassInformation(HInformation_Character charInfo)
 {
 	if(charInfo != None)
 	{
-		`Log("Setting up character information");
-		NPCMesh.SetSkeletalMesh(None);
+		`Log("---->Setting up character information<----");
 		Mesh.AnimSets = charInfo.default.HAnimSet;
 		Mesh.SetSkeletalMesh(charInfo.default.HSkeletalMesh);
 		Mesh.SetPhysicsAsset(charInfo.default.HPhysicsAsset);
@@ -43,6 +42,7 @@ function PlayTeleportEffect(bool bOut, bool bSound){}
 
 DefaultProperties
 {
+	CurrCharClassInfo=class'HideGame.HPlayerFamilyInfo'
 	MaxMultiJump=0
 	MultiJumpRemaining=0
 	bCanCrouch=true

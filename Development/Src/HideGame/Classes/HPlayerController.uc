@@ -81,25 +81,28 @@ function PlayerTick(float DeltaTime)
 			pulseRadius += DeltaTime*2000 - ( (DeltaTime*2000) * (pulseRadius/pulseMaxRadius) );
 		}
 	}
-
-	// Player Input to change Walkingstate
-	if(bChangedState)
+	
+	if(HPawn_Player(Pawn) != None)
 	{
-		switch(WalkState)
+		// Player Input to change Walkingstate
+		if(bChangedState)
 		{
-		case Idle: 
-			break;
-		case Walk:
-			Pawn.GroundSpeed = 250;
-			break;
-		case Sneak:
-			Pawn.GroundSpeed = 150;
-			break;
-		case Run:
-			Pawn.GroundSpeed = 400;
-			break;
+			switch(WalkState)
+			{
+			case Idle: 
+				break;
+			case Walk:
+				Pawn.GroundSpeed = 250;
+				break;
+			case Sneak:
+				Pawn.GroundSpeed = 150;
+				break;
+			case Run:
+				Pawn.GroundSpeed = 400;
+				break;
+			}
+			bChangedState=false;	
 		}
-		bChangedState=false;	
 	}
 	
 	//this line is not need if you add this code to PlayerController.uc
@@ -120,7 +123,6 @@ DefaultProperties
 	HPlayerinfo = class'HideGame.HInformation_Player'
 	InputClass = class'HideGame.HPlayerInput'
 	CameraClass = class'HideGame.HCamera'
-	StartSpot
 
 	//Points to the UTFamilyInfo class for your custom character
 	//CharacterClass=class'UTFamilyInfo_Liandri_Male'
