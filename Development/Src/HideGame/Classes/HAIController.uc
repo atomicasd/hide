@@ -30,6 +30,7 @@ var bool canSee;
 var bool shouldFollowPath;
 
 var HSoundSpot lastSoundSpot;
+var HLastSeenSpot lastPlayerSpot; //
 
 function OnSoundHeard( HSoundSpot spot )
 {
@@ -259,7 +260,9 @@ Begin:
 defaultproperties
 {
     attackDistance = 50
-    perceptionDistance = 1000
+    investigateMaxDistance = 1000
+	chaseMaxDistance = 700;
+	
 
 	AnimSetName ="ATTACK"
 	actual_node = 0

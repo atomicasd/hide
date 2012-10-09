@@ -42,6 +42,16 @@ function Tick(Float Delta)
 	}
 }
 
+function SetSeeThroughWalls( bool seeThrough )
+{
+	if( seeThrough )
+	{
+		Mesh.SetDepthPriorityGroup( SDPG_Foreground );
+	} else {
+		Mesh.SetDepthPriorityGroup( SDPG_World );
+	}
+}
+
 event Reset()
 {
 	MyController = HAIController(Controller);
@@ -67,4 +77,5 @@ DefaultProperties
 	PeripheralVision = 0.7
 
 	waitAtNode = 0.0f;
+
 }
