@@ -6,14 +6,20 @@ var     HInformation_Player         CharacterInfo;
 simulated function PostBeginPlay()
 {
 	super.PostBeginPlay();
-	CharacterInfo = new HCharacterInfo;
+
 	SetCharacterClassInformation(CharacterInfo);
 	MaxFootstepDistSq=10;
 }
 
 function bool Died(Controller Killer, class<DamageType> damageType, vector HitLocation)
 {
-	`Log("YOu died");
+	local HPawn_Monster p;
+
+	//Reset all monster on map to default settings.
+	foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
+	{
+		p.Reset();
+	}
 
 	return super.Died(Killer, damageType, HitLocation);
 }
@@ -62,8 +68,6 @@ defaultproperties
 {
 	InventoryManagerClass = None
 	HCharacterInfo = class'HideGame.HInformation_Player'
-	SoundGroupClass = class'HideGame.HPawnSoundGroup'
-
 	
 	GroundSpeed=210.0
 	CrouchHeight=45

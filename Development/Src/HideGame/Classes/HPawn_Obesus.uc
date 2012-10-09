@@ -5,7 +5,6 @@ var HInformation_Monster_Obesus CharacterInfo;
 
 simulated function PostBeginPlay()
 {
-	
 	SetPhysics(PHYS_Walking);
 	if(ControllerClass == none)
 	{
@@ -14,6 +13,7 @@ simulated function PostBeginPlay()
 	}
 	
 	// Setting PlayerInfo
+	SetCharacterClassFromInfo(class'HFamilyInfo_Obesus');
 	CharacterInfo = HInformation_Monster_Obesus(new HCharacterInfo);
 	SetCharacterClassInformation(CharacterInfo);
 
@@ -24,6 +24,7 @@ DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Obesus'
 	HCharacterInfo = class'HideGame.HInformation_Monster_Obesus'
+	CurrCharClassInfo = class'HFamilyInfo_Obesus'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
 		SkeletalMesh=SkeletalMesh'CH_IronGuard_Male.Mesh.SK_CH_IronGuard_MaleA'

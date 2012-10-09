@@ -42,8 +42,7 @@ function PlayTeleportEffect(bool bOut, bool bSound){}
 
 DefaultProperties
 {
-	CurrCharClassInfo=class'HideGame.HPlayerFamilyInfo'
-	MaxMultiJump=0
+w	MaxMultiJump=0
 	MultiJumpRemaining=0
 	bCanCrouch=true
 }

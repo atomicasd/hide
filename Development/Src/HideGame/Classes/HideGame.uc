@@ -54,13 +54,13 @@ state GameInProgress
 			if( mapOpacity >= 0.90 )
 			{
 				HPlayer.PulseFadeIn();
-				mapOpacity = 1.0;
-				MakeMapSolid();
-				isMapTransparent = false;
+				if( HPlayer.pulseFadedIn )
+				{
+					MakeMapSolid();
+				}
 			} else {
 				mapOpacity += (DeltaTime / 10);
-				HPlayer.pulseDensity = 0.9 - mapOpacity;
-				FadeMapTransparancy(mapOpacity);
+				//FadeMapTransparancy(mapOpacity);
 			}
 		}
 
@@ -73,9 +73,9 @@ state GameInProgress
 
 state LevelCompleted
 {
-	local HPawn_Monster p;
 	function BeginState(name PreviousStateName)
 	{
+		local HPawn_Monster p;
 		local HPlayerStart PlayerStartActor;
 		`Log("Resets Level");
 
@@ -150,7 +150,9 @@ function MakeMapTransparent()
             continue;
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
 	}
-	mapOpacity = 0.0;
+	mapOpacity = 0.1;
+	FadeMapTransparancy(mapOpacity);
+	isMapTransparent = true;
 }
 
 function MakeMapSolid()
@@ -170,6 +172,8 @@ function MakeMapSolid()
             continue;
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
 	}
+	isMapTransparent = false;
+	mapOpacity = 1.0;
 }
 
 function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smActor) 
@@ -272,7 +276,6 @@ exec function makePulseCircle()
 		MakeMapTransparent();
 		isMapTransparent = true;
 	}
-	RestartGame();
 	
 }
 

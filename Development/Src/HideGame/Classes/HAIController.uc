@@ -8,6 +8,9 @@ var () array<NavigationPoint> MyNavigationPoints;
 var     int         actual_node;
 var     int         last_node;
 
+var ()  float       waitAtNode;
+var     float       waitCounter;
+
 var float           perceptionDistance;
 
 var float           distanceToPlayer;
@@ -59,7 +62,7 @@ function Possess(Pawn aPawn, bool bVehicleTransition)
 
 		aiPawn = HPawn_Monster(Pawn);
 		MyNavigationPoints = aiPawn.MyNavigationPoints;
-
+		waitAtNode = aiPawn.waitAtNode;
 		Pawn.SetMovementPhysics();
 
 		if (Pawn.Physics == PHYS_Walking)
@@ -128,15 +131,23 @@ state FollowPath
 
 		if(Pawn.ReachedDestination(MoveTarget))
 		{
-			actual_node++;
-
-			if (actual_node >= MyNavigationPoints.Length)
+			if(waitCounter >= waitAtNode)
 			{
-				actual_node = 0;
-			}
-			last_node = actual_node;
+				actual_node++;
 
-			MoveTarget = MyNavigationPoints[actual_node];
+				if (actual_node >= MyNavigationPoints.Length)
+				{
+					actual_node = 0;
+				}
+				last_node = actual_node;
+
+				MoveTarget = MyNavigationPoints[actual_node];
+
+				waitCounter = 0.0f;
+			} else 
+			{
+				waitCounter += 0.1f;
+			}
 		}	
 
 		if (ActorReachable(MoveTarget)) 
@@ -149,7 +160,7 @@ state FollowPath
 			if (MoveTarget != none)
 			{
 
-				SetRotation(RInterpTo(Rotation,Rotator(MoveTarget.Location),1,90000,true));
+				//SetRotation(RInterpTo(Rotation,Rotator(MoveTarget.Location),1,90000,true));
 
 				MoveToward(MoveTarget, MoveTarget);
 			}
@@ -255,6 +266,8 @@ defaultproperties
 	last_node = 0
 	followingPath = true
 	IdleInterval = 2.5f
+
+	waitAtNode = 0.0f;
 
 	soundHeard = false;
 

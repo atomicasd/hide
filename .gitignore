@@ -4,6 +4,7 @@ Autosaves
 UDKGame/Build
 UDKGame/Cloud
 UDKGame/Config
+UDKGame/Script
 UDKGame/Content
 UDKGame/Flash
 UDKGame/Localization
@@ -11,7 +12,6 @@ UDKGame/Logs
 UDKGame/Movies
 UDKGame/ProjectTemplates
 UDKGame/Screenshots
-UDKGame/Script
 UDKGame/Splash
 UDKGame/PCTOC.txt
 UDKGame/PCTOC_CHN.txt
