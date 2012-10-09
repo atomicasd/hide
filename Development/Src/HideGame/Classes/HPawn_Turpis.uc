@@ -13,6 +13,7 @@ simulated function PostBeginPlay()
 		ControllerClass = class'HideGame.HAIController_Turpis';
 	}
 
+	SetCharacterClassFromInfo(class'HFamilyInfo_Turpis');
 	CharacterInfo = HInformation_Monster_Turpis( new HCharacterInfo );
 	SetCharacterClassInformation(CharacterInfo);
 
@@ -24,6 +25,7 @@ DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Turpis';
 	HCharacterInfo = class'HideGame.HInformation_Monster_Turpis'
+	CurrCharClassInfo = class'HFamilyInfo_Turpis'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
 		SkeletalMesh=SkeletalMesh'CH_LIAM_Cathode.Mesh.SK_CH_LIAM_Cathode'
