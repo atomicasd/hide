@@ -1,15 +1,14 @@
 class HPawn_Player extends HPawn;
 
-var     class<HInformation_Player>  HCharacterInfo;
-var     HInformation_Player         CharacterInfo;
+var     HFamilyInfo_Player      CharacterInfo;
 
 simulated function PostBeginPlay()
 {
 	super.PostBeginPlay();
 
-	CharacterInfo = new HCharacterInfo;
+	SetCharacterClassFromInfo(class'HFamilyInfo_Player');
+	CharacterInfo = HFamilyInfo_Player( new HCharacterInfo );
 	SetCharacterClassInformation(CharacterInfo);
-	MaxFootstepDistSq=10;
 }
 
 function bool Died(Controller Killer, class<DamageType> damageType, vector HitLocation)
@@ -55,7 +54,13 @@ event Tick(float TimeDelta)
 defaultproperties
 {
 	InventoryManagerClass = None
-	HCharacterInfo = class'HideGame.HInformation_Player'
+	HCharacterInfo = class'HideGame.HFamilyInfo_Player'
+
+	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
+		HiddenGame=true
+	End Object
+
+	Components.Add(NPCMesh0);
 	
 	GroundSpeed=200.0
 	CrouchHeight=45

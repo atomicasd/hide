@@ -1,4 +1,18 @@
-class HAIController_Obesus extends HAIController;
+class HAIController_Obesus extends HAIController
+	dependson(UTCharInfo);
+
+Function PostBeginPlay()
+{
+	local UTPlayerReplicationInfo PRI;
+	// copy visual properties
+ 	PRI = UTPlayerReplicationInfo(PlayerReplicationInfo);
+ 	if (PRI != None)
+ 	{
+		//Get the chosen character class for this character
+		PRI.CharClassInfo = class'HFamilyInfo_Obesus';
+		//PRI.CharClassInfo = class'UTCharInfo'.static.FindFamilyInfo(BotInfo.FamilyID);
+	}
+}
 
 Function Tick(float DeltaTime)
 {
