@@ -55,6 +55,7 @@ DefaultProperties
 	
 	NPCMesh=NPCMesh0
 	Components.Add(NPCMesh0)
+	GroundSpeed=240;
 
 }
 
