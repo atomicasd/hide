@@ -7,6 +7,7 @@ simulated function PostBeginPlay()
 {
 	super.PostBeginPlay();
 
+	CharacterInfo = new HCharacterInfo;
 	SetCharacterClassInformation(CharacterInfo);
 	MaxFootstepDistSq=10;
 }
@@ -38,10 +39,10 @@ event Tick(float TimeDelta)
 
 	switch(HPlayer.WalkState)   
 	{
-	case Idle:  soundRadius=150;  break;
-	case Walk:  soundRadius=600;  break;
-	case Sneak: soundRadius=300;  break;
-	case Run:   soundRadius=1500; break;
+	case Idle:  soundRadius=100;  break;
+	case Walk:  soundRadius=400;  break;
+	case Sneak: soundRadius=150;  break;
+	case Run:   soundRadius=500; break;
 	}
 
 	foreach OverlappingActors(class'HPawn_Monster', target, soundRadius)
@@ -58,7 +59,7 @@ defaultproperties
 	InventoryManagerClass = None
 	HCharacterInfo = class'HideGame.HInformation_Player'
 	
-	GroundSpeed=210.0
+	GroundSpeed=200.0
 	CrouchHeight=45
 	bStatic = false
 	bNoDelete = false
