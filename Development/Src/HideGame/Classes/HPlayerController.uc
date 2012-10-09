@@ -114,7 +114,7 @@ function PlayerTick(float DeltaTime)
 				
 					A.ForceUpdateComponents();
 				}
-
+				
 				pulseRadius -= DeltaTime*3000 - ( (DeltaTime*3000) * (pulseRadius/pulseMaxRadius) );
 			}
 		}
@@ -145,6 +145,16 @@ function PlayerTick(float DeltaTime)
 	
 	//this line is not need if you add this code to PlayerController.uc
 	Super.PlayerTick(DeltaTime);
+}
+
+function SeeMonstersThroughWalls( float radius )
+{
+	local HPawn_Monster target;
+	foreach OverlappingActors(class'HPawn_Monster', target, radius)
+	{
+		`log("eeeeeeeeeeeeee");
+		target.SetSeeThroughWalls( true );
+	}
 }
 
 exec function makePulseCircle()

@@ -39,9 +39,9 @@ event Tick(float TimeDelta)
 
 	switch(HPlayer.WalkState)   
 	{
-	case Idle:  soundRadius=100;  break;
+	case Idle:  soundRadius=170;  break;
+	case Sneak: soundRadius=200;  break;
 	case Walk:  soundRadius=400;  break;
-	case Sneak: soundRadius=150;  break;
 	case Run:   soundRadius=500; break;
 	}
 

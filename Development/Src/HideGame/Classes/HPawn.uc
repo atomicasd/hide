@@ -42,7 +42,7 @@ function PlayTeleportEffect(bool bOut, bool bSound){}
 
 DefaultProperties
 {
-w	MaxMultiJump=0
+	MaxMultiJump=0
 	MultiJumpRemaining=0
 	bCanCrouch=true
 }

@@ -33,6 +33,7 @@ DefaultProperties
 	
 	NPCMesh=NPCMesh0
 	Components.Add(NPCMesh0)
+
 }
 
 
