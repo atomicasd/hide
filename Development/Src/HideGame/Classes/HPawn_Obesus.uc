@@ -2,6 +2,8 @@ class HPawn_Obesus extends HPawn_Monster
 	placeable;
 
 var HFamilyInfo_Obesus CharacterInfo;
+var float timer;
+
 
 simulated function PostBeginPlay()
 {
@@ -18,6 +20,27 @@ simulated function PostBeginPlay()
 	SetCharacterClassInformation(CharacterInfo);
 
 	super.PostBeginPlay();
+}
+
+function Tick(float DeltaTime)
+{
+	local SoundCue BreathSound;
+	local HSoundGroup_Obesus HSoundGroup;
+
+	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
+	timer += DeltaTime;
+
+	if(timer > 10)
+	{
+		BreathSound = HSoundGroup.static.getBreathingSound();
+		
+		if(BreathSound != None)
+		{
+			`Log("Play sound");
+			PlaySound(BreathSound,false, true,,,true);
+		}
+		timer = 0;
+	}
 }
 
 DefaultProperties

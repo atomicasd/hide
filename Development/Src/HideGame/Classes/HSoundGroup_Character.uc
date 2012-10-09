@@ -3,7 +3,7 @@ class HSoundGroup_Character extends UTPawnSoundGroup;
 DefaultProperties
 {
 	DefaultJumpingSound=SoundCue'HidePackage.Sound.tactusBreathing01_Cue'
-	DefaultFootstepSound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_StoneCue'
+	DefaultFootstepSound=SoundCue'HidePackage.Sound.Silence1'
 
 	FootstepSounds[0]=(MaterialType=Stone,Sound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_StoneCue')
 	FootstepSounds[1]=(MaterialType=Dirt,Sound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_DirtCue')
@@ -34,8 +34,8 @@ DefaultProperties
 	JumpingSounds[14]=(MaterialType=ShallowWater,Sound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_WaterShallowJumpCue')
 	JumpingSounds[15]=(MaterialType=Wood,Sound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_WoodJumpCue')
 
-	DefaultLandingSound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_DirtLandCue'
-	//DefaultLandingSound=SoundCue'HidePackage.Sound.Silence1'
+	//DefaultLandingSound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_DirtLandCue'
+	DefaultLandingSound=SoundCue'HidePackage.Sound.Silence1'
 
 	LandingSounds[0]=(MaterialType=Stone,Sound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_StoneLandCue')
 	LandingSounds[1]=(MaterialType=Dirt,Sound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_DirtLandCue')
