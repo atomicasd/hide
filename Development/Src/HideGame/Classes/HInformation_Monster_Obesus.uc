@@ -1,5 +1,7 @@
 class HInformation_Monster_Obesus extends HInformation_Monster;
 
+
+
 DefaultProperties
 {
 	HAnimSet(0) = AnimSet'CH_AnimHuman.Anims.K_AnimHuman_BaseMale'
