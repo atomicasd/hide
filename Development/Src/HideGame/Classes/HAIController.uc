@@ -31,6 +31,9 @@ var bool shouldFollowPath;
 
 var HSoundSpot lastSoundSpot;
 var HLastSeenSpot lastPlayerSpot; //
+var bool playerSeen;
+var float investigateMaxDistance;
+var float chaseMaxDistance;
 
 function OnSoundHeard( HSoundSpot spot )
 {
@@ -81,9 +84,20 @@ auto state Idle
 		{
 			playerPawn = SeenPlayer;
 			distanceToPlayer = VSize(playerPawn.Location - Pawn.Location);
-			if (distanceToPlayer < perceptionDistance)
+			if (distanceToPlayer < chaseMaxDistance)
 			{ 
+				`log("Chasing player");
 				GotoState('ChasePlayer');
+			} else if (distanceToPlayer < investigateMaxDistance)
+			{
+				if( lastPlayerSpot != none )
+				{
+					lastPlayerSpot.Destroy();
+				}
+				lastPlayerSpot = Spawn(class'HLastSeenSpot',,, playerPawn.Location,,, true);
+				`log("Investigating spot");
+				GotoState('GoToLastSeenPlayer');
+
 			}
 		}
     }
@@ -112,9 +126,20 @@ state FollowPath
 		{
 			playerPawn = SeenPlayer;
 			distanceToPlayer = VSize(playerPawn.Location - Pawn.Location);
-			if (distanceToPlayer < perceptionDistance)
+			if (distanceToPlayer < chaseMaxDistance)
 			{ 
+				`log("Chasing player");
 				GotoState('ChasePlayer');
+			} else if (distanceToPlayer < investigateMaxDistance)
+			{
+				if( lastPlayerSpot != none )
+				{
+					lastPlayerSpot.Destroy();
+				}
+				lastPlayerSpot = Spawn(class'HLastSeenSpot',,, playerPawn.Location,,, true);
+				`log("Investigating spot");
+				GotoState('GoToLastSeenPlayer');
+
 			}
 		}
     }
@@ -253,17 +278,71 @@ Begin:
 				MoveToward( MoveTarget, MoveTarget );	
 			}
 		}
-		Sleep(1);
+		Sleep(0.1);
 	}
 }
+
+state GoToLastSeenPlayer
+{
+	event SeePlayer(Pawn SeenPlayer)
+	{
+		if( canSee )
+		{
+			playerPawn = SeenPlayer;
+			distanceToPlayer = VSize(playerPawn.Location - Pawn.Location);
+			if (distanceToPlayer < chaseMaxDistance)
+			{ 
+				`log("Chasing player");
+				GotoState('ChasePlayer');
+			} else if (distanceToPlayer < investigateMaxDistance)
+			{
+				if( lastPlayerSpot != none )
+				{
+					lastPlayerSpot.Destroy();
+				}
+				lastPlayerSpot = Spawn(class'HLastSeenSpot',,, playerPawn.Location,,, true);
+				`log("Investigating spot");
+				GotoState('GoToLastSeenPlayer');
+			}
+		}
+    }
+Begin:
+	playerSeen = true;
+	while(playerSeen)
+	{
+		MoveTarget = FindPathToward( lastPlayerSpot );
+		//Next path node in the path
+		if( Pawn.ReachedDestination( lastPlayerSpot ) )
+		{
+			playerSeen = false;
+			Sleep(8);
+			GotoState('Idle');
+		}
+
+		MoveTo( lastPlayerSpot.Location );
+
+		if( ActorReachable( MoveTarget ) )
+		{
+			MoveToward(MoveTarget, MoveTarget);	
+		} 
+		else
+		{
+			MoveTarget = FindPathToward( lastPlayerSpot );
+			if (MoveTarget != none)
+			{
+				MoveToward( MoveTarget, MoveTarget );	
+			}
+		}
+		Sleep(1);
+	}
+};
 
 defaultproperties
 {
     attackDistance = 50
-    investigateMaxDistance = 1000
-	chaseMaxDistance = 700;
+    investigateMaxDistance = 1300
+	chaseMaxDistance = 900;
 	
-
 	AnimSetName ="ATTACK"
 	actual_node = 0
 	last_node = 0
@@ -277,5 +356,5 @@ defaultproperties
 	canHear = false;
 	canSee = false;
 	shouldFollowPath = false;
-
+	playerSeen = false;
 }
