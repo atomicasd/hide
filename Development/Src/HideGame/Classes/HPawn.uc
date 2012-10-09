@@ -21,6 +21,7 @@ simulated function PostBeginPlay()
  */
 
 function bool Dodge(eDoubleClickDir DoubleClickMove){return false;}
+function PlayTeleportEffect(bool bOut, bool bSound){}
 function DoDoubleJump( bool bUpdating ) {}
 
 /*
@@ -48,7 +49,6 @@ simulated function SetCharacterClassInformation(HFamilyInfo_Character charInfo)
 
 }
 
-function PlayTeleportEffect(bool bOut, bool bSound){}
 
 DefaultProperties
 {

@@ -2,7 +2,6 @@ class HPawn_Obesus extends HPawn_Monster
 	placeable;
 
 var HFamilyInfo_Obesus CharacterInfo;
-var float timer;
 
 
 simulated function PostBeginPlay()
@@ -22,24 +21,46 @@ simulated function PostBeginPlay()
 	super.PostBeginPlay();
 }
 
-function Tick(float DeltaTime)
+function CreateAttackSound()
+{
+	local SoundCue AttackSound;
+	local HSoundGroup_Obesus HSoundGroup;
+
+	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
+	AttackSound = HSoundGroup.static.getAttackSounds();
+		
+	if(AttackSound != None)
+	{
+		PlaySound(AttackSound,false, true,,,true);
+	}
+}
+
+function CreateBreathingSound()
 {
 	local SoundCue BreathSound;
 	local HSoundGroup_Obesus HSoundGroup;
 
 	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
-	timer += DeltaTime;
-
-	if(timer > 10)
-	{
-		BreathSound = HSoundGroup.static.getBreathingSound();
+	BreathSound = HSoundGroup.static.getBreathingSound();
 		
-		if(BreathSound != None)
-		{
-			`Log("Play sound");
-			PlaySound(BreathSound,false, true,,,true);
-		}
-		timer = 0;
+	if(BreathSound != None)
+	{
+		PlaySound(BreathSound,false, true,,,true);
+	}
+}
+
+function CreateInvestigateSound()
+{
+	local SoundCue InvestigateSound;
+	local HSoundGroup_Obesus HSoundGroup;
+
+	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
+	InvestigateSound = HSoundGroup.static.getInvestigateSounds();
+		
+	if(InvestigateSound != None)
+	{
+		`Log("Play sound");
+		PlaySound(InvestigateSound,false, true,,,true);
 	}
 }
 
@@ -55,7 +76,6 @@ DefaultProperties
 	
 	NPCMesh=NPCMesh0
 	Components.Add(NPCMesh0)
-	GroundSpeed=240;
 
 }
 

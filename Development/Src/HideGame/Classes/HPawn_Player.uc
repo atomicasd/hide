@@ -1,6 +1,7 @@
 class HPawn_Player extends HPawn;
 
 var     HFamilyInfo_Player      CharacterInfo;
+var     int         waitSoundStep;
 
 simulated function PostBeginPlay()
 {
@@ -11,22 +12,46 @@ simulated function PostBeginPlay()
 	SetCharacterClassInformation(CharacterInfo);
 }
 
+simulated event ActuallyPlayFootStepSound(int FootDown)
+{
+	local int skipSteps;
+	switch(HPlayerController(Controller).WalkState)
+	{
+	case Idle: skipSteps=0; break;
+	case Walk: skipSteps=1; break;
+	case Sneak: skipSteps=2; break;
+	case Run: skipSteps=0; break;
+	}
+	if(waitSoundStep < skipSteps){
+		waitSoundStep++;
+		`log("Footsteps off");
+	}else{
+		`log("Footsteps onn");
+		waitSoundStep=0;
+		super.ActuallyPlayFootStepSound(FootDown);
+	}
+}
+
 function bool Died(Controller Killer, class<DamageType> damageType, vector HitLocation)
 {
+	return super.Died(Killer, damageType, HitLocation);
+}
+
+function PlayTeleportEffect(bool bOut, bool bSound)
+{
 	local HPawn_Monster p;
+
+	`log("Reset pawns");
 
 	//Reset all monster on map to default settings.
 	foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
 	{
 		p.Reset();
 	}
-
-	return super.Died(Killer, damageType, HitLocation);
 }
 
 exec function KillYourself()
 {
-	`Log("Die");
 	Suicide();
 }
 
