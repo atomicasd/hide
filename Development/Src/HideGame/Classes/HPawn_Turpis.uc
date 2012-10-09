@@ -1,7 +1,7 @@
 class HPawn_Turpis extends HPawn_Monster
 	placeable;
 
-var HInformation_Monster_Turpis CharacterInfo;
+var HFamilyInfo_Turpis CharacterInfo;
 
 simulated function PostBeginPlay()
 {
@@ -14,7 +14,7 @@ simulated function PostBeginPlay()
 	}
 
 	SetCharacterClassFromInfo(class'HFamilyInfo_Turpis');
-	CharacterInfo = HInformation_Monster_Turpis( new HCharacterInfo );
+	CharacterInfo = HFamilyInfo_Turpis( new HCharacterInfo );
 	SetCharacterClassInformation(CharacterInfo);
 
 	super.PostBeginPlay();
@@ -24,8 +24,7 @@ simulated function PostBeginPlay()
 DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Turpis';
-	HCharacterInfo = class'HideGame.HInformation_Monster_Turpis'
-	CurrCharClassInfo = class'HFamilyInfo_Turpis'
+	HCharacterInfo = class'HideGame.HFamilyInfo_Turpis'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
 		SkeletalMesh=SkeletalMesh'CH_LIAM_Cathode.Mesh.SK_CH_LIAM_Cathode'

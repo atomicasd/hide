@@ -4,7 +4,6 @@ var     Vector                  startingPosition;
 var     Rotator                 startingRotation;
 var     HAIController           MyController;
 var     AnimNodeSequence        MyAnimPlayControl;
-var     class<HInformation_Monster>  HCharacterInfo;
 
 var     bool                    AttAcking;
 var     bool                    bplayed;
