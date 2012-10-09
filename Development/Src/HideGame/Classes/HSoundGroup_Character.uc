@@ -1,8 +1,15 @@
 class HSoundGroup_Character extends UTPawnSoundGroup;
 
+static function SoundCue GetFootstepSound(int FootDown, name MaterialType)
+{
+	`Log("Step");
+	return super.GetFootstepSound(FootDown, MaterialType);
+}
+
 DefaultProperties
 {
-	DefaultJumpingSound=SoundCue'HidePackage.Sound.Silence1'
+	DefaultJumpingSound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_StoneCue'
+	DefaultFootstepSound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_StoneCue'
 
 	FootstepSounds[0]=(MaterialType=Stone,Sound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_StoneCue')
 	FootstepSounds[1]=(MaterialType=Dirt,Sound=SoundCue'A_Character_Footsteps.FootSteps.A_Character_Footstep_DirtCue')
