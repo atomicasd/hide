@@ -193,15 +193,15 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     matName = matApp.Name;  
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 
     //ENG: my package containing the base materials (shader_base/shader_base_translucent) 
-    packageName = name("HideGameContent"); 
+    packageName = name("Pulse_Material.Materials"); 
     materialClassName = string(packageName) $ "." $ string(matName); 
 	
-	if(InStr(matName, "pulsewall") == -1)
+	if(InStr(matName, "Pulse") == -1)
 		return none;
 
-    if(InStr(matName, "_translucent") == -1) 
+    if(InStr(matName, "_Translucent") == -1) 
     { 
-        materialClassName $= "_translucent";
+        materialClassName $= "_Translucent";
 
         //ITA: Copio dal material tutti i parametri delle texture che ho bisogno... può darsi ci sia un modo migliore per far questo, funziona comunque! 
         //ENG: I copy from the material all texture parameters I need... maybe there's a better way than this, it works anyway! 
@@ -244,11 +244,11 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
     //ENG: Checking the interpolation value, if I'm past 0.9f I'm gonna create a new instance with a solid material! 
 	matName = matApp.Name;
 
-	if( InStr(matName, "_translucent") != -1 )
+	if( InStr(matName, "_Translucent") != -1 )
 	{
-		packageName = Name("HideGameContent"); 
+		packageName = Name("Pulse_Material.Materials"); 
 		materialClassName = string(packageName) $ "." $ string(matName); 
-		materialClassName = Repl(materialClassName, "_translucent", ""); 
+		materialClassName = Repl(materialClassName, "_Translucent", ""); 
         
 		matInstanceConstant = new class'MaterialInstanceConstant'; 
 		oldMat.GetTextureParameterValue('Diffuse', textureValue); 
