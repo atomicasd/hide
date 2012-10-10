@@ -24,9 +24,7 @@ simulated event ActuallyPlayFootStepSound(int FootDown)
 	}
 	if(waitSoundStep < skipSteps){
 		waitSoundStep++;
-		`log("Footsteps off");
 	}else{
-		`log("Footsteps onn");
 		waitSoundStep=0;
 		super.ActuallyPlayFootStepSound(FootDown);
 	}

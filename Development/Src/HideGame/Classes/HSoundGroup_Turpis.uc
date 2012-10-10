@@ -62,7 +62,11 @@ DefaultProperties
 {
 	//HFootstepSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisStep01_Cue');
 	//HFootstepSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisStep02_Cue');
-	HFootstepSounds[0]=(Type=2, Sound=SoundCue'HidePackage.TurpisMonster.turpisStep03_Cue');
+	//HFootstepSounds[0]=(Type=2, Sound=SoundCue'HidePackage.TurpisMonster.turpisStep03_Cue');
+	
+	HFootstepSounds[0]=(Type=0, Sound=SoundCue'HidePackage.ObesusMonster.obesusStep01_Cue');
+	HFootstepSounds[1]=(Type=1, Sound=SoundCue'HidePackage.ObesusMonster.obesusStep02_Cue');
+	HFootstepSounds[2]=(Type=2, Sound=SoundCue'HidePackage.ObesusMonster.obesusStep03_Cue');
 
 	HBreathingSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisChaseBreathing01_Cue');
 	HBreathingSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisHeavyBreathing01_Cue');
