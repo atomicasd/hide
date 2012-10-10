@@ -17,14 +17,12 @@ function Tick(float DeltaTime)
 	{
 		if(playerSeen)
 		{
-			`log("Sound321");
 			HPawn_Obesus(Pawn).CreateInvestigateSound();
 			CreateInvestigateSound=false;
 		}
 	}else{
 		if(!playerSeen)
 		{
-			`log("Sound2");
 			HPawn_Obesus(Pawn).CreateInvestigateSound();
 			CreateInvestigateSound=true;
 		}
