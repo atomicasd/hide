@@ -1,27 +1,47 @@
-class HAIController_Obesus extends HAIController
-	dependson(UTCharInfo);
+class HAIController_Obesus extends HAIController;
 
-Function PostBeginPlay()
+var float timer;
+var bool CreateInvestigateSound;
+
+function Tick(float DeltaTime)
 {
-	local UTPlayerReplicationInfo PRI;
-	// copy visual properties
- 	PRI = UTPlayerReplicationInfo(PlayerReplicationInfo);
- 	if (PRI != None)
- 	{
-		//Get the chosen character class for this character
-		PRI.CharClassInfo = class'HFamilyInfo_Obesus';
-		//PRI.CharClassInfo = class'UTCharInfo'.static.FindFamilyInfo(BotInfo.FamilyID);
+	timer += DeltaTime;
+
+	if(timer > 14)
+	{
+		HPawn_Obesus(Pawn).CreateBreathingSound();
+		timer = 0;
 	}
-}
 
-Function Tick(float DeltaTime)
-{
-	//HPawn_Obesus(Pawn).PlayJumpingSound();
-	//Pawn.PlaySound(GetFootstepSound(0, Pawn.GetMaterialBelowFeet()), false, true,,,false);
+	if(CreateInvestigateSound)
+	{
+		if(playerSeen)
+		{
+			`log("Sound321");
+			HPawn_Obesus(Pawn).CreateInvestigateSound();
+			CreateInvestigateSound=false;
+		}
+	}else{
+		if(!playerSeen)
+		{
+			`log("Sound2");
+			HPawn_Obesus(Pawn).CreateInvestigateSound();
+			CreateInvestigateSound=true;
+		}
+	}
+	/*
+	if(bChasePlayer)
+	{
+		HPawn_Obesus(Pawn).CreateAttackSound();
+		bChasePlayer=false;
+	}
+	*/
 }
 
 DefaultProperties
 {
+	timer = 14
+	CreateInvestigateSound=true;
 	canSee = true;
 	shouldFollowPath = true;
 }

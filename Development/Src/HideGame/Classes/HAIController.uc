@@ -35,6 +35,8 @@ var bool playerSeen;
 var float investigateMaxDistance;
 var float chaseMaxDistance;
 
+var bool bChasePlayer;
+
 function OnSoundHeard( HSoundSpot spot )
 {
 	soundHeard = true;
@@ -198,7 +200,7 @@ state FollowPath
 state Chaseplayer
 {
   Begin:
-
+	bChasePlayer=true;
 	aiPawn.SetAttacking(false);
     Pawn.Acceleration = vect(0,0,1);
 
@@ -244,6 +246,7 @@ state Chaseplayer
 		}
     } else
     {
+		Sleep(1);
 		GotoState('Idle');
     }
 	goto 'Begin';
