@@ -27,7 +27,7 @@ DefaultProperties
 	HCharacterInfo = class'HideGame.HFamilyInfo_Turpis'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh=SkeletalMesh'HidePackage.monsters.TurpisRiggedQuick_Turpis_High_Final_3'
+		SkeletalMesh=SkeletalMesh'MonsterPackage.TurpisRiggedQuick'
 		HiddenGame=true
 	End Object
 

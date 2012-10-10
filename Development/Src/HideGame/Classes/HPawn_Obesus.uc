@@ -70,7 +70,7 @@ DefaultProperties
 	HCharacterInfo = class'HideGame.HFamilyInfo_Obesus'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh=SkeletalMesh'CH_IronGuard_Male.Mesh.SK_CH_IronGuard_MaleA'
+		SkeletalMesh=SkeletalMesh'MonsterPackage.ObesusRiggedQuick'
 		HiddenGame=true
 	End Object
 	

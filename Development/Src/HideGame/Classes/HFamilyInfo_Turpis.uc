@@ -4,8 +4,8 @@ DefaultProperties
 {
 	SoundGroupClass=class'HSoundGroup_Turpis'
 
-	HAnimSet(0) = AnimSet'CH_AnimHuman.Anims.K_AnimHuman_BaseMale'
+	HAnimSet(0) = AnimSet'MonsterPackage.Anims.TurpisAnims'
 	HPhysicsAsset = PhysicsAsset'CH_AnimCorrupt.Mesh.SK_CH_Corrupt_Male_Physics'
-	HSkeletalMesh = SkeletalMesh'HidePackage.TurpisRiggedQuick'
-	HAnimTreeTemplate = AnimTree'CH_AnimHuman_Tree.AT_CH_Human'
+	HSkeletalMesh = SkeletalMesh'MonsterPackage.TurpisRiggedQuick'
+	HAnimTreeTemplate = AnimTree'MonsterPackage.Anims.TurpisAnimTree'
 }
