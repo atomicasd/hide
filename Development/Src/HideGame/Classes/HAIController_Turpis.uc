@@ -5,4 +5,7 @@ DefaultProperties
 	canSee = false;
 	canHear = true;
 	shouldFollowPath = true;
+
+	WalkSpeed = 140
+	ChaseSpeed = 220
 }

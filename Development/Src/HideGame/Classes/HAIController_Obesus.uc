@@ -42,5 +42,8 @@ DefaultProperties
 	CreateInvestigateSound=true;
 	canSee = true;
 	shouldFollowPath = true;
+
+	WalkSpeed = 200
+	ChaseSpeed = 220
 }
 

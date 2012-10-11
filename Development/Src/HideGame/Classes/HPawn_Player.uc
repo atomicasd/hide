@@ -38,7 +38,7 @@ function bool Died(Controller Killer, class<DamageType> damageType, vector HitLo
 	return super.Died(Killer, damageType, HitLocation);
 }
 
-function PlayTeleportEffect(bool bOut, bool bSound)
+/*function PlayTeleportEffect(bool bOut, bool bSound)
 {
 	local HPawn_Monster p;
 
@@ -49,7 +49,7 @@ function PlayTeleportEffect(bool bOut, bool bSound)
 	{
 		p.Reset();
 	}
-}
+}*/
 
 exec function KillYourself()
 {

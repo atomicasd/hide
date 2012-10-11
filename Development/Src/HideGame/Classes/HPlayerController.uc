@@ -94,7 +94,6 @@ function PlayerTick(float DeltaTime)
 					A.DensityComponent.StartDistance = pulseRadius;
 					ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
 					{
-					
 						//B.MaxDensity = (pulseMaxRadius + 900) / ( pulseMaxRadius/5 * pulseRadius);
 						B.MaxDensity = 0.0f;
 						B.ForceUpdate(true);
@@ -128,13 +127,13 @@ function PlayerTick(float DeltaTime)
 			case Idle: 
 				break;
 			case Walk:
-				Pawn.GroundSpeed = 250;
-				break;
-			case Sneak:
 				Pawn.GroundSpeed = 150;
 				break;
+			case Sneak:
+				Pawn.GroundSpeed = 100;
+				break;
 			case Run:
-				Pawn.GroundSpeed = 400;
+				Pawn.GroundSpeed = 200;
 				break;
 			}
 			bChangedState=false;	
@@ -143,16 +142,6 @@ function PlayerTick(float DeltaTime)
 	
 	//this line is not need if you add this code to PlayerController.uc
 	Super.PlayerTick(DeltaTime);
-}
-
-function SeeMonstersThroughWalls( float radius )
-{
-	local HPawn_Monster target;
-	foreach OverlappingActors(class'HPawn_Monster', target, radius)
-	{
-		`log("eeeeeeeeeeeeee");
-		target.SetSeeThroughWalls( true );
-	}
 }
 
 exec function makePulseCircle()
