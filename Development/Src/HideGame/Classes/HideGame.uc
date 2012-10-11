@@ -9,7 +9,6 @@ var     float                   mapOpacity;
 var     HPlayerController       HPlayer;
 var     bool                    bChangeStateToGameInProgress;
 
-
 auto state SettingGame
 {
 	function BeginState(name PreviousStateName)
@@ -59,16 +58,31 @@ state GameInProgress
 					MakeMapSolid();
 				}
 			} else {
-				mapOpacity += (DeltaTime / 10);
+				mapOpacity += (DeltaTime / 3);
 				//FadeMapTransparancy(mapOpacity);
 			}
 		}
-
 	}
 
 	function EndState(name NextStateName)
 	{
 	}
+}
+
+function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam )
+{
+	//Reset pawns before a player spawn is chosen to avoid spawning inside a monster
+	local HPawn_Monster p;
+
+	`log("Reset pawns");
+
+	//Reset all monster on map to default settings.
+	foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
+	{
+		p.Reset();
+	}
+
+	return super.ChoosePlayerStart(Player, InTeam);
 }
 
 state LevelCompleted

@@ -37,6 +37,9 @@ var float chaseMaxDistance;
 
 var bool bChasePlayer;
 
+var float ChaseSpeed;
+var float WalkSpeed;
+
 function OnSoundHeard( HSoundSpot spot )
 {
 	soundHeard = true;
@@ -106,6 +109,7 @@ auto state Idle
 Begin:
 	Pawn.Acceleration = vect(0,0,0);
 	aiPawn.SetAttacking(false);
+	Pawn.GroundSpeed = WalkSpeed;
 
 	if(shouldFollowPath)
 	{
@@ -203,6 +207,7 @@ state Chaseplayer
 	bChasePlayer=true;
 	aiPawn.SetAttacking(false);
     Pawn.Acceleration = vect(0,0,1);
+	Pawn.GroundSpeed = ChaseSpeed;
 
     if (Pawn != none && playerPawn.Health > 0)
     {
@@ -216,7 +221,7 @@ state Chaseplayer
 			}
 			else //if(distanceToPlayer < 300)
 			{
-				MoveToward(playerPawn, playerPawn, 10.0f);
+				MoveToward(playerPawn, playerPawn, 0.0f);
 				if(Pawn.ReachedDestination(playerPawn))
 				{
 					//GotoState('Attack');
@@ -233,9 +238,9 @@ state Chaseplayer
 
 				distanceToPlayer = VSize(MoveTarget.Location - Pawn.Location);
 				if (distanceToPlayer < 100)
-					MoveToward(MoveTarget, playerPawn, 10.0f);
+					MoveToward(MoveTarget, playerPawn, 0.0f);
 				else
-					MoveToward(MoveTarget, MoveTarget, 10.0f);	
+					MoveToward(MoveTarget, MoveTarget, 0.0f);	
 
 				//MoveToward(MoveTarget, MoveTarget);
 			}
@@ -255,7 +260,7 @@ state Chaseplayer
 state GoToSoundSpot
 {
 Begin:
-
+	Pawn.GroundSpeed = ChaseSpeed;
 	while(soundHeard)
 	{
 		MoveTarget = FindPathToward( lastSoundSpot );
@@ -360,4 +365,7 @@ defaultproperties
 	canSee = false;
 	shouldFollowPath = false;
 	playerSeen = false;
+
+	WalkSpeed = 200;
+	ChaseSpeed = 200;
 }
