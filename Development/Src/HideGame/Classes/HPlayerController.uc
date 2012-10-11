@@ -20,8 +20,6 @@ var     float   pulseTime;
 var     float   pulseDensity;
 var     bool    pulseFadedIn;
 
-var     class<HInformation_Player>  HPlayerInfo;
-var     HInformation_Player         PlayerInfo;
 var     PlayerWalkingState          WalkState;
 
 simulated event PostBeginPlay()

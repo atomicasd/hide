@@ -26,7 +26,10 @@ simulated event ActuallyPlayFootStepSound(int FootDown)
 		waitSoundStep++;
 	}else{
 		waitSoundStep=0;
-		super.ActuallyPlayFootStepSound(FootDown);
+		if(skipSteps == 2)
+			super.ActuallyPlayFootStepSound(0);
+		else
+			super.ActuallyPlayFootStepSound(1);
 	}
 }
 
