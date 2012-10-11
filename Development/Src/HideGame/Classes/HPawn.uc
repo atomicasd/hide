@@ -27,28 +27,20 @@ function DoDoubleJump( bool bUpdating ) {}
 /*
  * Sets CharacterInfo for pawn
  */
-simulated function SetCharacterClassInformation(HFamilyInfo_Character charInfo)
+function HSetCharacterClassFromInfo(class<HFamilyInfo_Character> HInfo)
 {
-	if(charInfo != None)
+	SetCharacterClassFromInfo(HInfo);
+	`Log("---->    Character class info set    <----");
+
+	if(HInfo != None)
 	{
-		`Log("---->Setting up character information<----");
-		
-		Mesh.AnimSets = charInfo.default.HAnimSet;
-		`Log("---->"$Mesh.AnimSets[0]);
-	    Mesh.SetSkeletalMesh(charInfo.default.HSkeletalMesh);
-		`Log("---->"$Mesh.SkeletalMesh);
-		Mesh.SetPhysicsAsset(charInfo.default.HPhysicsAsset);
-		`Log("---->"$Mesh.PhysicsAsset);
-		Mesh.SetAnimTreeTemplate(charInfo.default.HAnimTreeTemplate);
-		`Log("---->"$Mesh.AnimTreeTemplate);
-
-		`Log("---->Finished ----");
+		Mesh.AnimSets = HInfo.default.HAnimSet;
+		Mesh.SetAnimTreeTemplate(HInfo.default.HAnimTreeTemplate);
+		`Log("---->  Animasion asstets finished    <----");
 	}else{
-		`Log("---->Pawn information class not set<----");
+		`Log("---->Pawns information class not set <----");
 	}
-
 }
-
 
 DefaultProperties
 {

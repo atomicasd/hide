@@ -31,20 +31,20 @@ static function SoundCue GetFootstepSound(int FootDown, name MaterialType)
 	local int i;
 	if(FootDown == 0){
 		return GetSneakFootstepSound(FootDown, MaterialType);
+	}else{
+		i = Rand(default.HFootstepSounds.Length);
+
+		return default.HFootstepSounds[i].Sound;
 	}
-
-	i = Rand(default.HFootstepSounds.Length);
-
-	return default.HFootstepSounds[i].Sound;
 }
 
 static function SoundCue GetSneakFootstepSound(int FootDown, name MaterialType)
 {
 	local int i;
 
-	i = Rand(default.HFootstepSounds.Length);
+	i = Rand(default.HSneakFootstepSounds.Length);
 
-	return default.HFootstepSounds[i].Sound;
+	return default.HSneakFootstepSounds[i].Sound;
 }
 
 static function SoundCue GetJumpSound(name MaterialType)
@@ -52,8 +52,6 @@ static function SoundCue GetJumpSound(name MaterialType)
 	local int i;
 
 	i = Rand(3);
-
-	`log("Jump sound: " $i);
 
 	return default.HJumpSounds[i].Sound;
 }

@@ -58,6 +58,15 @@ static function SoundCue GetFootstepSound(int FootDown, name MaterialType)
 	return default.HFootstepSounds[i].Sound;
 }
 
+static function SoundCue GetHHissingSound()
+{
+	local int i;
+
+	i = Rand(default.HHissingSounds.Length);
+
+	return default.HHissingSounds[i].Sound;
+}
+
 DefaultProperties
 {
 	//HFootstepSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisStep01_Cue');
@@ -73,7 +82,7 @@ DefaultProperties
 	HBreathingSounds[2]=(Type=2, Sound=SoundCue'HidePackage.TurpisMonster.turpisHeavyBreathing02_Cue');
 
 	HHissingSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisHissing01_Cue');
-	HHissingSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisHissing02_Cue');
+	//HHissingSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisHissing02_Cue');
 
 	HInvestigateSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisInvestigate01_Cue');
 	HInvestigateSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisInvestigate02_Cue');

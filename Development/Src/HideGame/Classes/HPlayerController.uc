@@ -155,12 +155,8 @@ exec function makePulseCircle()
 
 DefaultProperties
 {
-	HPlayerinfo = class'HideGame.HInformation_Player'
 	InputClass = class'HideGame.HPlayerInput'
 	CameraClass = class'HideGame.HCamera'
-
-	//Points to the UTFamilyInfo class for your custom character
-	//CharacterClass=class'HPlayerFamilyInfo'
 	
 	pulseMade = false;
 	pulseMaxRadius = 1000;

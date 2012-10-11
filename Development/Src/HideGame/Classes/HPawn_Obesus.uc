@@ -14,9 +14,7 @@ simulated function PostBeginPlay()
 	}
 	
 	// Setting PlayerInfo
-	SetCharacterClassFromInfo(class'HFamilyInfo_Obesus');
-	CharacterInfo = HFamilyInfo_Obesus( new HCharacterInfo );
-	SetCharacterClassInformation(CharacterInfo);
+	HSetCharacterClassFromInfo(class'HFamilyInfo_Obesus');
 
 	super.PostBeginPlay();
 }
