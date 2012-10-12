@@ -1,5 +1,6 @@
 class HPawn extends UTPawn;
 
+var     class<HFamilyInfo_Character>  HCharacterInfo;
 var     HPlayerController   HPlayer;
 var(NPC)    SkeletalMeshComponent   NPCMesh;
 
@@ -18,32 +19,31 @@ simulated function PostBeginPlay()
 /*
  * Removing dodge by overriding.
  */
+
 function bool Dodge(eDoubleClickDir DoubleClickMove){return false;}
+function PlayTeleportEffect(bool bOut, bool bSound){}
+function DoDoubleJump( bool bUpdating ) {}
 
 /*
- * Sets CharacterInfo for spawn
+ * Sets CharacterInfo for pawn
  */
-simulated function SetCharacterClassInformation(HInformation_Character charInfo)
+function HSetCharacterClassFromInfo(class<HFamilyInfo_Character> HInfo)
 {
-	if(charInfo != None)
+	SetCharacterClassFromInfo(HInfo);
+	`Log("---->    Character class info set    <----");
+
+	if(HInfo != None)
 	{
-		`Log("Setting up character information");
-		NPCMesh.SetSkeletalMesh(None);
-		Mesh.AnimSets = charInfo.default.HAnimSet;
-		Mesh.SetSkeletalMesh(charInfo.default.HSkeletalMesh);
-		Mesh.SetPhysicsAsset(charInfo.default.HPhysicsAsset);
-		Mesh.SetAnimTreeTemplate(charInfo.default.HAnimTreeTemplate);
+		Mesh.AnimSets = HInfo.default.HAnimSet;
+		Mesh.SetAnimTreeTemplate(HInfo.default.HAnimTreeTemplate);
+		`Log("---->  Animasion asstets finished    <----");
 	}else{
-		`Log("---->Pawn information class not set<----");
+		`Log("---->Pawns information class not set <----");
 	}
-
 }
-
-function PlayTeleportEffect(bool bOut, bool bSound){}
 
 DefaultProperties
 {
-	SpawnSound=None
 	MaxMultiJump=0
 	MultiJumpRemaining=0
 	bCanCrouch=true

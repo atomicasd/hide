@@ -3,6 +3,11 @@ class HPlayerInput extends UDKPlayerInput within HPlayerController;
 var     bool    SneakActivated;
 var     bool	RunActivated;
 
+exec function QuitGame()
+{
+	ConsoleCommand( "quit" );
+}
+
 // Activate Sneak. This will override Run
 exec function Sneak()
 {
@@ -34,24 +39,27 @@ exec function RunReleased()
  */
 function Tick( float DeltaTime )
 {
-	if(vsize(GetALocalPlayerController().Pawn.Velocity) != 0)
+	if(HPawn_Player(Pawn) != None)
 	{
-		bChangedState=true;
-		if(SneakActivated)
+		if(vsize(GetALocalPlayerController().Pawn.Velocity) != 0)
 		{
-			WalkState = Sneak;
+			bChangedState=true;
+			if(SneakActivated)
+			{
+				WalkState = Sneak;
+			}
+			else if(RunActivated)
+			{
+				WalkState = Run;
+			}
+			else
+			{
+				WalkState = Walk;
+			}
+		}else{
+			bChangedState=true;
+			WalkState = Idle;
 		}
-		else if(RunActivated)
-		{
-			WalkState = Run;
-		}
-		else
-		{
-			WalkState = Walk;
-		}
-	}else{
-		bChangedState=true;
-		WalkState = Idle;
 	}
 
 }

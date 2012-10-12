@@ -1,13 +1,51 @@
 class HPawn_Player extends HPawn;
 
-var     class<HInformation_Player>  HCharacterInfo;
-var     HInformation_Player         CharacterInfo;
+var     HFamilyInfo_Player      CharacterInfo;
+var     HSoundBeacon            soundBeacon;
+var     int                     waitSoundStep;
 
 simulated function PostBeginPlay()
 {
 	super.PostBeginPlay();
-	CharacterInfo = new HCharacterInfo;
-	SetCharacterClassInformation(CharacterInfo);
+
+	// Sets the FamilyInfo
+	HSetCharacterClassFromInfo(class'HFamilyInfo_Player');
+
+	// Creates players SoundBeacon
+	soundBeacon = Spawn(class'HSoundBeacon',,, Location,,, true);
+	soundBeacon.bIsPlayerSpawned=true;
+}
+
+simulated event ActuallyPlayFootStepSound(int FootDown)
+{
+	local int skipSteps;
+	switch(HPlayerController(Controller).WalkState)
+	{
+	case Idle: skipSteps=0; break;
+	case Walk: skipSteps=1; break;
+	case Sneak: skipSteps=2; break;
+	case Run: skipSteps=0; break;
+	}
+	if(waitSoundStep < skipSteps){
+		waitSoundStep++;
+	}else{
+		waitSoundStep=0;
+		if(HPlayerController(Controller).WalkState == Sneak)
+			super.ActuallyPlayFootStepSound(0);
+		else
+			super.ActuallyPlayFootStepSound(1);
+	}
+}
+
+function bool Died(Controller Killer, class<DamageType> damageType, vector HitLocation)
+{
+	soundBeacon.bIsPlayerDead=true;
+	return super.Died(Killer, damageType, HitLocation);
+}
+
+function PlayTeleportEffect(bool bOut, bool bSound)
+{
+	soundBeacon.bIsPlayerDead=false;
 }
 
 exec function KillYourself()
@@ -15,45 +53,39 @@ exec function KillYourself()
 	Suicide();
 }
 
+/*
+ * Spawnes the soundBeacon
+ */
 event Tick(float TimeDelta)
 {
 	local int soundRadius;
-	local HSoundSpot soundSpot;
-	local HPawn_Monster target;
 
 	switch(HPlayer.WalkState)   
 	{
-	case Idle:  soundRadius=150;  break;
-	case Walk:  soundRadius=600;  break;
-	case Sneak: soundRadius=300;  break;
-	case Run:   soundRadius=1500; break;
+	case Idle:  soundRadius=160;  break;
+	case Sneak: soundRadius=200;  break;
+	case Walk:  soundRadius=400;  break;
+	case Run:   soundRadius=500; break;
 	}
-
-	foreach OverlappingActors(class'HPawn_Monster', target, soundRadius)
-	{
-		soundSpot = Spawn(class'HSoundSpot',,, Location,,, true);
-		target.OnSoundHeard(soundSpot);
-	}
-
 	
+	soundBeacon.SetLocation(Location);
+	soundBeacon.Radius=soundRadius;
 }
 
 defaultproperties
 {
-	InventoryManagerClass = class'HideGame.HInventoryManager'
-	HCharacterInfo = class'HideGame.HInformation_Player'
-	
-	
-	/*
+	InventoryManagerClass = None
+	HCharacterInfo = class'HideGame.HFamilyInfo_Player'
+
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh=SkeletalMesh'CH_IronGuard_Male.Mesh.SK_CH_IronGuard_MaleA'
+		HiddenGame=true
 	End Object
-	*/
+
+	Components.Add(NPCMesh0);
 	
-	GroundSpeed=210.0
+	GroundSpeed=200.0
 	CrouchHeight=45
 	bStatic = false
 	bNoDelete = false
 	bCanDoubleJump=false
-	SpawnSound=None
 }

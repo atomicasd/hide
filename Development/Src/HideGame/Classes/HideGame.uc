@@ -9,7 +9,6 @@ var     float                   mapOpacity;
 var     HPlayerController       HPlayer;
 var     bool                    bChangeStateToGameInProgress;
 
-
 auto state SettingGame
 {
 	function BeginState(name PreviousStateName)
@@ -54,16 +53,15 @@ state GameInProgress
 			if( mapOpacity >= 0.90 )
 			{
 				HPlayer.PulseFadeIn();
-				mapOpacity = 1.0;
-				MakeMapSolid();
-				isMapTransparent = false;
+				if( HPlayer.pulseFadedIn )
+				{
+					MakeMapSolid();
+				}
 			} else {
-				mapOpacity += (DeltaTime / 10);
-				HPlayer.pulseDensity = 0.9 - mapOpacity;
-				FadeMapTransparancy(mapOpacity);
+				mapOpacity += (DeltaTime / 3);
+				//FadeMapTransparancy(mapOpacity);
 			}
 		}
-
 	}
 
 	function EndState(name NextStateName)
@@ -71,28 +69,49 @@ state GameInProgress
 	}
 }
 
+function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam )
+{
+	//Reset pawns before a player spawn is chosen to avoid spawning inside a monster
+	local HPawn_Monster p;
+
+	`log("Reset pawns");
+
+	//Reset all monster on map to default settings.
+	foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
+	{
+		p.Reset();
+	}
+
+	return super.ChoosePlayerStart(Player, InTeam);
+}
+
 state LevelCompleted
 {
-	local HPawn_Monster p;
 	function BeginState(name PreviousStateName)
 	{
+		local HPawn_Monster p;
 		local HPlayerStart PlayerStartActor;
 		`Log("Resets Level");
+
 		//Reset all monster on map to default settings.
 		foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
 		{
 			p.Reset();
 		}
-		GoToState('GameInProgress');
-		HPlayer.bInEndOfLevel=false;
 	
-		// Resets Spawnpoint
+		// Resets Spawnpoint and player
 		foreach WorldInfo.AllActors(class'HPlayerStart', PlayerStartActor)
 		{
 			PlayerStartActor.SetLocation(PlayerStartActor.defaultLocation);
 			`log("Checkpoint Location: "$PlayerStartActor.Location);
+			HPlayer.Pawn.SetLocation(PlayerStartActor.Location);
 		}
-		//ConsoleCommand("Open LEVELNAME");
+
+		HPlayer.bInEndOfLevel=false;
+		
+		GoToState('GameInProgress');
+		
+		//ConsoleCommand("Open lvl01");
 	}
 
 	function EndState(name NextStateName)
@@ -145,7 +164,9 @@ function MakeMapTransparent()
             continue;
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
 	}
-	mapOpacity = 0.0;
+	mapOpacity = 0.1;
+	FadeMapTransparancy(mapOpacity);
+	isMapTransparent = true;
 }
 
 function MakeMapSolid()
@@ -165,6 +186,8 @@ function MakeMapSolid()
             continue;
 		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
 	}
+	isMapTransparent = false;
+	mapOpacity = 1.0;
 }
 
 function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smActor) 
@@ -184,15 +207,15 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     matName = matApp.Name;  
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 
     //ENG: my package containing the base materials (shader_base/shader_base_translucent) 
-    packageName = name("HideGameContent"); 
+    packageName = name("Pulse_Material.Materials"); 
     materialClassName = string(packageName) $ "." $ string(matName); 
 	
-	if(InStr(matName, "pulsewall") == -1)
+	if(InStr(matName, "Pulse") == -1)
 		return none;
 
-    if(InStr(matName, "_translucent") == -1) 
+    if(InStr(matName, "_Translucent") == -1) 
     { 
-        materialClassName $= "_translucent";
+        materialClassName $= "_Translucent";
 
         //ITA: Copio dal material tutti i parametri delle texture che ho bisogno... può darsi ci sia un modo migliore per far questo, funziona comunque! 
         //ENG: I copy from the material all texture parameters I need... maybe there's a better way than this, it works anyway! 
@@ -235,11 +258,11 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
     //ENG: Checking the interpolation value, if I'm past 0.9f I'm gonna create a new instance with a solid material! 
 	matName = matApp.Name;
 
-	if( InStr(matName, "_translucent") != -1 )
+	if( InStr(matName, "_Translucent") != -1 )
 	{
-		packageName = Name("HideGameContent"); 
+		packageName = Name("Pulse_Material.Materials"); 
 		materialClassName = string(packageName) $ "." $ string(matName); 
-		materialClassName = Repl(materialClassName, "_translucent", ""); 
+		materialClassName = Repl(materialClassName, "_Translucent", ""); 
         
 		matInstanceConstant = new class'MaterialInstanceConstant'; 
 		oldMat.GetTextureParameterValue('Diffuse', textureValue); 
@@ -267,7 +290,6 @@ exec function makePulseCircle()
 		MakeMapTransparent();
 		isMapTransparent = true;
 	}
-	RestartGame();
 	
 }
 

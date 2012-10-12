@@ -4,7 +4,6 @@ var     Vector                  startingPosition;
 var     Rotator                 startingRotation;
 var     HAIController           MyController;
 var     AnimNodeSequence        MyAnimPlayControl;
-var     class<HInformation_Monster>  HCharacterInfo;
 
 var     bool                    AttAcking;
 var     bool                    bplayed;
@@ -12,6 +11,10 @@ var     Name                    AnimSetName;
 
 var()       array<NavigationPoint>  MyNavigationPoints;
 var(NPC)    class<AIController>     NPCController;
+
+var ()  float       PawnGroundSpeed;
+
+var ()  float       waitAtNode;
 
 simulated function PostBeginPlay()
 {
@@ -42,7 +45,6 @@ function Tick(Float Delta)
 event Reset()
 {
 	MyController = HAIController(Controller);
-	`Log("Reseting monster");
 	SetLocation(startingPosition);
 	SetRotation(startingRotation);
 	MyController.actual_node = 0;
@@ -62,4 +64,7 @@ DefaultProperties
  
     GroundSpeed=200.0
 	PeripheralVision = 0.7
+
+	waitAtNode = 0.0f;
+
 }
