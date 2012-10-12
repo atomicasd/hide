@@ -23,6 +23,7 @@ function Touch(Actor Other, PrimitiveComponent OtherComp, vector HitLocation, Ve
 			{
 				`log("Checkpoint Location: "$Location);
 				PlayerStartActor.SetLocation(Location);
+				PlayerStartActor.SetRotation(Rotation);
 			}
 		}
 	}
@@ -54,7 +55,7 @@ DefaultProperties
 {
 	Begin Object Class=StaticMeshComponent Name=PickupMesh
 		StaticMesh=StaticMesh'UN_SimpleMeshes.TexPropCube_Dup'
-		Scale3D=(X=0.75,Y=0.1,Z=0.75)
+		Scale3D=(X=0.1,Y=1.4,Z=1.1)
 		HiddenGame=true
 	End Object
 

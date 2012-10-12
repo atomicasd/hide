@@ -5,7 +5,6 @@ var HFamilyInfo_Turpis CharacterInfo;
 
 simulated function PostBeginPlay()
 {
-
 	SetPhysics(PHYS_Walking);
 	if(ControllerClass == none)
 	{

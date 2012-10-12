@@ -17,8 +17,12 @@ event Tick(float DeltaTime)
 	{
 		MakeSoundPulse();
 	}else if(CreateSound){
+		`Log("PulseRadius: "$Radius);
 		MakeSoundPulse();
 		CreateSound=false;
+		OnDestroy(new class'SeqAct_Destroy');
+	}else{
+		`Log("ButtonPulse");
 	}
 }
 
@@ -45,7 +49,8 @@ DefaultProperties
 		HiddenEditor=false
 	End Object
 
-	Components.add(sprite1)
+	Components.add(sprite1);
 
-	Radius=0
+	Radius=1000
+	CreateSound=true
 }

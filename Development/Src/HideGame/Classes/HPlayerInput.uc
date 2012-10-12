@@ -3,6 +3,11 @@ class HPlayerInput extends UDKPlayerInput within HPlayerController;
 var     bool    SneakActivated;
 var     bool	RunActivated;
 
+exec function QuitGame()
+{
+	ConsoleCommand( "quit" );
+}
+
 // Activate Sneak. This will override Run
 exec function Sneak()
 {
