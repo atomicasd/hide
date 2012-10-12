@@ -39,5 +39,9 @@ function MakeSoundPulse()
 
 DefaultProperties
 {
+	Begin Object class=SpriteComponent name=sprite1
+		Sprite=Texture2D'EditorResources.AmbientSoundIcons.S_Ambient_Sound'
+		HiddenGame=true
+	End Object
 	Radius=0
 }
