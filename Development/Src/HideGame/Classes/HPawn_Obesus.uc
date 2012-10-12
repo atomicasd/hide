@@ -1,7 +1,7 @@
 class HPawn_Obesus extends HPawn_Monster
 	placeable;
 
-var HInformation_Monster_Obesus CharacterInfo;
+var(CharacterInfo) HInformation_Monster_Obesus CharacterInfo;
 
 simulated function PostBeginPlay()
 {

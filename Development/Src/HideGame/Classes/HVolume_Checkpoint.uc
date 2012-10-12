@@ -75,7 +75,7 @@ DefaultProperties
 	Components.Add(CollisionCylinder1);
 
 	bNoEncroachCheck=false
-	bStatic=false
+	bStatic=true
 	bHidden=false
 	bCollideActors = true
 	CollisionType=COLLIDE_TouchAll
