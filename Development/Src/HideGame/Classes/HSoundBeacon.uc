@@ -40,8 +40,12 @@ function MakeSoundPulse()
 DefaultProperties
 {
 	Begin Object class=SpriteComponent name=sprite1
-		Sprite=Texture2D'EditorResources.AmbientSoundIcons.S_Ambient_Sound'
+		Sprite=Texture2D'EditorResources.S_Actor'
 		HiddenGame=true
+		HiddenEditor=false
 	End Object
+
+	Components.add(sprite1)
+
 	Radius=0
 }
