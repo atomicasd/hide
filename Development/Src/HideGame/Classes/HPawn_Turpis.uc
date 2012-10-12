@@ -13,12 +13,24 @@ simulated function PostBeginPlay()
 		ControllerClass = class'HideGame.HAIController_Turpis';
 	}
 
-	SetCharacterClassFromInfo(class'HFamilyInfo_Turpis');
-	CharacterInfo = HFamilyInfo_Turpis( new HCharacterInfo );
-	SetCharacterClassInformation(CharacterInfo);
+	HSetCharacterClassFromInfo(class'HFamilyInfo_Turpis');
 
 	super.PostBeginPlay();
-	
+}
+
+function PlayHissingSound()
+{
+	local SoundCue HSound;
+	local HSoundGroup_Turpis SG;
+
+	SG = HSoundGroup_Turpis(new SoundGroupClass);
+
+	HSound = SG.GetHHissingSound();
+
+	if(HSound != None)
+	{
+		PlaySound(HSound, false, true,,,true);
+	}
 }
 
 DefaultProperties

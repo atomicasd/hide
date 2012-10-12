@@ -1,15 +1,19 @@
 class HPawn_Player extends HPawn;
 
 var     HFamilyInfo_Player      CharacterInfo;
-var     int         waitSoundStep;
+var     HSoundBeacon            soundBeacon;
+var     int                     waitSoundStep;
 
 simulated function PostBeginPlay()
 {
 	super.PostBeginPlay();
 
-	SetCharacterClassFromInfo(class'HFamilyInfo_Player');
-	CharacterInfo = HFamilyInfo_Player( new HCharacterInfo );
-	SetCharacterClassInformation(CharacterInfo);
+	// Sets the FamilyInfo
+	HSetCharacterClassFromInfo(class'HFamilyInfo_Player');
+
+	// Creates players SoundBeacon
+	soundBeacon = Spawn(class'HSoundBeacon',,, Location,,, true);
+	soundBeacon.bIsPlayerSpawned=true;
 }
 
 simulated event ActuallyPlayFootStepSound(int FootDown)
@@ -26,7 +30,7 @@ simulated event ActuallyPlayFootStepSound(int FootDown)
 		waitSoundStep++;
 	}else{
 		waitSoundStep=0;
-		if(skipSteps == 2)
+		if(HPlayerController(Controller).WalkState == Sneak)
 			super.ActuallyPlayFootStepSound(0);
 		else
 			super.ActuallyPlayFootStepSound(1);
@@ -35,32 +39,26 @@ simulated event ActuallyPlayFootStepSound(int FootDown)
 
 function bool Died(Controller Killer, class<DamageType> damageType, vector HitLocation)
 {
+	soundBeacon.bIsPlayerDead=true;
 	return super.Died(Killer, damageType, HitLocation);
 }
 
-/*function PlayTeleportEffect(bool bOut, bool bSound)
+function PlayTeleportEffect(bool bOut, bool bSound)
 {
-	local HPawn_Monster p;
-
-	`log("Reset pawns");
-
-	//Reset all monster on map to default settings.
-	foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
-	{
-		p.Reset();
-	}
-}*/
+	soundBeacon.bIsPlayerDead=false;
+}
 
 exec function KillYourself()
 {
 	Suicide();
 }
 
+/*
+ * Spawnes the soundBeacon
+ */
 event Tick(float TimeDelta)
 {
 	local int soundRadius;
-	local HSoundSpot soundSpot;
-	local HPawn_Monster target;
 
 	switch(HPlayer.WalkState)   
 	{
@@ -69,12 +67,9 @@ event Tick(float TimeDelta)
 	case Walk:  soundRadius=400;  break;
 	case Run:   soundRadius=500; break;
 	}
-
-	foreach OverlappingActors(class'HPawn_Monster', target, soundRadius)
-	{
-		soundSpot = Spawn(class'HSoundSpot',,, Location,,, true);
-		target.OnSoundHeard(soundSpot);
-	}
+	
+	soundBeacon.SetLocation(Location);
+	soundBeacon.Radius=soundRadius;
 }
 
 defaultproperties

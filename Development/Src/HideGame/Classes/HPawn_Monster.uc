@@ -45,7 +45,6 @@ function Tick(Float Delta)
 event Reset()
 {
 	MyController = HAIController(Controller);
-	`Log("Reseting monster");
 	SetLocation(startingPosition);
 	SetRotation(startingRotation);
 	MyController.actual_node = 0;
