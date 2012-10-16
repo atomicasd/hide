@@ -44,7 +44,7 @@ function onExitButtonPress( GFxClikWidget.EventData ev )
 }
 function onNewGameButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open lvl01" );
+	ConsoleCommand( "Open HG-Lvl01" );
 }
 
 /*
