@@ -14,7 +14,6 @@ function SoundCue GetIdleSound()
 
 function HPlay()
 {
-	SoundCue = GetIdleSound();
 	Play();
 }
 

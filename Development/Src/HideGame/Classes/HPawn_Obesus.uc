@@ -1,9 +1,10 @@
 class HPawn_Obesus extends HPawn_Monster
 	placeable;
 
-var HFamilyInfo_Obesus          CharacterInfo;
-var HAudioComponent_IdleSounds  HIdleSound;
-var HSoundGroup_Obesus          HSoundGroup;
+var HFamilyInfo_Obesus                  CharacterInfo;
+var class<HAudioComponent_IdleSounds>   HIS;
+var HAudioComponent_IdleSounds          HIdleSound;
+var HSoundGroup_Obesus                  HSoundGroup;
 
 simulated function PostBeginPlay()
 {
@@ -20,28 +21,41 @@ simulated function PostBeginPlay()
 	// Sets soundgroup
 	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
 
+	HIdleSound = new HIS;
+	HIdleSound.SoundCue = SoundCue'SoundPackage.obesus.obesusBreathing01_Cue';
+	HIdleSound.addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing01_Cue');
+	HIdleSound.addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing02_Cue');
+	HIdleSound.addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing03_Cue');
+	HIdleSound.addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing04_Cue');
+
+
 	super.PostBeginPlay();
 }
 
 function CreateAttackSound()
 {
-	PlaySoundEffect(HSoundGroup.static.getAttackSounds());
+	HIdleSound.Stop();
+	HPlaySoundEffect(HSoundGroup.static.getAttackSounds());
 }
 
 function CreateBreathingSound()
 {
-	PlaySoundEffect(HSoundGroup.static.getBreathingSound());
+	`Log("Yeah");
+	HIdleSound.HPlay();
+	//HPlaySoundEffect(HSoundGroup.static.getBreathingSound());
 }
 
 function CreateInvestigateSound()
 {
-	PlaySoundEffect(HSoundGroup.static.getInvestigateSounds());
+	HIdleSound.Stop();
+	HPlaySoundEffect(HSoundGroup.static.getInvestigateSounds());
 }
 
 DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Obesus'
 	HCharacterInfo = class'HideGame.HFamilyInfo_Obesus'
+	HIS = class'HideGame.HAudioComponent_IdleSounds'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
 		SkeletalMesh=SkeletalMesh'MonsterPackage.ObesusRiggedQuick'

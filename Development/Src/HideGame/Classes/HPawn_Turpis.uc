@@ -2,6 +2,7 @@ class HPawn_Turpis extends HPawn_Monster
 	placeable;
 
 var HFamilyInfo_Turpis CharacterInfo;
+var HSoundGroup_Turpis HSoundGroup;
 
 simulated function PostBeginPlay()
 {
@@ -12,24 +13,18 @@ simulated function PostBeginPlay()
 		ControllerClass = class'HideGame.HAIController_Turpis';
 	}
 
+	// Sets family info
 	HSetCharacterClassFromInfo(class'HFamilyInfo_Turpis');
+
+	// Sound
+	HSoundGroup = HSoundGroup_Turpis(new SoundGroupClass);
 
 	super.PostBeginPlay();
 }
 
 function PlayHissingSound()
 {
-	local SoundCue HSound;
-	local HSoundGroup_Turpis SG;
-
-	SG = HSoundGroup_Turpis(new SoundGroupClass);
-
-	HSound = SG.GetHHissingSound();
-
-	if(HSound != None)
-	{
-		PlaySound(HSound, false, true,,,true);
-	}
+	HPlaySoundEffect(HSoundGroup.GetHHissingSound());
 }
 
 DefaultProperties
