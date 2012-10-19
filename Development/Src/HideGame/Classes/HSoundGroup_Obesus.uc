@@ -87,24 +87,24 @@ static function SoundCue getBreathingSound()
 
 DefaultProperties
 {
-	HFootstepSounds[0]=(Type=0, Sound=SoundCue'HidePackage.ObesusMonster.obesusStep01_Cue');
-	HFootstepSounds[1]=(Type=1, Sound=SoundCue'HidePackage.ObesusMonster.obesusStep02_Cue');
-	HFootstepSounds[2]=(Type=2, Sound=SoundCue'HidePackage.ObesusMonster.obesusStep03_Cue');
+	HFootstepSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.obesus.obesusStep01_Cue');
+	HFootstepSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.obesus.obesusStep02_Cue');
+	HFootstepSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.obesus.obesusStep03_Cue');
 
-	HAttackSounds[0]=(Type=0, Sound=SoundCue'HidePackage.ObesusMonster.obesusAttack01_Cue');
-	HAttackSounds[1]=(Type=1, Sound=SoundCue'HidePackage.ObesusMonster.obesusAttack02_Cue');
-	HAttackSounds[2]=(Type=2, Sound=SoundCue'HidePackage.ObesusMonster.obesusAttack03_Cue');
+	HAttackSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.obesus.obesusAttack01_Cue');
+	HAttackSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.obesus.obesusAttack02_Cue');
+	HAttackSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.obesus.obesusAttack03_Cue');
 
-	HLaughterSounds[0]=(Type=0, Sound=SoundCue'HidePackage.ObesusMonster.obesusLaughter01_Cue');
-	HLaughterSounds[1]=(Type=1, Sound=SoundCue'HidePackage.ObesusMonster.obesusLaughter02_Cue');
-	HLaughterSounds[2]=(Type=2, Sound=SoundCue'HidePackage.ObesusMonster.obesusLaughter03_Cue');
-	HLaughterSounds[3]=(Type=3, Sound=SoundCue'HidePackage.ObesusMonster.obesusLaughter04_Cue');
+	HLaughterSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.obesus.obesusLaughter01_Cue');
+	HLaughterSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.obesus.obesusLaughter02_Cue');
+	HLaughterSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.obesus.obesusLaughter03_Cue');
+	HLaughterSounds[3]=(Type=3, Sound=SoundCue'SoundPackage.obesus.obesusLaughter04_Cue');
 
-	HBreathingSounds[0]=(Type=0, Sound=SoundCue'HidePackage.ObesusMonster.obesusBreathing01_Cue');
-	HBreathingSounds[1]=(Type=1, Sound=SoundCue'HidePackage.ObesusMonster.obesusBreathing02_Cue');
-	HBreathingSounds[2]=(Type=2, Sound=SoundCue'HidePackage.ObesusMonster.obesusBreathing03_Cue');
-	HBreathingSounds[3]=(Type=3, Sound=SoundCue'HidePackage.ObesusMonster.obesusBreathing04_Cue');
+	HBreathingSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.obesus.obesusBreathing01_Cue');
+	HBreathingSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.obesus.obesusBreathing02_Cue');
+	HBreathingSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.obesus.obesusBreathing03_Cue');
+	HBreathingSounds[3]=(Type=3, Sound=SoundCue'SoundPackage.obesus.obesusBreathing04_Cue');
 
-	HInvestigateSounds[0]=(Type=0, Sound=SoundCue'HidePackage.ObesusMonster.obesusInvestigate01_Cue');
-	HInvestigateSounds[1]=(Type=1, Sound=SoundCue'HidePackage.ObesusMonster.obesusInvestigate02_Cue');
+	HInvestigateSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.obesus.obesusInvestigate01_Cue');
+	HInvestigateSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.obesus.obesusInvestigate02_Cue');
 }

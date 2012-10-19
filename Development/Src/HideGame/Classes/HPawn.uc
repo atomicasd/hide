@@ -36,9 +36,18 @@ function HSetCharacterClassFromInfo(class<HFamilyInfo_Character> HInfo)
 	{
 		Mesh.AnimSets = HInfo.default.HAnimSet;
 		Mesh.SetAnimTreeTemplate(HInfo.default.HAnimTreeTemplate);
+		
 		`Log("---->  Animasion asstets finished    <----");
 	}else{
 		`Log("---->Pawns information class not set <----");
+	}
+}	
+
+function HPlaySoundEffect(SoundCue SoundToPlay)
+{
+	if(SoundToPlay != None)
+	{
+		PlaySound(SoundToPlay,false, true,,,true);
 	}
 }
 

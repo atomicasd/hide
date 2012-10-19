@@ -34,7 +34,6 @@ function MakeSoundPulse()
 
 	foreach OverlappingActors(class'HPawn_Monster', target, Radius)
 	{
-		`Log("Monster here");
 		soundSpot = Spawn(class'HSoundSpot',,,Location,,,true);
 		target.OnSoundHeard(soundSpot);
 	}

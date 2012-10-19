@@ -69,25 +69,25 @@ static function SoundCue GetHHissingSound()
 
 DefaultProperties
 {
-	//HFootstepSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisStep01_Cue');
-	//HFootstepSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisStep02_Cue');
-	//HFootstepSounds[0]=(Type=2, Sound=SoundCue'HidePackage.TurpisMonster.turpisStep03_Cue');
+	//HFootstepSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.turpis.turpisStep01_Cue');
+	//HFootstepSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.turpis.turpisStep02_Cue');
+	//HFootstepSounds[0]=(Type=2, Sound=SoundCue'SoundPackage.turpis.turpisStep03_Cue');
 	
-	HFootstepSounds[0]=(Type=0, Sound=SoundCue'HidePackage.ObesusMonster.obesusStep01_Cue');
-	HFootstepSounds[1]=(Type=1, Sound=SoundCue'HidePackage.ObesusMonster.obesusStep02_Cue');
-	HFootstepSounds[2]=(Type=2, Sound=SoundCue'HidePackage.ObesusMonster.obesusStep03_Cue');
+	HFootstepSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.obesus.obesusStep01_Cue');
+	HFootstepSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.obesus.obesusStep02_Cue');
+	HFootstepSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.obesus.obesusStep03_Cue');
 
-	HBreathingSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisChaseBreathing01_Cue');
-	HBreathingSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisHeavyBreathing01_Cue');
-	HBreathingSounds[2]=(Type=2, Sound=SoundCue'HidePackage.TurpisMonster.turpisHeavyBreathing02_Cue');
+	HBreathingSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.turpis.turpisChaseBreathing01_Cue');
+	HBreathingSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.turpis.turpisHeavyBreathing01_Cue');
+	HBreathingSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.turpis.turpisHeavyBreathing02_Cue');
 
-	HHissingSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisHissing01_Cue');
-	//HHissingSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisHissing02_Cue');
+	HHissingSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.turpis.turpisHissing01_Cue');
+	//HHissingSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.turpis.turpisHissing02_Cue');
 
-	HInvestigateSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisInvestigate01_Cue');
-	HInvestigateSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisInvestigate02_Cue');
+	HInvestigateSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.turpis.turpisInvestigate01_Cue');
+	HInvestigateSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.turpis.turpisInvestigate02_Cue');
 
-	HScreamSounds[0]=(Type=0, Sound=SoundCue'HidePackage.TurpisMonster.turpisScream01_Cue');
-	HScreamSounds[1]=(Type=1, Sound=SoundCue'HidePackage.TurpisMonster.turpisScream02_Cue');
-	HScreamSounds[2]=(Type=2, Sound=SoundCue'HidePackage.TurpisMonster.turpisScream03_Cue');
+	HScreamSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.turpis.turpisScream01_Cue');
+	HScreamSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.turpis.turpisScream02_Cue');
+	HScreamSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.turpis.turpisScream03_Cue');
 }
