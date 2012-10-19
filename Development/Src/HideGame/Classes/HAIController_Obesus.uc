@@ -38,7 +38,7 @@ function Tick(float DeltaTime)
 
 DefaultProperties
 {
-	timer = 14
+	timer = 12
 	CreateInvestigateSound=true;
 	canSee = true;
 	shouldFollowPath = true;

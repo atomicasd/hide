@@ -12,7 +12,7 @@ function bool Start( optional bool StartPaused = false )
 	Advance( 0 );
 
 	MenuMusic = new Hmusic;
-	`Log("Sound");
+
 	MenuMusic.SoundCue = SoundCue'MenuPackage.MainMenuSound.alphaMainMenuSound_Cue';
 	MenuMusic.Play();
 
