@@ -368,4 +368,6 @@ defaultproperties
 
 	WalkSpeed = 200;
 	ChaseSpeed = 200;
+
+	bAdjustFromWalls = false;
 }
