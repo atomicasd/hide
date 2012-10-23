@@ -1,19 +1,27 @@
 class HPawn_Monster extends HPawn;
 
+// Default position
 var     Vector                  startingPosition;
 var     Rotator                 startingRotation;
+
+// Controller
 var     HAIController           MyController;
 var     AnimNodeSequence        MyAnimPlayControl;
 
+// Animation
+var array<HAnimBlend_Monster>   HAnimBlend;
+
+// Variables
 var     bool                    AttAcking;
 var     bool                    bplayed;
 var     Name                    AnimSetName;
 
+// AI
 var()       array<NavigationPoint>  MyNavigationPoints;
 var(NPC)    class<AIController>     NPCController;
 
+// kismet variable
 var ()  float       PawnGroundSpeed;
-
 var ()  float       waitAtNode;
 
 simulated function PostBeginPlay()
@@ -42,6 +50,8 @@ function Tick(Float Delta)
 	}
 }
 
+
+// Resets the position of the monster and its default path
 event Reset()
 {
 	MyController = HAIController(Controller);
@@ -51,6 +61,38 @@ event Reset()
 	MyController.last_node = 0;
 	MyController.GotoState('Idle');
 	super.Reset();
+}
+
+
+/**
+ * Animation
+ */
+
+// Initialize the animtree
+simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
+{
+	local HAnimBlend_Monster BlendState;
+
+	super.PostInitAnimTree(SkelComp);
+
+	if(SkelComp == Mesh)
+	{
+		foreach mesh.AllAnimNodes(class'HAnimBlend_Monster', BlendState)
+		{
+			HAnimBlend[HAnimBlend.Length] = BlendState;
+		}
+	}
+}
+
+// Sets what animation we want to play
+simulated event SetAnimState(MonsterState stateAnimType)
+{
+	local int i;
+
+	for ( i = 0; i < HAnimBlend.Length; i++)
+	{
+		HAnimBlend[i].SetAnimState(stateAnimType);
+	}
 }
 
 DefaultProperties
