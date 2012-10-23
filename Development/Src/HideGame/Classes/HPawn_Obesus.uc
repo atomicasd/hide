@@ -4,6 +4,9 @@ class HPawn_Obesus extends HPawn_Monster
 // Character info
 var HFamilyInfo_Obesus                  CharacterInfo;
 
+// Animation
+var array<HAnimBlend_Obesus>            HAnimBlend;
+
 // Sound
 var HSoundGroup_Obesus                  HSoundGroup;
 
@@ -41,6 +44,37 @@ function CreateBreathingSound()
 function CreateInvestigateSound()
 {
 	HPlaySoundEffect(HSoundGroup.static.getInvestigateSounds());
+}
+
+/**
+ * Animation
+ */
+
+// Initialize the animtree
+simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
+{
+	local HAnimBlend_Obesus BlendState;
+
+	super.PostInitAnimTree(SkelComp);
+
+	if(SkelComp == Mesh)
+	{
+		foreach mesh.AllAnimNodes(class'HAnimBlend_Obesus', BlendState)
+		{
+			HAnimBlend[HAnimBlend.Length] = BlendState;
+		}
+	}
+}
+
+// Sets what animation we want to play
+simulated event SetObesusState(ObesusState stateAnimType)
+{
+	local int i;
+
+	for ( i = 0; i < HAnimBlend.Length; i++)
+	{
+		HAnimBlend[i].SetObesusAnimState(stateAnimType);
+	}
 }
 
 DefaultProperties
