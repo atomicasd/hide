@@ -207,7 +207,7 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     matName = matApp.Name;  
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 
     //ENG: my package containing the base materials (shader_base/shader_base_translucent) 
-    packageName = name("Pulse_Material.Materials"); 
+    packageName = name("Lvl01_Package.Materials"); 
     materialClassName = string(packageName) $ "." $ string(matName); 
 	
 	if(InStr(matName, "Pulse") == -1)
@@ -260,7 +260,7 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 
 	if( InStr(matName, "_Translucent") != -1 )
 	{
-		packageName = Name("Pulse_Material.Materials"); 
+		packageName = Name("Lvl01_Package.Materials"); 
 		materialClassName = string(packageName) $ "." $ string(matName); 
 		materialClassName = Repl(materialClassName, "_Translucent", ""); 
         
