@@ -1,7 +1,10 @@
 class HPawn_Turpis extends HPawn_Monster
 	placeable;
 
+// Information
 var HFamilyInfo_Turpis CharacterInfo;
+
+// Sound
 var HSoundGroup_Turpis HSoundGroup;
 
 simulated function PostBeginPlay()
@@ -22,6 +25,11 @@ simulated function PostBeginPlay()
 	super.PostBeginPlay();
 }
 
+/**
+ * Sound
+ */
+
+// Play hissing sound
 function PlayHissingSound()
 {
 	HPlaySoundEffect(HSoundGroup.GetHHissingSound());

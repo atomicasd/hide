@@ -84,7 +84,8 @@ defaultproperties
 	Components.Add(NPCMesh0);
 	
 	GroundSpeed=200.0
-	CrouchHeight=45
+	CrouchHeight=40
+	CrouchedPct=+0.65
 	bStatic = false
 	bNoDelete = false
 	bCanDoubleJump=false
