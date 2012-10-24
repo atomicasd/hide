@@ -56,10 +56,4 @@ DefaultProperties
 	End Object
 
 	Components.Add(PickupMesh)
-
-	bNoEncroachCheck=false
-	bStatic=false
-	bHidden=false
-	bCollideActors = true
-	CollisionType=COLLIDE_TouchAll
 }
