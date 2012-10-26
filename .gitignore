@@ -1,7 +1,8 @@
 UDKGame
-HideGame
+HideGame/Content/
 Engine
 Binaries
+HideGame/Config/
 Development/Flash
 Development/Src/Core
 Development/Src/Engine
@@ -24,4 +25,5 @@ Development/Src/WinDrv
 *.suo
 *.ucproj
 *.user
+*.orig
 

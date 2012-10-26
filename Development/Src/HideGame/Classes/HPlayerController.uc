@@ -36,18 +36,78 @@ simulated event PostBeginPlay()
 		A.ForceUpdateComponents();
 	}
 	
-	SpawnPlayerCamera();
 	WalkState = Idle;
+}
+simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rotation )
+{
+	local Actor TheViewTarget;
+
+	// sometimes the PlayerCamera can be none and we probably do not want this
+	// so we will check to see if we have a CameraClass.  Having a CameraClass is
+	// saying:  we want a camera so make certain one exists by spawning one
+	if( PlayerCamera == None )
+	{
+		if( CameraClass != None )
+		{
+			// Associate Camera with PlayerController
+			PlayerCamera = Spawn(CameraClass, Self);
+			if( PlayerCamera != None )
+				PlayerCamera.InitializeFor( Self );
+			else
+				`log("Couldn't Spawn Camera Actor for Player!!");
+		}
+
+		TheViewTarget = GetViewTarget();
+
+		if( TheViewTarget != None )
+		{
+			out_Location = TheViewTarget.Location;
+			out_Rotation = TheViewTarget.Rotation;
+		}
+		else
+		{
+			out_Location = Location;
+			out_Rotation = Rotation;
+		}
+	}
+	else
+		PlayerCamera.GetCameraViewPoint(out_Location, out_Rotation);
 }
 
 function EnablePulse()
 {
+
 	pulseMade = true;
 	pulseRadius = 0.0f;
 	pulseFadeOut = true;
 	fadeOutStart = 0.0f;
 	pulseDensity = 1.0f;
 	pulseFadedIn = false;
+	
+}
+
+function TriggerRemoteKismetEvent( name EventName )
+{
+	local array<SequenceObject> AllSeqEvents;
+	local Sequence GameSeq;
+	local int i;
+
+	GameSeq = WorldInfo.GetGameSequence();
+	if (GameSeq != None)
+	{
+		// reset the game sequence
+		GameSeq.Reset();
+
+		// find any Level Reset events that exist
+		GameSeq.FindSeqObjectsByClass(class'SeqEvent_RemoteEvent', true, AllSeqEvents);
+
+		// activate them
+		for (i = 0; i < AllSeqEvents.Length; i++)
+		{
+			if(SeqEvent_RemoteEvent(AllSeqEvents[i]).EventName == EventName)
+				SeqEvent_RemoteEvent(AllSeqEvents[i]).CheckActivate(WorldInfo, None);
+		}
+	}
 }
 
 function PulseFadeIn()
@@ -155,8 +215,8 @@ exec function makePulseCircle()
 
 DefaultProperties
 {
-	InputClass = class'HideGame.HPlayerInput'
-	CameraClass = class'HideGame.HCamera'
+	InputClass = class'HideGame.HPlayerInput';
+	CameraClass = class'HCamera';
 	
 	pulseMade = false;
 	pulseMaxRadius = 1000;

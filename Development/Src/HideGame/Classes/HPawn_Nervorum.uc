@@ -12,6 +12,8 @@ var HFamilyInfo_Nervorum            CharacterInfo;
 // Sound
 var HSoundGroup_Nervorum            HSoundGroup;
 
+var Rotator lastTouchedRotation;
+
 simulated function PostBeginPlay()
 {
 	local HNervorum_GroundNerve nerve;
@@ -51,19 +53,33 @@ simulated function PostBeginPlay()
  */
 event Tick(float DeltaTime)
 {
+	local PlayerController PC;
+	local HPawn_Player pPawn;
 	local int i;
+	PC = GetALocalPlayerController();
+	pPawn = HPawn_Player( PC.Pawn );
 
 	if(bTraceNerves)
 	{
-		`Log("Trace");
 		for(i = 0; i < ChildNerves.Length; i++)
 		{
-			if(ChildNerves[i].CheckCollision())
-				`log("Collide");
-			if(ChildNerves[i].ChildCollision())
-				`log("Child collide");
+			if(ChildNerves[i].CheckCollision() || ChildNerves[i].ChildCollision())
+			{
+				if( pPawn != none && pPawn.Health > 0 ) 
+				{
+					`log("touch");
+					pPawn.KillByNervorum( self );
+					lastTouchedRotation = Rotator( pPawn.Location - Location );
+				}
+			}
 		}
 	}
+	SetRotation( lastTouchedRotation);
+}
+
+function EncroachedBy( Actor other )
+{
+	
 }
 
 DefaultProperties
@@ -77,7 +93,9 @@ DefaultProperties
 	End Object
 
 	bTraceNerves=false
-	
+	bCanBeDamaged = false;
 	NPCMesh=NPCMesh0
 	Components.Add(NPCMesh0)
+
+	killPlayerOnTouch = false;
 }

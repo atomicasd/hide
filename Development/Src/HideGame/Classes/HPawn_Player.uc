@@ -4,6 +4,15 @@ var     HFamilyInfo_Player      CharacterInfo;
 var     HSoundBeacon            soundBeacon;
 var     int                     waitSoundStep;
 
+var     bool                    steppedOnNerve;
+var     Vector                  steppedLocation;
+var     Rotator                 steppedRotation;
+var     HPawn_Nervorum          nervorumKilledBy;
+var     float                   pullSpeed;
+var     float                   waitTillPull;
+var     float                   positionAlpha;
+var     bool                    cameraFadeStarted;
+
 simulated function PostBeginPlay()
 {
 	super.PostBeginPlay();
@@ -14,6 +23,7 @@ simulated function PostBeginPlay()
 	// Creates players SoundBeacon
 	soundBeacon = Spawn(class'HSoundBeacon',,, Location,,, true);
 	soundBeacon.bIsPlayerSpawned=true;
+	
 }
 
 simulated event ActuallyPlayFootStepSound(int FootDown)
@@ -45,7 +55,12 @@ function bool Died(Controller Killer, class<DamageType> damageType, vector HitLo
 
 function PlayTeleportEffect(bool bOut, bool bSound)
 {
+	local HCamera pCamera;
+
+	pCamera = HCamera( HPlayerController( GetALocalPlayerController() ).PlayerCamera);
+	pCamera.FadeToNormal( 0.5 );
 	soundBeacon.bIsPlayerDead=false;
+
 }
 
 exec function KillYourself()
@@ -59,6 +74,10 @@ exec function KillYourself()
 event Tick(float TimeDelta)
 {
 	local int soundRadius;
+	local Vector vectorToNervorum;
+	local Vector normalizedVectorToNervorum;
+	local HPlayerController pController;
+	local HCamera pCamera;
 
 	switch(HPlayer.WalkState)   
 	{
@@ -78,6 +97,59 @@ event Tick(float TimeDelta)
 			KillYourself();
 	}
 	*/
+	
+	if( steppedOnNerve )
+	{
+		if( waitTillPull < 0.0 )
+		{
+			vectorToNervorum = nervorumKilledBy.Location - Location;
+			normalizedVectorToNervorum = Normal( vectorToNervorum );
+			//steppedLocation += normalizedVectorToNervorum * pullSpeed;
+		} else
+		{
+			waitTillPull -= TimeDelta;
+		}
+		vectorToNervorum = nervorumKilledBy.Location - Location;
+		normalizedVectorToNervorum = Normal( vectorToNervorum );
+
+		SetLocation( VLerp( steppedLocation, nervorumKilledBy.Location, positionAlpha/2 )  );
+		positionAlpha += TimeDelta;
+		if( positionAlpha > 0.7 && !cameraFadeStarted)
+		{
+			cameraFadeStarted = true;
+			pController = HPlayerController( GetALocalPlayerController() );
+			pCamera = HCamera( pController.PlayerCamera );
+			pCamera.FadeToBlack( 1 );
+		}
+
+
+		steppedRotation = Rotator( vectorToNervorum );
+		SetViewRotation( RInterpTo(Rotation, Rotator(vectorToNervorum), 0.015, 20000, true));
+
+		if( VSize( vectorToNervorum ) < 10.0f )
+		{
+			KillYourself();
+			steppedOnNerve = false;
+			cameraFadeStarted = false;
+		}
+	}
+}
+
+function KillByNervorum( HPawn_Nervorum nervorum )
+{
+	if( !steppedOnNerve )
+	{
+		steppedOnNerve = true;
+		pullSpeed = 2.0f;
+		steppedLocation = Location;
+		steppedRotation = GetViewRotation();
+		nervorumKilledBy = nervorum;
+		waitTillPull = 0.5;
+		positionAlpha = 0.0f;
+		cameraFadeStarted = false;
+	}
+
+
 }
 
 defaultproperties
@@ -97,4 +169,8 @@ defaultproperties
 	bStatic = false
 	bNoDelete = false
 	bCanDoubleJump=false
+	RagdollLifespan = 0.1f;
+	
+	waitTillPull = 0.5;
+	cameraFadeStarted = false;
 }

@@ -164,7 +164,6 @@ state FollowPath
 			GotoState('Idle');
 		}
 		MoveTarget = MyNavigationPoints[actual_node];
-
 		if(Pawn.ReachedDestination(MoveTarget))
 		{
 			if(waitCounter >= waitAtNode)
@@ -188,11 +187,12 @@ state FollowPath
 
 		if (ActorReachable(MoveTarget)) 
 		{
-			MoveToward(MoveTarget, MoveTarget, 20.0f);	
+			MoveToward(MoveTarget, MoveTarget,,false);	
 		}
 		else
 		{
-			`log("Finding path towards");
+			MoveTo( MoveTarget.Location );
+			/*`log("Finding path towards");
 			MoveTarget = FindPathToward(MyNavigationPoints[actual_node]);
 			if (MoveTarget != none)
 			{
@@ -200,7 +200,7 @@ state FollowPath
 				SetRotation(RInterpTo(Rotation,Rotator(MoveTarget.Location),1,90000,true));
 
 				MoveToward(MoveTarget, MoveTarget);
-			}
+			}*/
 		}
 		Sleep(0.1);
 	}
@@ -253,7 +253,7 @@ state Chaseplayer
 			}
 			else
 			{
-				MoveTo( playerPawn );
+				MoveTo( playerPawn.Location );
 			}
 		}
     } else
