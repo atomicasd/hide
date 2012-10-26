@@ -1,5 +1,4 @@
-class HVolume_Nervorum extends HVolume
-	placeable;
+class HVolume_Nervorum extends HVolume;
 
 var(CylinderComponent)  CylinderComponent   HCylinder;
 
@@ -82,7 +81,6 @@ DefaultProperties
 	bStatic=false
 	bHidden=false
 	bCollideActors = true
-	CollisionType=COLLIDE_TouchAll
 
 	Components.add(Cylinder0)
 }
