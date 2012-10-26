@@ -83,6 +83,7 @@ function bool CheckCollision()
 	foreach TraceActors(class'HPawn_Player', HitActor, HitLoc, 
                         HitNorm, Location2, Location1, ,hitInfo)
 	{
+		
 		return true;
 	}
 
