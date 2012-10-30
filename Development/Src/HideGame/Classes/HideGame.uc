@@ -298,8 +298,8 @@ DefaultProperties
 {
 	PlayerControllerClass=class'HideGame.HPlayerController'
 	DefaultPawnClass = class'HideGame.HPawn_Player'
-	HUDType = class'HideGame.HPlayerHUD'
-
+	HUDType = class'HideGame.HGameHUD'
+	
 	bDelayedStart=false 
 	bUseClassicHUD=true
 	

@@ -76,7 +76,6 @@ simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rot
 
 function EnablePulse()
 {
-
 	pulseMade = true;
 	pulseRadius = 0.0f;
 	pulseFadeOut = true;
