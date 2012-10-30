@@ -1,9 +1,13 @@
 class HideGame extends UTGame
-config(Game);
+config(HideGame);
 
 /*
  * Config variables
  */
+
+var config int LevelsCleared;
+var config string OnCurrentLevel;
+
 var     bool                    isMapTransparent;
 var     float                   mapOpacity;
 var     HPlayerController       HPlayer;
@@ -14,6 +18,13 @@ auto state SettingGame
 	function BeginState(name PreviousStateName)
 	{
 		bChangeStateToGameInProgress = true;
+		
+		OnCurrentLevel = WorldInfo.GetMapName();
+		`Log("---------> MapName: " $WorldInfo.GetMapName());
+		`Log("---------> LevelsCleared: " $LevelsCleared);
+		`Log("---------> OnCurrentLevel: " $OnCurrentLevel);
+
+		SaveConfig();
 	}
 
 	function EndState(name NextStateName)
@@ -69,6 +80,50 @@ state GameInProgress
 	}
 }
 
+state LevelCompleted
+{
+	function BeginState(name PreviousStateName)
+	{
+		local string        NextLevel;
+
+		`Log("Next Level");
+
+		if(LevelsCleared < getLevelNumber())
+		{
+			LevelsCleared++;
+		}
+		
+		NextLevel = "Open HG-Lvl-";
+
+		NextLevel $= GetLevelNumber() + 1;
+
+		SaveConfig();
+
+		// Changing level to the next level
+		ConsoleCommand(NextLevel);
+		
+	}
+
+	function EndState(name NextStateName)
+	{
+	}
+}
+
+function int getLevelNumber()
+{
+	local string        MapName;
+	local int           MapNumber;
+	local array<string> MapArray;
+	local int           i;
+
+	MapName = WorldInfo.GetMapName();
+	MapArray = SplitString(MapName, "-");
+
+	MapNumber = int(MapArray[1]);
+
+	return MapNumber;
+}
+
 function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam )
 {
 	//Reset pawns before a player spawn is chosen to avoid spawning inside a monster
@@ -83,40 +138,6 @@ function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam 
 	}
 
 	return super.ChoosePlayerStart(Player, InTeam);
-}
-
-state LevelCompleted
-{
-	function BeginState(name PreviousStateName)
-	{
-		local HPawn_Monster p;
-		local HPlayerStart PlayerStartActor;
-		`Log("Resets Level");
-
-		//Reset all monster on map to default settings.
-		foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
-		{
-			p.Reset();
-		}
-	
-		// Resets Spawnpoint and player
-		foreach WorldInfo.AllActors(class'HPlayerStart', PlayerStartActor)
-		{
-			PlayerStartActor.SetLocation(PlayerStartActor.defaultLocation);
-			`log("Checkpoint Location: "$PlayerStartActor.Location);
-			HPlayer.Pawn.SetLocation(PlayerStartActor.Location);
-		}
-
-		HPlayer.bInEndOfLevel=false;
-		
-		GoToState('GameInProgress');
-		
-		//ConsoleCommand("Open lvl01");
-	}
-
-	function EndState(name NextStateName)
-	{
-	}
 }
 
 event Tick(float DeltaTime)
