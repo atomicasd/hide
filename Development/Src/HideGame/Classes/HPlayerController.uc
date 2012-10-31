@@ -35,7 +35,7 @@ simulated event PostBeginPlay()
 		A.DensityComponent.StartDistance = 20000;
 		A.ForceUpdateComponents();
 	}
-	
+
 	WalkState = Idle;
 }
 simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rotation )
@@ -76,7 +76,6 @@ simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rot
 
 function EnablePulse()
 {
-
 	pulseMade = true;
 	pulseRadius = 0.0f;
 	pulseFadeOut = true;
@@ -211,6 +210,21 @@ exec function makePulseCircle()
 	pulseFadeOut = true;
 	fadeOutStart = 0.0f;
 	`log("Making pulse effect");
+}
+
+function SetMasterVolume(float Volume)
+{
+	SetAudioGroupVolume('Master', Volume);
+}
+
+function SetMusicVolume(float Volume)
+{
+	SetAudioGroupVolume('Music', Volume);
+}
+
+function SetAudioGroupVolume( name GroupName, float Volume )
+{
+	super.SetAudioGroupVolume( GroupName, Volume );
 }
 
 DefaultProperties

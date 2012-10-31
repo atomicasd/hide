@@ -5,24 +5,39 @@ config(HideGame);
  * Config variables
  */
 
-var config int LevelsCleared;
-var config string OnCurrentLevel;
+var config  int                     LevelsCleared;
+var config  string                  OnCurrentLevel;
+var config  float                   MasterVolume;
+var config  float                   MusicVolume;
 
-var     bool                    isMapTransparent;
-var     float                   mapOpacity;
-var     HPlayerController       HPlayer;
-var     bool                    bChangeStateToGameInProgress;
+var         bool                    isMapTransparent;
+var         float                   mapOpacity;
+var         HPlayerController       HPlayer;
+var         bool                    bChangeStateToGameInProgress;
 
 auto state SettingGame
 {
 	function BeginState(name PreviousStateName)
 	{
+		local string        MapName;
+		local array<string> lvlName;
+
+		MapName = WorldInfo.GetMapName();
+
+		lvlName = SplitString(MapName);
+
+		if(lvlName[0] != "HideMenuMap")
+		{
+			OnCurrentLevel=MapName;
+		}
+
 		bChangeStateToGameInProgress = true;
-		
-		OnCurrentLevel = WorldInfo.GetMapName();
+
 		`Log("---------> MapName: " $WorldInfo.GetMapName());
 		`Log("---------> LevelsCleared: " $LevelsCleared);
 		`Log("---------> OnCurrentLevel: " $OnCurrentLevel);
+		`Log("---------> Master Sound lvl:" $MasterVolume);
+		`Log("---------> Music Sound lvl: " $MusicVolume);
 
 		SaveConfig();
 	}
@@ -56,6 +71,8 @@ state GameInProgress
 			{
 				`log("Creating HPC");
 				HPlayer=HPC;
+				HPC.SetMusicVolume(MusicVolume);
+				HPC.SetMasterVolume(MasterVolume);
 			}
 		}
 
@@ -114,7 +131,6 @@ function int getLevelNumber()
 	local string        MapName;
 	local int           MapNumber;
 	local array<string> MapArray;
-	local int           i;
 
 	MapName = WorldInfo.GetMapName();
 	MapArray = SplitString(MapName, "-");
