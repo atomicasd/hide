@@ -12,7 +12,7 @@ function TogglePauseMenu()
 {
     if ( PauseMenu != none && PauseMenu.bMovieIsOpen )
 	{
-          //PauseMenu.PlayCloseAnimation();
+          PauseMenu.ClosePauseMenu();
 	}
     else
     {
@@ -26,13 +26,11 @@ function TogglePauseMenu()
             PauseMenu.LocalPlayerOwnerIndex = class'Engine'.static.GetEngine().GamePlayers.Find(LocalPlayer(PlayerOwner.Player));
             PauseMenu.SetTimingMode(TM_Real);
             PlayerOwner.SetPause(True);
-			
+			`log("eee");
         }
 
         SetVisible(false);
         PauseMenu.Start();
-        //PauseMenu.PlayOpenAnimation();
-        //PauseMenu.AddFocusIgnoreKey('Escape');
     }
 }
 

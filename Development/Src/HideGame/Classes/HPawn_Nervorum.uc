@@ -39,6 +39,7 @@ simulated function PostBeginPlay()
 		`log("---->Adding nerve<----");
 		ChildNerves.AddItem(nerve);
 		nerve.bAlreadyOwned = true;
+		nerve.nervorumOwnedBy = self;
 		nerve.findChildNerves();
 	}
 
@@ -59,6 +60,8 @@ event Tick(float DeltaTime)
 	PC = GetALocalPlayerController();
 	pPawn = HPawn_Player( PC.Pawn );
 
+	bTraceNerves = false;
+
 	if(bTraceNerves)
 	{
 		for(i = 0; i < ChildNerves.Length; i++)
@@ -67,14 +70,19 @@ event Tick(float DeltaTime)
 			{
 				if( pPawn != none && pPawn.Health > 0 ) 
 				{
-					`log("touch");
+					
 					pPawn.KillByNervorum( self );
-					lastTouchedRotation = Rotator( pPawn.Location - Location );
+					RotateTowardsPawn( pPawn );
 				}
 			}
 		}
 	}
 	SetRotation( lastTouchedRotation);
+}
+
+function RotateTowardsPawn( Pawn thePawn )
+{
+	lastTouchedRotation = Rotator( thePawn.Location - Location );
 }
 
 function EncroachedBy( Actor other )

@@ -48,7 +48,7 @@ function Tick(Float Delta)
 	local HPawn_Player victim;
 	local HCamera pCamera;
 	if( killPlayerOnTouch )
-	{	
+	{
 		foreach self.OverlappingActors(class'HPawn_Player', victim, 40)
 		{
 			victim.KillYourself();

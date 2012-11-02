@@ -6,6 +6,7 @@ var     SkeletalMeshComponent           Mesh;
 
 // Nerves
 var     array<HNervorum_GroundNerve>    ChildNerves;  
+var     HPawn_Nervorum nervorumOwnedBy;
 
 // Get name for bones to easy find the Location
 var     name        Point1;
@@ -44,6 +45,7 @@ function findChildNerves()
 		if(!nerve.bAlreadyOwned){
 			`log("---->Adding childnerve<-----");
 			nerve.bAlreadyOwned = true;
+			nerve.nervorumOwnedBy = nervorumOwnedBy;
 			nerve.findChildNerves();
 			ChildNerves.AddItem(nerve);
 		}

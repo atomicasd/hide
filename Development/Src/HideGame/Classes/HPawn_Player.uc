@@ -75,9 +75,9 @@ event Tick(float TimeDelta)
 {
 	local int soundRadius;
 	local Vector vectorToNervorum;
-	local Vector normalizedVectorToNervorum;
 	local HPlayerController pController;
 	local HCamera pCamera;
+	local HNervorum_GroundNerve nerve;
 
 	switch(HPlayer.WalkState)   
 	{
@@ -98,21 +98,28 @@ event Tick(float TimeDelta)
 	}
 	*/
 	
+	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve,200)
+	{
+		if(nerve.CheckCollision() )
+		{
+			nerve.nervorumOwnedBy.RotateTowardsPawn( self );
+			KillByNervorum( nerve.nervorumOwnedBy );
+		}
+	}
+	
 	if( steppedOnNerve )
 	{
 		if( waitTillPull < 0.0 )
 		{
 			vectorToNervorum = nervorumKilledBy.Location - Location;
-			normalizedVectorToNervorum = Normal( vectorToNervorum );
 			//steppedLocation += normalizedVectorToNervorum * pullSpeed;
 		} else
 		{
 			waitTillPull -= TimeDelta;
 		}
 		vectorToNervorum = nervorumKilledBy.Location - Location;
-		normalizedVectorToNervorum = Normal( vectorToNervorum );
 
-		SetLocation( VLerp( steppedLocation, nervorumKilledBy.Location, positionAlpha/2 )  );
+		SetLocation( VLerp( steppedLocation, nervorumKilledBy.Location, positionAlpha/3 )  );
 		positionAlpha += TimeDelta;
 		if( positionAlpha > 0.7 && !cameraFadeStarted)
 		{
