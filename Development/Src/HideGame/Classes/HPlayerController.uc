@@ -229,6 +229,11 @@ exec function makePulseCircle()
 	`log("Making pulse effect");
 }
 
+/**
+ * Input functions
+ */
+
+// Activate the pulse ability and freezes the player
 exec function ActivatePulse()
 {
 	if(pulseTimer <= 0)
@@ -244,6 +249,7 @@ exec function ActivatePulse()
 	}
 }
 
+// Disable the pulse effect, and starts the cooldown
 exec function DisablePulse()
 {
 	IgnoreInput(false);
@@ -252,6 +258,7 @@ exec function DisablePulse()
 	startPulseTimer = true;
 }
 
+// Ignores mouse and move input
 function IgnoreInput(bool bIgnore)
 {
 	bIgnoreInput = bIgnore;
@@ -259,26 +266,34 @@ function IgnoreInput(bool bIgnore)
 	ClientIgnoreMoveInput(bIgnore);
 }
 
-function SetMasterVolume(float Volume)
-{
-	SetAudioGroupVolume('Master', Volume);
-}
-
-function SetMusicVolume(float Volume)
-{
-	SetAudioGroupVolume('Music', Volume);
-}
-
-function SetAudioGroupVolume( name GroupName, float Volume )
-{
-	super.SetAudioGroupVolume( GroupName, Volume );
-}
-
+// Need this so player cant jump when he uses pulse
 function CheckJumpOrDuck()
 {
 	if(!bIgnoreInput){
 		super.CheckJumpOrDuck();
 	}
+}
+
+
+/**
+ * Sound functions
+ */
+// Set Master Volume
+function SetMasterVolume(float Volume)
+{
+	SetAudioGroupVolume('Master', Volume);
+}
+
+// Set Music Volume
+function SetMusicVolume(float Volume)
+{
+	SetAudioGroupVolume('Music', Volume);
+}
+
+// Last functions thats sets sound to the musicgroup
+function SetAudioGroupVolume( name GroupName, float Volume )
+{
+	super.SetAudioGroupVolume( GroupName, Volume );
 }
 
 DefaultProperties

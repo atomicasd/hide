@@ -11,7 +11,6 @@ exec function QuitGame()
 // Activate Sneak. This will override Run
 exec function Sneak()
 {
-	//Pawn.StartCrouch(-Pawn.CrouchHeight);
 	bDuck=1;
 	SneakActivated = true;
 }
@@ -20,7 +19,6 @@ exec function Sneak()
 exec function SneakReleased()
 {
 	bDuck=0;
-	//Pawn.EndCrouch(-Pawn.CrouchHeight);
 	SneakActivated = false;
 }
 

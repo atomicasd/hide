@@ -10,6 +10,10 @@ var config  string                  OnCurrentLevel;
 var config  float                   MasterVolume;
 var config  float                   MusicVolume;
 
+/*
+ * Variables
+ */
+
 var         string                  MapName;
 
 var         bool                    isMapTransparent;
@@ -80,7 +84,6 @@ state GameInProgress
 
 				if(lvlName[0] == "HideMenuMap")
 				{
-					`log("Disable input");
 					HPC.IgnoreInput(true);
 				}else{
 					HPC.IgnoreInput(false);
