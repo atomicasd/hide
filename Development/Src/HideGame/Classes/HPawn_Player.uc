@@ -23,7 +23,6 @@ simulated function PostBeginPlay()
 	// Creates players SoundBeacon
 	soundBeacon = Spawn(class'HSoundBeacon',,, Location,,, true);
 	soundBeacon.bIsPlayerSpawned=true;
-	
 }
 
 simulated event ActuallyPlayFootStepSound(int FootDown)

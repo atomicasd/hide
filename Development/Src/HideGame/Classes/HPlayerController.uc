@@ -10,6 +10,7 @@ enum PlayerWalkingState
 
 var     bool    bInEndOfLevel;
 var     bool    bChangedState;
+var     bool    bIgnoreInput;
 
 var     bool	pulseMade;
 var     bool    pulseFadeOut; //If the pulse should go outwards or towards the player(end of pulse)
@@ -18,7 +19,10 @@ var     float	pulseRadius;
 var     float   fadeOutStart;
 var     float   pulseTime;
 var     float   pulseDensity;
+var     float   pulseTimer;
 var     bool    pulseFadedIn;
+var     bool    startPulseTimer;
+var     float   pulseCooldownTimer;
 
 var     PlayerWalkingState          WalkState;
 
@@ -76,6 +80,7 @@ simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rot
 
 function EnablePulse()
 {
+	IgnoreInput(true);
 	pulseMade = true;
 	pulseRadius = 0.0f;
 	pulseFadeOut = true;
@@ -148,6 +153,8 @@ function PlayerTick(float DeltaTime)
 			{
 				if( pulseRadius <= 3 )
 				{
+					IgnoreInput(false);
+
 					pulseFadedIn = true;
 					pulseMade = false;
 					A.DensityComponent.StartDistance = pulseRadius;
@@ -171,9 +178,19 @@ function PlayerTick(float DeltaTime)
 					A.ForceUpdateComponents();
 				}
 				
-				pulseRadius -= DeltaTime*3000 - ( (DeltaTime*3000) * (pulseRadius/pulseMaxRadius) );
+				pulseRadius -= DeltaTime*2000;
 			}
 		}
+	}
+
+	if(startPulseTimer)
+	{
+		if(pulseTimer > 0)
+		{
+			pulseTimer -= DeltaTime;
+		}else{
+			startPulseTimer = false;
+		}   
 	}
 	
 	if(HPawn_Player(Pawn) != None)
@@ -212,6 +229,36 @@ exec function makePulseCircle()
 	`log("Making pulse effect");
 }
 
+exec function ActivatePulse()
+{
+	if(pulseTimer <= 0)
+	{
+		pulseTimer = pulseCooldownTimer;
+		IgnoreInput(true);
+		pulseMade = true;
+		pulseRadius = 0.0f;
+		pulseFadeOut = true;
+		fadeOutStart = 0.0f;
+		pulseDensity = 1.0f;
+		pulseFadedIn = false;
+	}
+}
+
+exec function DisablePulse()
+{
+	IgnoreInput(false);
+	pulseFadeOut = false;
+	pulseFadedIn = true;
+	startPulseTimer = true;
+}
+
+function IgnoreInput(bool bIgnore)
+{
+	bIgnoreInput = bIgnore;
+	ClientIgnoreLookInput(bIgnore);
+	ClientIgnoreMoveInput(bIgnore);
+}
+
 function SetMasterVolume(float Volume)
 {
 	SetAudioGroupVolume('Master', Volume);
@@ -227,6 +274,13 @@ function SetAudioGroupVolume( name GroupName, float Volume )
 	super.SetAudioGroupVolume( GroupName, Volume );
 }
 
+function CheckJumpOrDuck()
+{
+	if(!bIgnoreInput){
+		super.CheckJumpOrDuck();
+	}
+}
+
 DefaultProperties
 {
 	InputClass = class'HideGame.HPlayerInput';
@@ -240,5 +294,6 @@ DefaultProperties
 	pulseTime = 5.0f;
 	pulseDensity = 1.0f;
 	pulseFadedIn = false;
+	pulseCooldownTimer = 5;
 }
 

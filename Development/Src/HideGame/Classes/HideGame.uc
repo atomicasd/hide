@@ -10,6 +10,8 @@ var config  string                  OnCurrentLevel;
 var config  float                   MasterVolume;
 var config  float                   MusicVolume;
 
+var         string                  MapName;
+
 var         bool                    isMapTransparent;
 var         float                   mapOpacity;
 var         HPlayerController       HPlayer;
@@ -19,7 +21,6 @@ auto state SettingGame
 {
 	function BeginState(name PreviousStateName)
 	{
-		local string        MapName;
 		local array<string> lvlName;
 
 		MapName = WorldInfo.GetMapName();
@@ -56,6 +57,7 @@ state GameInProgress
 	function Tick(float DeltaTime)
 	{
 		local HPlayerController HPC;
+		local array<string>     lvlName;
 
 		if(HPlayer!=None)
 		{
@@ -73,6 +75,16 @@ state GameInProgress
 				HPlayer=HPC;
 				HPC.SetMusicVolume(MusicVolume);
 				HPC.SetMasterVolume(MasterVolume);
+
+				lvlName = SplitString(MapName);
+
+				if(lvlName[0] == "HideMenuMap")
+				{
+					`log("Disable input");
+					HPC.IgnoreInput(true);
+				}else{
+					HPC.IgnoreInput(false);
+				}
 			}
 		}
 
