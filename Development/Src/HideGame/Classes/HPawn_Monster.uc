@@ -24,6 +24,8 @@ var(NPC)    class<AIController>     NPCController;
 var ()  float       PawnGroundSpeed;
 var ()  float       waitAtNode;
 
+var     bool        killPlayerOnTouch;
+
 simulated function PostBeginPlay()
 {
 	startingPosition = Location;
@@ -44,9 +46,15 @@ function SetAttacking(bool atacar)
 function Tick(Float Delta)
 {
 	local HPawn_Player victim;
-	foreach self.OverlappingActors(class'HPawn_Player', victim, 40)
+	local HCamera pCamera;
+	if( killPlayerOnTouch )
 	{
-		victim.KillYourself();
+		foreach self.OverlappingActors(class'HPawn_Player', victim, 40)
+		{
+			victim.KillYourself();
+			pCamera = HCamera( HPlayerController( GetALocalPlayerController() ).PlayerCamera);
+			pCamera.FadeToBlack( 0.5 );
+		}
 	}
 }
 
@@ -108,5 +116,7 @@ DefaultProperties
 	PeripheralVision = 0.7
 
 	waitAtNode = 0.0f;
+
+	killPlayerOnTouch = true;
 
 }

@@ -1,4 +1,4 @@
-UDKGame
+
 HideGame
 Engine
 Binaries
@@ -24,4 +24,6 @@ Development/Src/WinDrv
 *.suo
 *.ucproj
 *.user
-
+*.orig
+HideGame/Content/
+HideGame/Config/

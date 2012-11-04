@@ -1,19 +1,50 @@
 class HideGame extends UTGame
-config(Game);
+config(HideGame);
 
 /*
  * Config variables
  */
-var     bool                    isMapTransparent;
-var     float                   mapOpacity;
-var     HPlayerController       HPlayer;
-var     bool                    bChangeStateToGameInProgress;
+
+var config  int                     LevelsCleared;
+var config  string                  OnCurrentLevel;
+var config  float                   MasterVolume;
+var config  float                   MusicVolume;
+
+/*
+ * Variables
+ */
+
+var         string                  MapName;
+
+var         bool                    isMapTransparent;
+var         float                   mapOpacity;
+var         HPlayerController       HPlayer;
+var         bool                    bChangeStateToGameInProgress;
 
 auto state SettingGame
 {
 	function BeginState(name PreviousStateName)
 	{
+		local array<string> lvlName;
+
+		MapName = WorldInfo.GetMapName();
+
+		lvlName = SplitString(MapName);
+
+		if(lvlName[0] != "HideMenuMap")
+		{
+			OnCurrentLevel=MapName;
+		}
+
 		bChangeStateToGameInProgress = true;
+
+		`Log("---------> MapName: " $WorldInfo.GetMapName());
+		`Log("---------> LevelsCleared: " $LevelsCleared);
+		`Log("---------> OnCurrentLevel: " $OnCurrentLevel);
+		`Log("---------> Master Sound lvl:" $MasterVolume);
+		`Log("---------> Music Sound lvl: " $MusicVolume);
+
+		SaveConfig();
 	}
 
 	function EndState(name NextStateName)
@@ -30,6 +61,7 @@ state GameInProgress
 	function Tick(float DeltaTime)
 	{
 		local HPlayerController HPC;
+		local array<string>     lvlName;
 
 		if(HPlayer!=None)
 		{
@@ -45,6 +77,17 @@ state GameInProgress
 			{
 				`log("Creating HPC");
 				HPlayer=HPC;
+				HPC.SetMusicVolume(MusicVolume);
+				HPC.SetMasterVolume(MasterVolume);
+
+				lvlName = SplitString(MapName);
+
+				if(lvlName[0] == "HideMenuMap")
+				{
+					HPC.IgnoreInput(true);
+				}else{
+					HPC.IgnoreInput(false);
+				}
 			}
 		}
 
@@ -69,6 +112,49 @@ state GameInProgress
 	}
 }
 
+state LevelCompleted
+{
+	function BeginState(name PreviousStateName)
+	{
+		local string        NextLevel;
+
+		`Log("Next Level");
+
+		if(LevelsCleared < getLevelNumber())
+		{
+			LevelsCleared++;
+		}
+		
+		NextLevel = "Open HG-Lvl-";
+
+		NextLevel $= GetLevelNumber() + 1;
+
+		SaveConfig();
+
+		// Changing level to the next level
+		ConsoleCommand(NextLevel);
+		
+	}
+
+	function EndState(name NextStateName)
+	{
+	}
+}
+
+function int getLevelNumber()
+{
+	local string        MapName;
+	local int           MapNumber;
+	local array<string> MapArray;
+
+	MapName = WorldInfo.GetMapName();
+	MapArray = SplitString(MapName, "-");
+
+	MapNumber = int(MapArray[1]);
+
+	return MapNumber;
+}
+
 function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam )
 {
 	//Reset pawns before a player spawn is chosen to avoid spawning inside a monster
@@ -83,40 +169,6 @@ function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam 
 	}
 
 	return super.ChoosePlayerStart(Player, InTeam);
-}
-
-state LevelCompleted
-{
-	function BeginState(name PreviousStateName)
-	{
-		local HPawn_Monster p;
-		local HPlayerStart PlayerStartActor;
-		`Log("Resets Level");
-
-		//Reset all monster on map to default settings.
-		foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
-		{
-			p.Reset();
-		}
-	
-		// Resets Spawnpoint and player
-		foreach WorldInfo.AllActors(class'HPlayerStart', PlayerStartActor)
-		{
-			PlayerStartActor.SetLocation(PlayerStartActor.defaultLocation);
-			`log("Checkpoint Location: "$PlayerStartActor.Location);
-			HPlayer.Pawn.SetLocation(PlayerStartActor.Location);
-		}
-
-		HPlayer.bInEndOfLevel=false;
-		
-		GoToState('GameInProgress');
-		
-		//ConsoleCommand("Open lvl01");
-	}
-
-	function EndState(name NextStateName)
-	{
-	}
 }
 
 event Tick(float DeltaTime)
@@ -207,7 +259,7 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     matName = matApp.Name;  
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 
     //ENG: my package containing the base materials (shader_base/shader_base_translucent) 
-    packageName = name("Pulse_Material.Materials"); 
+    packageName = name("Lvl01_Package.Materials"); 
     materialClassName = string(packageName) $ "." $ string(matName); 
 	
 	if(InStr(matName, "Pulse") == -1)
@@ -260,7 +312,7 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 
 	if( InStr(matName, "_Translucent") != -1 )
 	{
-		packageName = Name("Pulse_Material.Materials"); 
+		packageName = Name("Lvl01_Package.Materials"); 
 		materialClassName = string(packageName) $ "." $ string(matName); 
 		materialClassName = Repl(materialClassName, "_Translucent", ""); 
         
@@ -298,8 +350,8 @@ DefaultProperties
 {
 	PlayerControllerClass=class'HideGame.HPlayerController'
 	DefaultPawnClass = class'HideGame.HPawn_Player'
-	HUDType = class'HideGame.HPlayerHUD'
-
+	HUDType = class'HideGame.HGameHUD'
+	
 	bDelayedStart=false 
 	bUseClassicHUD=true
 	

@@ -1,5 +1,7 @@
 class HMainMenu extends GFxMoviePlayer;
 
+var HPlayerController HPlayer;
+
 var GFxClikWidget  newGameBtn;
 var GFxClikWidget  exitBtn;
 var class<AudioComponent> Hmusic;
@@ -7,7 +9,6 @@ var AudioComponent MenuMusic;
 
 function bool Start( optional bool StartPaused = false )
 {
-	
 	super.Start();
 	Advance( 0 );
 
@@ -27,6 +28,7 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 	case ( 'newGameBtn' ):
 		newGameBtn = GFxClikWidget( Widget );
 		newGameBtn.AddEventListener( 'CLIK_press', onNewGameButtonPress );
+		HPlayer.IgnoreInput(false);
 		break;
 	case ( 'exitBtn' ):
 		exitBtn = GFxClikWidget( Widget );
@@ -44,7 +46,7 @@ function onExitButtonPress( GFxClikWidget.EventData ev )
 }
 function onNewGameButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open HG-Lvl01" );
+	ConsoleCommand( "Open HG-Lvl-1" );
 }
 
 /*
