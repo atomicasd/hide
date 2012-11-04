@@ -12,12 +12,14 @@ exec function QuitGame()
 exec function Sneak()
 {
 	//Pawn.StartCrouch(-Pawn.CrouchHeight);
+	bDuck=1;
 	SneakActivated = true;
 }
 
 // Deactivate Sneak.
 exec function SneakReleased()
 {
+	bDuck=0;
 	//Pawn.EndCrouch(-Pawn.CrouchHeight);
 	SneakActivated = false;
 }

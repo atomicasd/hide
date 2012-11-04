@@ -107,6 +107,8 @@ auto state Idle
 		}
     }
 Begin:
+	aiPawn.SetAnimState(MS_Idle);
+
 	Pawn.Acceleration = vect(0,0,0);
 	aiPawn.SetAttacking(false);
 	Pawn.GroundSpeed = WalkSpeed;
@@ -151,6 +153,8 @@ state FollowPath
     }
 
  Begin:
+
+	aiPawn.SetAnimState(MS_Walk);
 
 	while(followingPath)
 	{
@@ -204,6 +208,8 @@ state FollowPath
 state Chaseplayer
 {
   Begin:
+	aiPawn.SetAnimState(MS_Run);
+
 	bChasePlayer=true;
 	aiPawn.SetAttacking(false);
     Pawn.Acceleration = vect(0,0,1);
@@ -260,6 +266,8 @@ state Chaseplayer
 state GoToSoundSpot
 {
 Begin:
+	aiPawn.SetAnimState(MS_Investigate);
+
 	Pawn.GroundSpeed = ChaseSpeed;
 	while(soundHeard)
 	{
@@ -315,6 +323,7 @@ state GoToLastSeenPlayer
 		}
     }
 Begin:
+	aiPawn.SetAnimState(MS_Investigate);
 	playerSeen = true;
 	while(playerSeen)
 	{
