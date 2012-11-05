@@ -43,7 +43,6 @@ function findChildNerves()
 	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve, 30)
 	{
 		if(!nerve.bAlreadyOwned){
-			`log("---->Adding childnerve<-----");
 			nerve.bAlreadyOwned = true;
 			nerve.nervorumOwnedBy = nervorumOwnedBy;
 			nerve.findChildNerves();

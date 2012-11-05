@@ -236,9 +236,9 @@ exec function makePulseCircle()
 // Activate the pulse ability and freezes the player
 exec function ActivatePulse()
 {
-	if(pulseTimer <= 0)
-	{
-		pulseTimer = pulseCooldownTimer;
+//	if(pulseTimer <= 0)
+//	{
+//		pulseTimer = pulseCooldownTimer;
 		IgnoreInput(true);
 		pulseMade = true;
 		pulseRadius = 0.0f;
@@ -246,17 +246,17 @@ exec function ActivatePulse()
 		fadeOutStart = 0.0f;
 		pulseDensity = 1.0f;
 		pulseFadedIn = false;
-	}
+//	}
+
 }
 
 // Disable the pulse effect, and starts the cooldown
 exec function DisablePulse()
 {
-	`log("edfsa");
 	IgnoreInput(false);
 	pulseFadeOut = false;
 	pulseFadedIn = true;
-	startPulseTimer = true;
+//	startPulseTimer = true;
 }
 
 // Ignores mouse and move input
@@ -301,7 +301,6 @@ DefaultProperties
 {
 	InputClass = class'HideGame.HPlayerInput';
 	CameraClass = class'HCamera';
-	
 	pulseMade = false;
 	pulseMaxRadius = 1000;
 	pulseRadius = 1;

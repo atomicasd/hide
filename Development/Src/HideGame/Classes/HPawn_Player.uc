@@ -64,7 +64,11 @@ function PlayTeleportEffect(bool bOut, bool bSound)
 
 exec function KillYourself()
 {
+	local HPlayerController PC;
+	PC = HPlayerController( GetALocalPlayerController() );
 	Suicide();
+	PC.DisablePulse();
+
 }
 
 /*
@@ -99,6 +103,8 @@ event Tick(float TimeDelta)
 	}
 	
 	if( steppedOnNerve )
+
+
 	{
 		if( waitTillPull < 0.0 )
 		{
