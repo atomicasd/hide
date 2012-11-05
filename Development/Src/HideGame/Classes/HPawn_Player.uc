@@ -88,14 +88,6 @@ event Tick(float TimeDelta)
 	
 	soundBeacon.SetLocation(Location);
 	soundBeacon.Radius=soundRadius;
-
-	/*
-	foreach WorldInfo.AllActors(class'HNervorum_GroundNerve', Nerve)
-	{
-		if(Nerve.CheckCollision())
-			KillYourself();
-	}
-	*/
 	
 	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve,200)
 	{

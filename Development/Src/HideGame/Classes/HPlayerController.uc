@@ -252,6 +252,7 @@ exec function ActivatePulse()
 // Disable the pulse effect, and starts the cooldown
 exec function DisablePulse()
 {
+	`log("edfsa");
 	IgnoreInput(false);
 	pulseFadeOut = false;
 	pulseFadedIn = true;
