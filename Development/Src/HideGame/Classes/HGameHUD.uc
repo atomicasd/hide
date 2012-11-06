@@ -2,6 +2,9 @@ class HGameHUD extends UTHUDBase;
 
 var HPauseMenu PauseMenu;
 
+var Vector WorldOrigin;
+var Vector WorldDirection;
+
 exec function ShowMenu()
 {
 	// if using GFx HUD, use GFx pause menu

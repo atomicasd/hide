@@ -32,6 +32,10 @@ simulated function PostBeginPlay()
 
 	// Sets soundgroup
 	HSoundGroup = HSoundGroup_Nervorum(new SoundGroupClass);
+	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing01_Cue');
+	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing02_Cue');
+	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing03_Cue');
+	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing04_Cue');
 
 	// Find the nerves on the ground
 	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve, 60)
@@ -62,6 +66,8 @@ event Tick(float DeltaTime)
 
 	bTraceNerves = false;
 
+	super.Tick(DeltaTime);
+
 	if(bTraceNerves)
 	{
 		for(i = 0; i < ChildNerves.Length; i++)
@@ -88,6 +94,11 @@ function RotateTowardsPawn( Pawn thePawn )
 function EncroachedBy( Actor other )
 {
 	
+}
+
+simulated function PlayAttackSound()
+{
+	HPlaySoundEffect(HSoundGroup.static.getAttackSounds());
 }
 
 DefaultProperties

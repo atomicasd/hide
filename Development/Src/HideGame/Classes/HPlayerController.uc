@@ -19,7 +19,7 @@ var     float	pulseRadius;
 var     float   fadeOutStart;
 var     float   pulseTime;
 var     float   pulseDensity;
-var     float   pulseTimer;
+var     float   HpulseTimer;
 var     bool    pulseFadedIn;
 var     bool    startPulseTimer;
 var     float   pulseCooldownTimer;
@@ -185,9 +185,9 @@ function PlayerTick(float DeltaTime)
 
 	if(startPulseTimer)
 	{
-		if(pulseTimer > 0)
+		if(hpulseTimer > 0)
 		{
-			pulseTimer -= DeltaTime;
+			hpulseTimer -= DeltaTime;
 		}else{
 			startPulseTimer = false;
 		}   
@@ -236,9 +236,9 @@ exec function makePulseCircle()
 // Activate the pulse ability and freezes the player
 exec function ActivatePulse()
 {
-	if(pulseTimer <= 0)
+	if(hpulseTimer <= 0)
 	{
-		pulseTimer = pulseCooldownTimer;
+		hpulseTimer = pulseCooldownTimer;
 		IgnoreInput(true);
 		pulseMade = true;
 		pulseRadius = 0.0f;
@@ -295,6 +295,8 @@ function SetAudioGroupVolume( name GroupName, float Volume )
 {
 	super.SetAudioGroupVolume( GroupName, Volume );
 }
+
+
 
 DefaultProperties
 {

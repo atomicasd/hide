@@ -267,7 +267,7 @@ state Chaseplayer
 state GoToSoundSpot
 {
 Begin:
-	aiPawn.SetAnimState(MS_Investigate);
+	aiPawn.SetAnimState(MS_Run);
 
 	Pawn.GroundSpeed = ChaseSpeed;
 	while(soundHeard)

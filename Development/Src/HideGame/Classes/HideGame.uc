@@ -143,12 +143,12 @@ state LevelCompleted
 
 function int getLevelNumber()
 {
-	local string        MapName;
+	local string        MapName0;
 	local int           MapNumber;
 	local array<string> MapArray;
 
-	MapName = WorldInfo.GetMapName();
-	MapArray = SplitString(MapName, "-");
+	MapName0 = WorldInfo.GetMapName();
+	MapArray = SplitString(MapName0, "-");
 
 	MapNumber = int(MapArray[1]);
 
