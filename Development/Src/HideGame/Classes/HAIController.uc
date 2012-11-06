@@ -171,6 +171,9 @@ state FollowPath
 		MoveTarget = MyNavigationPoints[actual_node];
 		if(Pawn.ReachedDestination(MoveTarget))
 		{
+			if( waitAtNode > 0 )
+				aiPawn.SetAnimState(MS_Idle);
+
 			if(waitCounter >= waitAtNode)
 			{
 				if( waitAtNode > 0 )
@@ -287,6 +290,7 @@ Begin:
 		if( Pawn.ReachedDestination( lastSoundSpot ) )
 		{
 			soundHeard = false;
+			aiPawn.SetAnimState(MS_Investigate);
 			Sleep(8);
 			GotoState('Idle');
 		}

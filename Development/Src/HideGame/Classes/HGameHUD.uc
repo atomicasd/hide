@@ -140,6 +140,7 @@ exec function FadeInHitEffect()
 
 exec function FadeOutHitEffect()
 {
+	`log("Fade out");
 	bFadeInHitEffect = false;
 	bFadeOutHitEffect = true;
 	HPlayerController( GetALocalPlayerController() ).DisablePulse();

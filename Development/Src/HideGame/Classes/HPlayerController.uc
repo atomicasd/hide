@@ -8,6 +8,8 @@ enum PlayerWalkingState
 	Run
 };
 
+var     HideGame    hGame;
+
 var     bool    bInEndOfLevel;
 var     bool    bChangedState;
 var     bool    bIgnoreInput;
@@ -163,7 +165,7 @@ function PlayerTick(float DeltaTime)
 					A.DensityComponent.StartDistance = pulseRadius;
 					ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
 					{
-						//B.MaxDensity = (pulseMaxRadius + 900) / ( pulseMaxRadius/5 * pulseRadius);
+						hGame.MakeMapSolid();
 						B.MaxDensity = 0.0f;
 						B.ForceUpdate(true);
 					}
@@ -248,18 +250,14 @@ exec function makePulseCircle()
 // Activate the pulse ability and freezes the player
 exec function ActivatePulse()
 {
-	if(hpulseTimer <= 0)
-//	{
-		hpulseTimer = pulseCooldownTimer;
-		IgnoreInput(true);
-		pulseMade = true;
-		pulseRadius = 0.0f;
-		pulseFadeOut = true;
-		fadeOutStart = 0.0f;
-		pulseDensity = 1.0f;
-		pulseFadedIn = false;
-//	}
-
+	hGame.MakeMapTransparent();
+	IgnoreInput(true);
+	pulseMade = true;
+	pulseRadius = 0.0f;
+	pulseFadeOut = true;
+	fadeOutStart = 0.0f;
+	pulseDensity = 1.0f;
+	pulseFadedIn = false;
 }
 
 // Disable the pulse effect, and starts the cooldown
