@@ -52,6 +52,12 @@ function OnSoundHeard( HSoundSpot spot )
 		GotoState('GoToSoundSpot');
 }
 
+function FeelPlayer()
+{
+	playerPawn = HPlayerController( GetALocalPlayerController() ).Pawn;
+	GotoState('ChasePlayer');
+}
+
 function SetAttacking(bool isAttacking)
 {
 	AttAcking = isAttacking;
@@ -116,13 +122,12 @@ Begin:
 	if(shouldFollowPath)
 	{
 		//Worldinfo.Game.Broadcast(self, "!!!!!!!  Going to FollowPath  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		followingPath = true;
-		actual_node = last_node;
-		GotoState('FollowPath');
-	} else 
-	{
-		Sleep(1);
-		goto 'Begin';
+		if(MyNavigationPoints.Length > 0 )
+		{
+			followingPath = true;
+			actual_node = last_node;
+			GotoState('FollowPath');
+		}
 	}
 }
 
@@ -158,6 +163,7 @@ state FollowPath
 
 	while(followingPath)
 	{
+		
 		if(MyNavigationPoints.Length <= 0)
 		{
 			followingPath = false;
@@ -188,6 +194,7 @@ state FollowPath
 		if (ActorReachable(MoveTarget)) 
 		{
 			MoveToward(MoveTarget, MoveTarget,,false);	
+			
 		}
 		else
 		{
@@ -216,7 +223,7 @@ state Chaseplayer
     Pawn.Acceleration = vect(0,0,1);
 	Pawn.GroundSpeed = ChaseSpeed;
 
-    if (Pawn != none && playerPawn.Health > 0)
+    if (playerPawn != none && playerPawn.Health > 0)
     {
 		//If we can directly reach the player
 		if ( ActorReachable(playerPawn) )

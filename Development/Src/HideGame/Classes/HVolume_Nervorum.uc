@@ -19,24 +19,7 @@ function PostBeginPlay()
  */
 function Touch(Actor Other, PrimitiveComponent OtherComp, vector HitLocation, Vector HitNomal)
 {
-	local HPawn_Player HP;
-	local HPlayerController HPC;
 
-	super.Touch(Other, OtherComp, HitLocation, HitNomal);
-
-	HP=HPawn_Player(Other);
-	HPC=HPlayerController(HP.Owner);
-
-	if(HP != None)
-	{
-		if(HPC != None)
-		{
-			if(HOwner != None)
-			{
-				HOwner.bTraceNerves = true;
-			}
-		}
-	}
 }
 
 /*
@@ -44,24 +27,7 @@ function Touch(Actor Other, PrimitiveComponent OtherComp, vector HitLocation, Ve
  */
 event UnTouch(Actor Other)
 {
-	local HPawn_Player HP;
-	local HPlayerController HPC;
 
-	super.UnTouch(Other);
-
-	HP=HPawn_Player(Other);
-	HPC=HPlayerController(HP.Owner);
-
-	if(HP != None)
-	{
-		if(HPC != None)
-		{
-			if(HOwner != None)
-			{
-				HOwner.bTraceNerves = false;
-			}
-		}
-	}
 }
 
 DefaultProperties

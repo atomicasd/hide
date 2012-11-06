@@ -26,6 +26,9 @@ var     float   pulseCooldownTimer;
 
 var     PlayerWalkingState          WalkState;
 
+var bool bFinishedGame;
+var float timeTillMainMenu;
+
 simulated event PostBeginPlay()
 {
 	local FogVolumeSphericalDensityInfo A;
@@ -215,6 +218,15 @@ function PlayerTick(float DeltaTime)
 			bChangedState=false;	
 		}
 	}
+
+	if(bFinishedGame)
+	{
+		timeTillMainMenu -= DeltaTime;
+		if( timeTillMainMenu <= 0.0)
+		{
+			ConsoleCommand( "Open HG-HideMenuMap" );
+		}
+	}
 	
 	//this line is not need if you add this code to PlayerController.uc
 	Super.PlayerTick(DeltaTime);
@@ -237,7 +249,7 @@ exec function makePulseCircle()
 exec function ActivatePulse()
 {
 	if(hpulseTimer <= 0)
-	{
+//	{
 		hpulseTimer = pulseCooldownTimer;
 		IgnoreInput(true);
 		pulseMade = true;
@@ -246,7 +258,8 @@ exec function ActivatePulse()
 		fadeOutStart = 0.0f;
 		pulseDensity = 1.0f;
 		pulseFadedIn = false;
-	}
+//	}
+
 }
 
 // Disable the pulse effect, and starts the cooldown
@@ -255,7 +268,7 @@ exec function DisablePulse()
 	IgnoreInput(false);
 	pulseFadeOut = false;
 	pulseFadedIn = true;
-	startPulseTimer = true;
+//	startPulseTimer = true;
 }
 
 // Ignores mouse and move input
@@ -274,6 +287,11 @@ function CheckJumpOrDuck()
 	}
 }
 
+function FinishGame()
+{
+	IgnoreInput(true);
+	bFinishedGame = true;
+}
 
 /**
  * Sound functions
@@ -312,5 +330,8 @@ DefaultProperties
 	pulseDensity = 1.0f;
 	pulseFadedIn = false;
 	pulseCooldownTimer = 5;
+
+	bFinishedGame = false;
+	timeTillMainMenu = 8.0f;
 }
 

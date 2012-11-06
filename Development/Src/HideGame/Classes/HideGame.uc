@@ -35,7 +35,7 @@ auto state SettingGame
 		{
 			OnCurrentLevel=MapName;
 		}
-
+		
 		bChangeStateToGameInProgress = true;
 
 		`Log("---------> MapName: " $WorldInfo.GetMapName());

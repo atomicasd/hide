@@ -58,7 +58,7 @@ event Tick(Float DeltaTime)
 
 	if( killPlayerOnTouch )
 	{
-		foreach self.OverlappingActors(class'HPawn_Player', victim, 40)
+		foreach self.OverlappingActors(class'HPawn_Player', victim, 50)
 		{
 			if(!bAttackSound){
 				PlayAttackSound();

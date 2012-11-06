@@ -64,7 +64,11 @@ function PlayTeleportEffect(bool bOut, bool bSound)
 
 exec function KillYourself()
 {
+	local HPlayerController PC;
+	PC = HPlayerController( GetALocalPlayerController() );
 	Suicide();
+	PC.DisablePulse();
+
 }
 
 /*
@@ -88,14 +92,6 @@ event Tick(float TimeDelta)
 	
 	soundBeacon.SetLocation(Location);
 	soundBeacon.Radius=soundRadius;
-
-	/*
-	foreach WorldInfo.AllActors(class'HNervorum_GroundNerve', Nerve)
-	{
-		if(Nerve.CheckCollision())
-			KillYourself();
-	}
-	*/
 	
 	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve,200)
 	{
@@ -107,6 +103,8 @@ event Tick(float TimeDelta)
 	}
 	
 	if( steppedOnNerve )
+
+
 	{
 		if( waitTillPull < 0.0 )
 		{
