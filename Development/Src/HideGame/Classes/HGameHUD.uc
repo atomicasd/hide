@@ -154,9 +154,4 @@ function DrawGameHud()
 DefaultProperties
 {
 	bFadeInHitEffect = false;
-	bShowWeaponbar = false;
-	bOnlyShowWeaponBarIfChanging = false;
-	bShowClock = false;
-	bShowDoll = false;
-	bShowScoring = false;
 }
