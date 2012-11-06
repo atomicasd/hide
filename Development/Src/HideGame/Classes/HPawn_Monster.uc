@@ -37,6 +37,7 @@ simulated function PostBeginPlay()
 	startingPosition = Location;
 	startingRotation = Rotation;
 
+	`log("lgo");
 
 	super.PostBeginPlay();
 }
@@ -70,6 +71,7 @@ event Tick(Float DeltaTime)
 			pCamera.FadeToBlack( 0.5 );
 		}
 	}
+	//`log("Location: " $Location);
 
 	if(MyController.GetStateName() == 'Idle')
 	{
@@ -85,16 +87,19 @@ event Tick(Float DeltaTime)
 // Resets the position of the monster and its default path
 event Reset()
 {
+	super.Reset();
 	MyController = HAIController(Controller);
+
+	`log("Location: " $Location);
 
 	SetLocation(startingPosition);
 	SetRotation(startingRotation);
 
+	`log("Location: " $Location);
+
 	MyController.actual_node = 0;
 	MyController.last_node = 0;
 	MyController.GotoState('Idle');
-
-	super.Reset();
 }
 
 /**
