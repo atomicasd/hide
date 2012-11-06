@@ -275,7 +275,7 @@ exec function DisablePulse()
 function IgnoreInput(bool bIgnore)
 {
 	bIgnoreInput = bIgnore;
-	ClientIgnoreLookInput(bIgnore);
+	//ClientIgnoreLookInput(bIgnore);
 	ClientIgnoreMoveInput(bIgnore);
 }
 
