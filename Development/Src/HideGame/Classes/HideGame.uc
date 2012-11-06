@@ -168,6 +168,7 @@ function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam 
 	foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
 	{
 		p.Reset();
+		`log("Reset");
 	}
 
 	return super.ChoosePlayerStart(Player, InTeam);

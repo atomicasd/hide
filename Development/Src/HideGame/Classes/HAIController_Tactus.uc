@@ -8,7 +8,7 @@ function Tick(float DeltaTime)
 
 	if(timer > 12)
 	{
-		HPawn_Tactus(Pawn).CreateBreathingSound();
+		//HPawn_Tactus(Pawn).CreateBreathingSound();
 		timer = 0;
 	}
 }
