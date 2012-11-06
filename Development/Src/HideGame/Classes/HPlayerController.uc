@@ -26,6 +26,9 @@ var     float   pulseCooldownTimer;
 
 var     PlayerWalkingState          WalkState;
 
+var bool bFinishedGame;
+var float timeTillMainMenu;
+
 simulated event PostBeginPlay()
 {
 	local FogVolumeSphericalDensityInfo A;
@@ -215,6 +218,15 @@ function PlayerTick(float DeltaTime)
 			bChangedState=false;	
 		}
 	}
+
+	if(bFinishedGame)
+	{
+		timeTillMainMenu -= DeltaTime;
+		if( timeTillMainMenu <= 0.0)
+		{
+			ConsoleCommand( "Open HG-HideMenuMap" );
+		}
+	}
 	
 	//this line is not need if you add this code to PlayerController.uc
 	Super.PlayerTick(DeltaTime);
@@ -275,6 +287,11 @@ function CheckJumpOrDuck()
 	}
 }
 
+function FinishGame()
+{
+	IgnoreInput(true);
+	bFinishedGame = true;
+}
 
 /**
  * Sound functions
@@ -310,5 +327,8 @@ DefaultProperties
 	pulseDensity = 1.0f;
 	pulseFadedIn = false;
 	pulseCooldownTimer = 5;
+
+	bFinishedGame = false;
+	timeTillMainMenu = 8.0f;
 }
 

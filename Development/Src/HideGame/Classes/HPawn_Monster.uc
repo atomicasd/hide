@@ -49,7 +49,7 @@ function Tick(Float Delta)
 	local HCamera pCamera;
 	if( killPlayerOnTouch )
 	{
-		foreach self.OverlappingActors(class'HPawn_Player', victim, 40)
+		foreach self.OverlappingActors(class'HPawn_Player', victim, 50)
 		{
 			victim.KillYourself();
 			pCamera = HCamera( HPlayerController( GetALocalPlayerController() ).PlayerCamera);
