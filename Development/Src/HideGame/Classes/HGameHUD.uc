@@ -4,6 +4,7 @@ var HPauseMenu PauseMenu;
 
 var bool bFadeInHitEffect;
 
+
 exec function ShowMenu()
 {
 	// if using GFx HUD, use GFx pause menu
@@ -41,7 +42,6 @@ function TogglePauseMenu()
  */
 function NotifyBindPostProcessEffects()
 {
-	local Vector dir;
 	// create hit effect material instance
 	HitEffect = MaterialEffect(LocalPlayer(PlayerOwner.Player).PlayerPostProcess.FindPostProcessEffect('HitEffect'));
 	if (HitEffect != None)
@@ -154,9 +154,4 @@ function DrawGameHud()
 DefaultProperties
 {
 	bFadeInHitEffect = false;
-	bShowWeaponbar = false;
-	bOnlyShowWeaponBarIfChanging = false;
-	bShowClock = false;
-	bShowDoll = false;
-	bShowScoring = false;
 }

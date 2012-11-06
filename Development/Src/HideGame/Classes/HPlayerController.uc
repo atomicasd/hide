@@ -21,7 +21,7 @@ var     float	pulseRadius;
 var     float   fadeOutStart;
 var     float   pulseTime;
 var     float   pulseDensity;
-var     float   pulseTimer;
+var     float   HpulseTimer;
 var     bool    pulseFadedIn;
 var     bool    startPulseTimer;
 var     float   pulseCooldownTimer;
@@ -190,9 +190,9 @@ function PlayerTick(float DeltaTime)
 
 	if(startPulseTimer)
 	{
-		if(pulseTimer > 0)
+		if(hpulseTimer > 0)
 		{
-			pulseTimer -= DeltaTime;
+			hpulseTimer -= DeltaTime;
 		}else{
 			startPulseTimer = false;
 		}   
@@ -312,10 +312,13 @@ function SetAudioGroupVolume( name GroupName, float Volume )
 	super.SetAudioGroupVolume( GroupName, Volume );
 }
 
+
+
 DefaultProperties
 {
 	InputClass = class'HideGame.HPlayerInput';
 	CameraClass = class'HCamera';
+	
 	pulseMade = false;
 	pulseMaxRadius = 1000;
 	pulseRadius = 1;

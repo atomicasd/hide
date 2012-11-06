@@ -2,10 +2,10 @@ class HPawn_Obesus extends HPawn_Monster
 	placeable;
 
 // Character info
-var HFamilyInfo_Obesus                  CharacterInfo;
-
+var HFamilyInfo_Obesus      CharacterInfo;
+     
 // Sound
-var HSoundGroup_Obesus                  HSoundGroup;
+var HSoundGroup_Obesus      HSoundGroup;
 
 simulated function PostBeginPlay()
 {
@@ -22,25 +22,30 @@ simulated function PostBeginPlay()
 	// Sets soundgroup
 	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
 
+	addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing01_Cue');
+	addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing02_Cue');
+	addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing03_Cue');
+	addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing04_Cue');
+
+	// Sound
+	playIdleSound();
+
 	super.PostBeginPlay();
 }
 
 /**
  * Sound functions
  */
-function CreateAttackSound()
-{
-	HPlaySoundEffect(HSoundGroup.static.getAttackSounds());
-}
-
-function CreateBreathingSound()
-{
-	HPlaySoundEffect(HSoundGroup.static.getBreathingSound());
-}
 
 function CreateInvestigateSound()
 {
 	HPlaySoundEffect(HSoundGroup.static.getInvestigateSounds());
+}
+
+simulated function PlayAttackSound()
+{
+	`log("Attack-uu!");
+	HPlaySoundEffect(HSoundGroup.static.getAttackSounds());
 }
 
 DefaultProperties
@@ -49,7 +54,7 @@ DefaultProperties
 	HCharacterInfo = class'HideGame.HFamilyInfo_Obesus'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh=SkeletalMesh'MonsterPackage.ObesusRiggedQuick'
+		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_Monsters_Obesus_SkeletalMesh01'
 		HiddenGame=true
 	End Object
 	

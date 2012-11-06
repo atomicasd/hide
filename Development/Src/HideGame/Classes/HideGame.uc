@@ -145,12 +145,12 @@ state LevelCompleted
 
 function int getLevelNumber()
 {
-	local string        MapName;
+	local string        MapName0;
 	local int           MapNumber;
 	local array<string> MapArray;
 
-	MapName = WorldInfo.GetMapName();
-	MapArray = SplitString(MapName, "-");
+	MapName0 = WorldInfo.GetMapName();
+	MapArray = SplitString(MapName0, "-");
 
 	MapNumber = int(MapArray[1]);
 
@@ -260,7 +260,6 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
 
     matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
     oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
-
     matName = matApp.Name;
 	packageName = matApp.GetPackageName();
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 

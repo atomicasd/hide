@@ -159,11 +159,10 @@ state FollowPath
 
  Begin:
 
-	aiPawn.SetAnimState(MS_Walk);
+	
 
 	while(followingPath)
 	{
-		
 		if(MyNavigationPoints.Length <= 0)
 		{
 			followingPath = false;
@@ -177,6 +176,9 @@ state FollowPath
 
 			if(waitCounter >= waitAtNode)
 			{
+				if( waitAtNode > 0 )
+					aiPawn.SetAnimState(MS_Walk);
+
 				actual_node++;
 
 				if (actual_node >= MyNavigationPoints.Length)
@@ -197,11 +199,12 @@ state FollowPath
 		if (ActorReachable(MoveTarget)) 
 		{
 			MoveToward(MoveTarget, MoveTarget,,false);	
-			
+			aiPawn.SetAnimState(MS_Idle);
 		}
 		else
 		{
 			MoveTo( MoveTarget.Location );
+			aiPawn.SetAnimState(MS_Idle);
 			/*`log("Finding path towards");
 			MoveTarget = FindPathToward(MyNavigationPoints[actual_node]);
 			if (MoveTarget != none)
@@ -277,7 +280,7 @@ state Chaseplayer
 state GoToSoundSpot
 {
 Begin:
-	aiPawn.SetAnimState(MS_Investigate);
+	aiPawn.SetAnimState(MS_Run);
 
 	Pawn.GroundSpeed = ChaseSpeed;
 	while(soundHeard)

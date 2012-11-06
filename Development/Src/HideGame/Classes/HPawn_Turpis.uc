@@ -21,6 +21,7 @@ simulated function PostBeginPlay()
 
 	// Sound
 	HSoundGroup = HSoundGroup_Turpis(new SoundGroupClass);
+	addIdleSound(SoundCue'SoundPackage.Enviroment.Silence_Cue');
 
 	super.PostBeginPlay();
 }
@@ -39,12 +40,12 @@ DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Turpis';
 	HCharacterInfo = class'HideGame.HFamilyInfo_Turpis'
-	
+
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh=SkeletalMesh'MonsterPackage.TurpisRiggedQuick'
+		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Turpis_SkeletalMesh02'
 		HiddenGame=true
 	End Object
-
+	
 	NPCMesh=NPCMesh0
 	Components.Add(NPCMesh0)
 

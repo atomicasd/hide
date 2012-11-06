@@ -11,6 +11,11 @@ var     AnimNodeSequence        MyAnimPlayControl;
 // Animation
 var array<HAnimBlend_Monster>   HAnimBlend;
 
+// Sound
+var array<SoundCue>             IdleSounds;
+var AudioComponent              IdleSound;
+var bool                        bAttackSound;
+
 // Variables
 var     bool                    AttAcking;
 var     bool                    bplayed;
@@ -28,8 +33,11 @@ var     bool        killPlayerOnTouch;
 
 simulated function PostBeginPlay()
 {
+	// Default position
 	startingPosition = Location;
 	startingRotation = Rotation;
+
+
 	super.PostBeginPlay();
 }
 
@@ -43,17 +51,32 @@ function SetAttacking(bool atacar)
 	AttAcking = atacar;
 }
 
-function Tick(Float Delta)
+event Tick(Float DeltaTime)
 {
 	local HPawn_Player victim;
 	local HCamera pCamera;
+
 	if( killPlayerOnTouch )
 	{
 		foreach self.OverlappingActors(class'HPawn_Player', victim, 50)
 		{
+			if(!bAttackSound){
+				PlayAttackSound();
+				bAttackSound=true;
+			}
 			victim.KillYourself();
+
 			pCamera = HCamera( HPlayerController( GetALocalPlayerController() ).PlayerCamera);
 			pCamera.FadeToBlack( 0.5 );
+		}
+	}
+
+	if(MyController.GetStateName() == 'Idle')
+	{
+		if(!IdleSound.IsPlaying())
+		{
+			playIdleSound();
+			bAttackSound=false;
 		}
 	}
 }
@@ -63,14 +86,16 @@ function Tick(Float Delta)
 event Reset()
 {
 	MyController = HAIController(Controller);
+
 	SetLocation(startingPosition);
 	SetRotation(startingRotation);
+
 	MyController.actual_node = 0;
 	MyController.last_node = 0;
 	MyController.GotoState('Idle');
+
 	super.Reset();
 }
-
 
 /**
  * Animation
@@ -103,12 +128,66 @@ simulated event SetAnimState(MonsterState stateAnimType)
 	}
 }
 
+/**
+ * Sound functions
+ **/
+function playIdleSound()
+{
+	if(IdleSound == None)
+		newIdleSound(getIdleSound());
+	else
+		IdleSound.SoundCue = getIdleSound();
+
+	IdleSound.Play();
+}
+
+function stopIdleSound()
+{
+	if(IdleSound != None)
+		IdleSound.Stop();
+	`log("Stop sound");
+}
+
+function newIdleSound(SoundCue Sound)
+{
+	IdleSound = CreateAudioComponent(Sound, false, false, true,, true);
+}
+
+/**
+ * Sound list
+ */
+function SoundCue getIdleSound()
+{
+	local int i;
+
+	i = rand(IdleSounds.Length);
+
+	return IdleSounds[i];
+}
+
+function addIdleSound(SoundCue Sound)
+{
+	IdleSounds.AddItem(Sound);
+	`log("Sound length: " $IdleSounds.Length);
+}
+
+/**
+ * Spesific sound
+ */
+function HPlaySoundEffect(SoundCue SoundToPlay)
+{
+	IdleSound.Stop();
+
+	super.HPlaySoundEffect(SoundToPlay);
+}
+
+simulated function PlayAttackSound()
+{
+	//HPlaySoundEffect(HSoundGroup.static.getAttackSounds());
+}
+
 DefaultProperties
 {
-    Begin Object Name=CollisionCylinder
-        CollisionHeight=+44.000000
-    End Object
-	
     bJumpCapable=false
     bCanJump=false
  
