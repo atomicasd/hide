@@ -4,6 +4,9 @@ var HPlayerController HPlayer;
 
 var GFxClikWidget  newGameBtn;
 var GFxClikWidget  exitBtn;
+var GFxClikWidget  lvl1Btn;
+var GFxClikWidget  lvl2Btn;
+var GFxClikWidget  brightnessSlider;
 var class<AudioComponent> Hmusic;
 var AudioComponent MenuMusic;
 
@@ -25,14 +28,26 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 	
 	switch( WidgetName )
 	{
-	case ( 'newGameBtn' ):
+	case ( 'btn_newgame' ):
 		newGameBtn = GFxClikWidget( Widget );
 		newGameBtn.AddEventListener( 'CLIK_press', onNewGameButtonPress );
 		HPlayer.IgnoreInput(false);
 		break;
-	case ( 'exitBtn' ):
+	case ( 'btn_exitgame' ):
 		exitBtn = GFxClikWidget( Widget );
 		exitBtn.AddEventListener( 'CLIK_press', onExitButtonPress );
+		break;
+	case ( 'btn_level1' ):
+		lvl1Btn = GFxClikWidget( Widget );
+		lvl1Btn.AddEventListener( 'CLIK_press', onLvl1ButtonPress );
+		break;
+	case ( 'btn_level2' ):
+		lvl2Btn = GFxClikWidget( Widget );
+		lvl2Btn.AddEventListener( 'CLIK_press', onLvl2ButtonPress );
+		break;
+	case ( 'slider_brightness' ):
+		brightnessSlider = GFxClikWidget( Widget );
+		brightnessSlider.AddEventListener( 'CLIK_valueChange', onBrightnessSlider );
 		break;
 	default:
 		break;
@@ -46,8 +61,25 @@ function onExitButtonPress( GFxClikWidget.EventData ev )
 }
 function onNewGameButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open HG-Lvl-1" );
+	ConsoleCommand( "Open HG-Lvl01" );
 }
+
+function onLvl1ButtonPress( GFxClikWidget.EventData ev )
+{
+	ConsoleCommand( "Open HG-Lvl01" );
+}
+
+function onLvl2ButtonPress( GFxClikWidget.EventData ev )
+{
+	ConsoleCommand( "Open HG-Lvl02" );
+}
+
+function onBrightnessSlider( GFxClikWidget.EventData ev )
+{
+	`log("yes");
+	//ConsoleCommand( "Open HG-Lvl02" );
+}
+
 
 /*
 final function ConsoleCommand( string Cmd, optional bool bWriteToLog )
@@ -60,8 +92,11 @@ final function ConsoleCommand( string Cmd, optional bool bWriteToLog )
 
 DefaultProperties
 {
-	WidgetBindings.Add( ( WidgetName="newGameBtn", WidgetClass=class'GFxClikWidget' ) )
-	WidgetBindings.Add( ( WidgetName="exitBtn", WidgetClass=class'GFxClikWidget' ) )
-
+	WidgetBindings.Add( ( WidgetName="btn_newgame", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_exitgame", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_level1", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_level2", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="slider_brightness", WidgetClass=class'GFxClikWidget' ) )
+	bCaptureInput = true;
 	Hmusic = class'AudioComponent'
 }
