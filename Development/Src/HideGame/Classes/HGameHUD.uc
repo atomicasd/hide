@@ -42,7 +42,6 @@ function TogglePauseMenu()
  */
 function NotifyBindPostProcessEffects()
 {
-	local Vector dir;
 	// create hit effect material instance
 	HitEffect = MaterialEffect(LocalPlayer(PlayerOwner.Player).PlayerPostProcess.FindPostProcessEffect('HitEffect'));
 	if (HitEffect != None)

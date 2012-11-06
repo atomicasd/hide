@@ -255,7 +255,6 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
 
     matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
     oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
-	matApp.GetGroupName(
     matName = matApp.Name;  
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 
     //ENG: my package containing the base materials (shader_base/shader_base_translucent) 
