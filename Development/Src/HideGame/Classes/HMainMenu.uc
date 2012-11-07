@@ -3,6 +3,7 @@ class HMainMenu extends GFxMoviePlayer;
 var HPlayerController HPlayer;
 
 var GFxClikWidget  newGameBtn;
+var GFxClikWidget  continueBtn;
 var GFxClikWidget  exitBtn;
 var GFxClikWidget  lvl1Btn;
 var GFxClikWidget  lvl2Btn;
@@ -28,10 +29,14 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 	
 	switch( WidgetName )
 	{
-	case ( 'btn_newgame' ):
+	case ( 'btn_newgame'):
 		newGameBtn = GFxClikWidget( Widget );
 		newGameBtn.AddEventListener( 'CLIK_press', onNewGameButtonPress );
-		HPlayer.IgnoreInput(false);
+		
+		break;
+	case ( 'btn_newgame'):
+		continueBtn = GFxClikWidget( Widget );
+		continueBtn.AddEventListener( 'CLIK_press', onNewGameButtonPress );
 		break;
 	case ( 'btn_exitgame' ):
 		exitBtn = GFxClikWidget( Widget );
@@ -44,6 +49,7 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 	case ( 'btn_level2' ):
 		lvl2Btn = GFxClikWidget( Widget );
 		lvl2Btn.AddEventListener( 'CLIK_press', onLvl2ButtonPress );
+	
 		break;
 	case ( 'slider_brightness' ):
 		brightnessSlider = GFxClikWidget( Widget );
@@ -61,20 +67,32 @@ function onExitButtonPress( GFxClikWidget.EventData ev )
 }
 function onNewGameButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open HG-Lvl01" );
+	ConsoleCommand( "Open HG-Lvl-1" );
 }
 
 function onLvl1ButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open HG-Lvl01" );
+	ConsoleCommand( "Open HG-Lvl-1" );
 }
 
 function onLvl2ButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open HG-Lvl02" );
+	ConsoleCommand( "Open HG-Lvl-2" );
 }
 
 function onBrightnessSlider( GFxClikWidget.EventData ev )
+{
+	`log("yes");
+	//ConsoleCommand( "Open HG-Lvl02" );
+}
+
+function onAmbientSliderChanged( GFxClikWidget.EventData ev )
+{
+	`log("yes");
+	//ConsoleCommand( "Open HG-Lvl02" );
+}
+
+function onEffectSliderChanged( GFxClikWidget.EventData ev )
 {
 	`log("yes");
 	//ConsoleCommand( "Open HG-Lvl02" );
@@ -93,6 +111,7 @@ final function ConsoleCommand( string Cmd, optional bool bWriteToLog )
 DefaultProperties
 {
 	WidgetBindings.Add( ( WidgetName="btn_newgame", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_continue", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_exitgame", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_level1", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_level2", WidgetClass=class'GFxClikWidget' ) )

@@ -12,6 +12,7 @@ var bool followingPlayer;
 simulated function PostBeginPlay()
 {
 	SetPhysics(PHYS_Walking);
+	
 	if(ControllerClass == none)
 	{
 		//set the existing ControllerClass to our new NPCController class
@@ -23,7 +24,7 @@ simulated function PostBeginPlay()
 
 	// Sets soundgroup
 	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
-
+	
 	super.PostBeginPlay();
 }
 

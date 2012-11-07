@@ -159,8 +159,6 @@ state FollowPath
 
  Begin:
 
-	
-
 	while(followingPath)
 	{
 		if(MyNavigationPoints.Length <= 0)

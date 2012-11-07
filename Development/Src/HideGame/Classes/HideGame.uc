@@ -21,6 +21,8 @@ var         float                   mapOpacity;
 var         HPlayerController       HPlayer;
 var         bool                    bChangeStateToGameInProgress;
 
+var HGameHud hHud;
+
 auto state SettingGame
 {
 	function BeginState(name PreviousStateName)
@@ -51,6 +53,7 @@ auto state SettingGame
 	{
 	}
 }
+
 
 state GameInProgress
 {
@@ -269,6 +272,9 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
 	if( string(matName) == "Lvl02_Material")
 	{
 		matGroupName = name("Lvl02");
+	} else if ( string(matName) == "Lvl01_Material") 
+	{
+		matGroupName = name("lvl01");
 	}
 	else
 	{
@@ -328,6 +334,9 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 	if( string(matName) == "Lvl02_Material_Translucent")
 	{
 		matGroupName = name("Lvl02");
+	} else if ( string(matName) == "Lvl01_Material_Translucent") 
+	{
+		matGroupName = name("lvl01");
 	}
 	else
 	{
@@ -359,6 +368,13 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 	
 
     return matInstanceConstant; 
+}
+
+function ShowFinishGamePicture()
+{
+	
+	hHud.ShowFinishGamePicture();
+	
 }
 
 

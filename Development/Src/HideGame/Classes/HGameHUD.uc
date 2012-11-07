@@ -4,7 +4,11 @@ var HPauseMenu PauseMenu;
 
 var bool bFadeInHitEffect;
 
+var bool bShowFinishGamePicture;
 
+var CanvasIcon thankYouPicture;
+
+var HideGame hGame;
 exec function ShowMenu()
 {
 	// if using GFx HUD, use GFx pause menu
@@ -15,7 +19,7 @@ function TogglePauseMenu()
 {
     if ( PauseMenu != none && PauseMenu.bMovieIsOpen )
 	{
-          PauseMenu.ClosePauseMenu();
+          //PauseMenu.ClosePauseMenu();
 	}
     else
     {
@@ -24,7 +28,7 @@ function TogglePauseMenu()
         if (PauseMenuMovie == None)
         {
             PauseMenu = new class'HPauseMenu';
-            PauseMenu.MovieInfo = SwfMovie'MenuPackage.PauseMenu';
+            PauseMenu.MovieInfo = SwfMovie'MenuPackage.HPauseMenu';
             PauseMenu.bEnableGammaCorrection = FALSE;
             PauseMenu.LocalPlayerOwnerIndex = class'Engine'.static.GetEngine().GamePlayers.Find(LocalPlayer(PlayerOwner.Player));
             PauseMenu.SetTimingMode(TM_Real);
@@ -61,6 +65,13 @@ function NotifyBindPostProcessEffects()
 		HitEffect.bShowInGame = false;
 	}
 	
+}
+
+function Tick(float DeltaTime)
+{
+	hGame = HPlayerController( GetALocalPlayerController() ).hGame;
+	hGame.hHud = self;
+	super.Tick( DeltaTime );
 }
 
 /**
@@ -146,12 +157,59 @@ exec function FadeOutHitEffect()
 	HPlayerController( GetALocalPlayerController() ).DisablePulse();
 }
 
+final function DrawIconStretched(CanvasIcon Icon, float X, float Y, optional float ScaleX, optional float ScaleY)
+{
+   if (Icon.Texture != None)
+   {
+		
+      // verify properties are valid
+      if (ScaleX <= 0.f)
+      {
+         ScaleX = ViewX/1920.0f;
+		 
+      }
+
+      if (ScaleY <= 0.f)
+      {
+         ScaleY = ViewY/1080.0f;
+      }
+
+      if (Icon.UL == 0.f)
+      {
+         Icon.UL = Icon.Texture.GetSurfaceWidth();
+      }
+
+      if (Icon.VL == 0.f)
+      {
+         Icon.VL = Icon.Texture.GetSurfaceHeight();
+      }
+
+      // set the canvas position
+      Canvas.SetPos(X, Y);
+
+      // and draw the texture
+      Canvas.DrawTileStretched(Icon.Texture, Abs(Icon.UL) * ScaleX, Abs(Icon.VL) * ScaleY,
+                           Icon.U, Icon.V, Icon.UL, Icon.VL,, true, true);
+   }
+}
+
 function DrawGameHud()
 {
+	if(bShowFinishGamePicture)
+	{
+		DrawIconStretched( thankYouPicture, 0, 0, );
+	}
 	UpdateDamage();
+}
+
+function ShowFinishGamePicture()
+{
+	bShowFinishGamePicture = true;
 }
 
 DefaultProperties
 {
 	bFadeInHitEffect = false;
+	bShowFinishGamePicture = false;
+	thankYouPicture = (Texture=Texture2D'MenuPackage.thankyou')
 }

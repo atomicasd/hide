@@ -169,6 +169,7 @@ defaultproperties
 	
 	GroundSpeed=200.0
 	CrouchHeight=40
+	AirSpeed = 1;
 	CrouchedPct=+0.65
 	bStatic = false
 	bNoDelete = false

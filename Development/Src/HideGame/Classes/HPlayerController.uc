@@ -287,6 +287,7 @@ function CheckJumpOrDuck()
 
 function FinishGame()
 {
+	hGame.ShowFinishGamePicture();
 	IgnoreInput(true);
 	bFinishedGame = true;
 }

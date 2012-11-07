@@ -1,7 +1,7 @@
 class HPauseMenu extends GFxMoviePlayer;
 
 //var GFxObject  PauseMC;
-var GFxClikWidget pmResume, pmRestart, pmOptions, pmControls, pmMainMenu;
+var GFxClikWidget pmRestart, pmMainMenu, pmExit;
 
 
 var bool bRollOver;
@@ -13,7 +13,7 @@ function bool Start(optional bool StartPaused = false)
     Advance(0);
 	//AddCaptureKey('Enter');
 	//AddCaptureKey('Space');
-	AddFocusIgnoreKey('Escape');
+	//AddFocusIgnoreKey('Escape');
 	
     return TRUE;
 }
@@ -22,13 +22,17 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 {
 	switch(WidgetName)
 	{
-		case ('btn_resume'):
-			pmResume = GFxClikWidget(Widget);
-			pmResume.AddEventListener( 'CLIK_press', onResumeButtonPress );
+		case ('btn_restartLevel'):
+			pmRestart = GFxClikWidget(Widget);
+			pmRestart.AddEventListener( 'CLIK_press', onRestartButtonPress );
 			break;
-		case ('btn_exitToMainMenu'):
-			pmResume = GFxClikWidget(Widget);
-			pmResume.AddEventListener( 'CLIK_press', onExitButtonPress );
+		case ('btn_quitToMenu'):
+			pmMainMenu = GFxClikWidget(Widget);
+			pmMainMenu.AddEventListener( 'CLIK_press', onMenuButtonPress );
+			break;
+		case ('btn_exitgame'):
+			pmExit = GFxClikWidget(Widget);
+			pmExit.AddEventListener( 'CLIK_press', onExitButtonPress );
 			break;
 		Default:
 			break;
@@ -36,15 +40,21 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 	return true;
 }
 
-function onResumeButtonPress( GFxClikWidget.EventData ev )
+function onRestartButtonPress( GFxClikWidget.EventData ev )
 {
-	ClosePauseMenu();
+	ConsoleCommand( "RestartLevel" );
+}
+
+function onMenuButtonPress( GFxClikWidget.EventData ev )
+{
+	ConsoleCommand( "Open HG-HideMenuMap" );
 }
 
 function onExitButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open HG-HideMenuMap" );
+	ConsoleCommand( "quit" );
 }
+
 
 function ClosePauseMenu()
 {
@@ -53,12 +63,13 @@ function ClosePauseMenu()
 
 defaultproperties
 {
-	
+	bShowHardwareMouseCursor = true;
     bEnableGammaCorrection=FALSE
 	bIgnoreMouseInput = false
 	bPauseGameWhileActive = true;
 	bCaptureInput = true;
-	WidgetBindings.Add( ( WidgetName="btn_resume", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_restartLevel", WidgetClass=class'GFxClikWidget' ) )
 
-	WidgetBindings.Add( ( WidgetName="btn_exitToMainMenu", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_quitToMenu", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_exitgame", WidgetClass=class'GFxClikWidget' ) )
 }
