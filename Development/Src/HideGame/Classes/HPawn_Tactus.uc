@@ -21,6 +21,9 @@ simulated function PostBeginPlay()
 	
 	// Setting PlayerInfo
 	HSetCharacterClassFromInfo(class'HFamilyInfo_Tactus');
+	addIdleSound(SoundCue'SoundPackage.tactus.tactusHeavyBreathing01_Cue');
+	addIdleSound(SoundCue'SoundPackage.tactus.tactusHeavyBreathing02_Cue');
+	addIdleSound(SoundCue'SoundPackage.tactus.tactusHeavyBreathing03_Cue');
 
 	// Sets soundgroup
 	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
@@ -65,7 +68,7 @@ DefaultProperties
 	HCharacterInfo = class'HideGame.HFamilyInfo_Tactus'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Obesus_SkeletalMesh01'
+		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Tactus_SkeletalMesh01'
 		HiddenGame=true
 	End Object
 	followingPlayer = false;

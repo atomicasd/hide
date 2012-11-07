@@ -40,4 +40,5 @@ static function SoundCue getAttackSounds()
 
 DefaultProperties
 {
+
 }

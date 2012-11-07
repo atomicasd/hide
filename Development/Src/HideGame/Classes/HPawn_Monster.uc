@@ -37,8 +37,6 @@ simulated function PostBeginPlay()
 	startingPosition = Location;
 	startingRotation = Rotation;
 
-	`log("lgo");
-
 	super.PostBeginPlay();
 }
 
@@ -90,12 +88,12 @@ event Reset()
 	super.Reset();
 	MyController = HAIController(Controller);
 
-	`log("Location: " $Location);
+	`log("Location: " $startingRotation);
 
 	SetLocation(startingPosition);
 	SetRotation(startingRotation);
 
-	`log("Location: " $Location);
+	`log("Location: " $Rotation);
 
 	MyController.actual_node = 0;
 	MyController.last_node = 0;

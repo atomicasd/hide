@@ -24,6 +24,10 @@ DefaultProperties
 	HFootstepSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.obesus.obesusStep02_Cue');
 	HFootstepSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.obesus.obesusStep03_Cue');
 
+	HSneakFootstepSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.obesus.obesusStep01_Cue');
+	HSneakFootstepSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.obesus.obesusStep01_Cue');
+	HSneakFootstepSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.obesus.obesusStep01_Cue');
+
 	HAttackSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.obesus.obesusAttack01_Cue');
 	HAttackSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.obesus.obesusAttack02_Cue');
 	HAttackSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.obesus.obesusAttack03_Cue');

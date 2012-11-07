@@ -40,6 +40,7 @@ DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Turpis';
 	HCharacterInfo = class'HideGame.HFamilyInfo_Turpis'
+	SoundGroupClass = class'HideGame.HSoundGroup_Turpis'
 
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
 		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Turpis_SkeletalMesh02'
