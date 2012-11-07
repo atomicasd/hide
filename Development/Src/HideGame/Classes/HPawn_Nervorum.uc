@@ -107,7 +107,7 @@ DefaultProperties
 	HCharacterInfo = class'HideGame.HFamilyInfo_Nervorum'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Obesus_SkeletalMesh01'
+		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Nervorum_Skeletal001'
 		HiddenGame=true
 	End Object
 

@@ -7,8 +7,8 @@ DefaultProperties
 	
 	// Mesh and physical assets
 	PhysAsset = PhysicsAsset'CH_AnimCorrupt.Mesh.SK_CH_Corrupt_Male_Physics'
-	CharacterMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Obesus_SkeletalMesh01'
+	CharacterMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Nervorum_Skeletal001'
 	// Animation asstes
-	HAnimSet(0) = AnimSet'MonsterPackage.Anims.ObesusAnims'
-	HAnimTreeTemplate = AnimTree'MonsterPackage.Anims.ObesusAnimTree'
+	HAnimSet(0) = AnimSet'MonsterPackage.Anims.NervorumAnimFinal'
+	HAnimTreeTemplate = AnimTree'MonsterPackage.Anims.NervorumAnimTree'
 }
