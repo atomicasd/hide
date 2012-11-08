@@ -61,17 +61,17 @@ function onExitButtonPress( GFxClikWidget.EventData ev )
 }
 function onNewGameButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open HG-Lvl01" );
+	ConsoleCommand( "Open HG-Lvl-1" );
 }
 
 function onLvl1ButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open HG-Lvl01" );
+	ConsoleCommand( "Open HG-Lvl-1" );
 }
 
 function onLvl2ButtonPress( GFxClikWidget.EventData ev )
 {
-	ConsoleCommand( "Open HG-Lvl02" );
+	ConsoleCommand( "Open HG-Lvl-2" );
 }
 
 function onBrightnessSlider( GFxClikWidget.EventData ev )

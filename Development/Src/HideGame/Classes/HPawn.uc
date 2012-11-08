@@ -2,7 +2,6 @@ class HPawn extends UTPawn;
 
 var     class<HFamilyInfo_Character>  HCharacterInfo;
 var     HPlayerController   HPlayer;
-var(NPC)    SkeletalMeshComponent   NPCMesh;
 
 simulated function PostBeginPlay()
 {

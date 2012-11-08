@@ -66,13 +66,40 @@ DefaultProperties
 	ControllerClass = class'HideGame.HAIController_Tactus'
 	HCharacterInfo = class'HideGame.HFamilyInfo_Tactus'
 	
-	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Tactus_SkeletalMesh01'
-		HiddenGame=true
+	Components.Remove(WPawnSkeletalMeshComponent)
+
+	Begin Object Class=SkeletalMeshComponent Name=WPawnSkeletalMeshComponent0
+		bCacheAnimSequenceNodes=FALSE
+		AlwaysLoadOnClient=true
+		AlwaysLoadOnServer=true
+		bOwnerNoSee=true
+		CastShadow=true
+		BlockRigidBody=TRUE
+		bUpdateSkelWhenNotRendered=false
+		bIgnoreControllersWhenNotRendered=TRUE
+		bUpdateKinematicBonesFromAnimation=true
+		bCastDynamicShadow=true
+		RBChannel=RBCC_Untitled3
+		RBCollideWithChannels=(Untitled3=true)
+		LightEnvironment=MyLightEnvironment
+		bOverrideAttachmentOwnerVisibility=true
+		bAcceptsDynamicDecals=FALSE
+		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_Monsters_Tactus_SkeletalMesh01'
+		HiddenEditor=false
+		bHasPhysicsAssetInstance=true
+		TickGroup=TG_PreAsyncWork
+		MinDistFactorForKinematicUpdate=0.2
+		bChartDistanceFactor=true
+		//bSkipAllUpdateWhenPhysicsAsleep=TRUE
+		RBDominanceGroup=1
+		// Nice lighting for hair
+		bUseOnePassLightingOnTranslucency=TRUE
+		bPerBoneMotionBlur=true
 	End Object
+	Mesh=WPawnSkeletalMeshComponent0
+	Components.Add(WPawnSkeletalMeshComponent0)
+
 	followingPlayer = false;
-	NPCMesh=NPCMesh0
-	Components.Add(NPCMesh0)
 
 }
 

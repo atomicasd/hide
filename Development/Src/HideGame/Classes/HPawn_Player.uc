@@ -161,11 +161,13 @@ defaultproperties
 	InventoryManagerClass = None
 	HCharacterInfo = class'HideGame.HFamilyInfo_Player'
 
+	/*
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
 		HiddenGame=true
 	End Object
 
 	Components.Add(NPCMesh0);
+	*/
 	
 	GroundSpeed=200.0
 	CrouchHeight=40
