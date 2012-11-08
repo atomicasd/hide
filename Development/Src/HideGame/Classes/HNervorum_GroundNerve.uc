@@ -43,7 +43,6 @@ function findChildNerves()
 	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve, 30)
 	{
 		if(!nerve.bAlreadyOwned){
-			`log("---->Adding childnerve<-----");
 			nerve.bAlreadyOwned = true;
 			nerve.nervorumOwnedBy = nervorumOwnedBy;
 			nerve.findChildNerves();
@@ -85,7 +84,6 @@ function bool CheckCollision()
 	foreach TraceActors(class'HPawn_Player', HitActor, HitLoc, 
                         HitNorm, Location2, Location1, ,hitInfo)
 	{
-		
 		return true;
 	}
 
@@ -95,9 +93,10 @@ function bool CheckCollision()
 DefaultProperties
 {
 	Begin Object Class=SkeletalMeshComponent Name=Mesh01
-		SkeletalMesh=SkeletalMesh'MonsterPackage.NerveBox'
+		SkeletalMesh=SkeletalMesh'MonsterPackage.nerve'
 		BlockActors=true
 		CollideActors=true
+		Scale3D=(X=0.009143,Y=0.009143,Z=0.009143)
 	End Object
 
 	bAlreadyOwned = false

@@ -52,6 +52,12 @@ function OnSoundHeard( HSoundSpot spot )
 		GotoState('GoToSoundSpot');
 }
 
+function FeelPlayer()
+{
+	playerPawn = HPlayerController( GetALocalPlayerController() ).Pawn;
+	GotoState('ChasePlayer');
+}
+
 function SetAttacking(bool isAttacking)
 {
 	AttAcking = isAttacking;
@@ -116,13 +122,12 @@ Begin:
 	if(shouldFollowPath)
 	{
 		//Worldinfo.Game.Broadcast(self, "!!!!!!!  Going to FollowPath  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		followingPath = true;
-		actual_node = last_node;
-		GotoState('FollowPath');
-	} else 
-	{
-		Sleep(1);
-		goto 'Begin';
+		if(MyNavigationPoints.Length > 0 )
+		{
+			followingPath = true;
+			actual_node = last_node;
+			GotoState('FollowPath');
+		}
 	}
 }
 
@@ -154,7 +159,7 @@ state FollowPath
 
  Begin:
 
-	aiPawn.SetAnimState(MS_Walk);
+	
 
 	while(followingPath)
 	{
@@ -166,8 +171,14 @@ state FollowPath
 		MoveTarget = MyNavigationPoints[actual_node];
 		if(Pawn.ReachedDestination(MoveTarget))
 		{
+			if( waitAtNode > 0 )
+				aiPawn.SetAnimState(MS_Idle);
+
 			if(waitCounter >= waitAtNode)
 			{
+				if( waitAtNode > 0 )
+					aiPawn.SetAnimState(MS_Idle);
+
 				actual_node++;
 
 				if (actual_node >= MyNavigationPoints.Length)
@@ -188,10 +199,12 @@ state FollowPath
 		if (ActorReachable(MoveTarget)) 
 		{
 			MoveToward(MoveTarget, MoveTarget,,false);	
+			aiPawn.SetAnimState(MS_Walk);
 		}
 		else
 		{
 			MoveTo( MoveTarget.Location );
+			aiPawn.SetAnimState(MS_Walk);
 			/*`log("Finding path towards");
 			MoveTarget = FindPathToward(MyNavigationPoints[actual_node]);
 			if (MoveTarget != none)
@@ -216,7 +229,7 @@ state Chaseplayer
     Pawn.Acceleration = vect(0,0,1);
 	Pawn.GroundSpeed = ChaseSpeed;
 
-    if (Pawn != none && playerPawn.Health > 0)
+    if (playerPawn != none && playerPawn.Health > 0)
     {
 		//If we can directly reach the player
 		if ( ActorReachable(playerPawn) )
@@ -267,7 +280,7 @@ state Chaseplayer
 state GoToSoundSpot
 {
 Begin:
-	aiPawn.SetAnimState(MS_Investigate);
+	aiPawn.SetAnimState(MS_Run);
 
 	Pawn.GroundSpeed = ChaseSpeed;
 	while(soundHeard)
@@ -277,6 +290,7 @@ Begin:
 		if( Pawn.ReachedDestination( lastSoundSpot ) )
 		{
 			soundHeard = false;
+			aiPawn.SetAnimState(MS_Investigate);
 			Sleep(8);
 			GotoState('Idle');
 		}

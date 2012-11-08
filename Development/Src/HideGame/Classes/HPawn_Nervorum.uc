@@ -32,6 +32,10 @@ simulated function PostBeginPlay()
 
 	// Sets soundgroup
 	HSoundGroup = HSoundGroup_Nervorum(new SoundGroupClass);
+	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing01_Cue');
+	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing02_Cue');
+	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing03_Cue');
+	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing04_Cue');
 
 	// Find the nerves on the ground
 	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve, 60)
@@ -62,6 +66,8 @@ event Tick(float DeltaTime)
 
 	bTraceNerves = false;
 
+	super.Tick(DeltaTime);
+
 	if(bTraceNerves)
 	{
 		for(i = 0; i < ChildNerves.Length; i++)
@@ -90,13 +96,18 @@ function EncroachedBy( Actor other )
 	
 }
 
+simulated function PlayAttackSound()
+{
+	HPlaySoundEffect(HSoundGroup.static.getAttackSounds());
+}
+
 DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Nervorum'
 	HCharacterInfo = class'HideGame.HFamilyInfo_Nervorum'
 	
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh=SkeletalMesh'MonsterPackage.ObesusRiggedQuick'
+		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Nervorum_Skeletal001'
 		HiddenGame=true
 	End Object
 

@@ -7,12 +7,6 @@ function Tick(float DeltaTime)
 {
 	timer += DeltaTime;
 
-	if(timer > 12)
-	{
-		HPawn_Obesus(Pawn).CreateBreathingSound();
-		timer = 0;
-	}
-
 	if(CreateInvestigateSound)
 	{
 		if(playerSeen)

@@ -8,6 +8,8 @@ enum PlayerWalkingState
 	Run
 };
 
+var     HideGame    hGame;
+
 var     bool    bInEndOfLevel;
 var     bool    bChangedState;
 var     bool    bIgnoreInput;
@@ -19,12 +21,15 @@ var     float	pulseRadius;
 var     float   fadeOutStart;
 var     float   pulseTime;
 var     float   pulseDensity;
-var     float   pulseTimer;
+var     float   HpulseTimer;
 var     bool    pulseFadedIn;
 var     bool    startPulseTimer;
 var     float   pulseCooldownTimer;
 
 var     PlayerWalkingState          WalkState;
+
+var bool bFinishedGame;
+var float timeTillMainMenu;
 
 simulated event PostBeginPlay()
 {
@@ -160,7 +165,7 @@ function PlayerTick(float DeltaTime)
 					A.DensityComponent.StartDistance = pulseRadius;
 					ForEach A.ComponentList( class'FogVolumeSphericalDensityComponent', B )
 					{
-						//B.MaxDensity = (pulseMaxRadius + 900) / ( pulseMaxRadius/5 * pulseRadius);
+						hGame.MakeMapSolid();
 						B.MaxDensity = 0.0f;
 						B.ForceUpdate(true);
 					}
@@ -185,9 +190,9 @@ function PlayerTick(float DeltaTime)
 
 	if(startPulseTimer)
 	{
-		if(pulseTimer > 0)
+		if(hpulseTimer > 0)
 		{
-			pulseTimer -= DeltaTime;
+			hpulseTimer -= DeltaTime;
 		}else{
 			startPulseTimer = false;
 		}   
@@ -215,6 +220,15 @@ function PlayerTick(float DeltaTime)
 			bChangedState=false;	
 		}
 	}
+
+	if(bFinishedGame)
+	{
+		timeTillMainMenu -= DeltaTime;
+		if( timeTillMainMenu <= 0.0)
+		{
+			ConsoleCommand( "Open HG-HideMenuMap" );
+		}
+	}
 	
 	//this line is not need if you add this code to PlayerController.uc
 	Super.PlayerTick(DeltaTime);
@@ -236,17 +250,14 @@ exec function makePulseCircle()
 // Activate the pulse ability and freezes the player
 exec function ActivatePulse()
 {
-	if(pulseTimer <= 0)
-	{
-		pulseTimer = pulseCooldownTimer;
-		IgnoreInput(true);
-		pulseMade = true;
-		pulseRadius = 0.0f;
-		pulseFadeOut = true;
-		fadeOutStart = 0.0f;
-		pulseDensity = 1.0f;
-		pulseFadedIn = false;
-	}
+	hGame.MakeMapTransparent();
+	IgnoreInput(true);
+	pulseMade = true;
+	pulseRadius = 0.0f;
+	pulseFadeOut = true;
+	fadeOutStart = 0.0f;
+	pulseDensity = 1.0f;
+	pulseFadedIn = false;
 }
 
 // Disable the pulse effect, and starts the cooldown
@@ -255,14 +266,14 @@ exec function DisablePulse()
 	IgnoreInput(false);
 	pulseFadeOut = false;
 	pulseFadedIn = true;
-	startPulseTimer = true;
+//	startPulseTimer = true;
 }
 
 // Ignores mouse and move input
 function IgnoreInput(bool bIgnore)
 {
 	bIgnoreInput = bIgnore;
-	ClientIgnoreLookInput(bIgnore);
+	//ClientIgnoreLookInput(bIgnore);
 	ClientIgnoreMoveInput(bIgnore);
 }
 
@@ -274,6 +285,11 @@ function CheckJumpOrDuck()
 	}
 }
 
+function FinishGame()
+{
+	IgnoreInput(true);
+	bFinishedGame = true;
+}
 
 /**
  * Sound functions
@@ -296,6 +312,8 @@ function SetAudioGroupVolume( name GroupName, float Volume )
 	super.SetAudioGroupVolume( GroupName, Volume );
 }
 
+
+
 DefaultProperties
 {
 	InputClass = class'HideGame.HPlayerInput';
@@ -310,5 +328,8 @@ DefaultProperties
 	pulseDensity = 1.0f;
 	pulseFadedIn = false;
 	pulseCooldownTimer = 5;
+
+	bFinishedGame = false;
+	timeTillMainMenu = 8.0f;
 }
 
