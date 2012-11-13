@@ -17,26 +17,7 @@ auto state SettingGame
 {
 	function BeginState(name PreviousStateName)
 	{
-		local array<string> lvlName;
-
-		MapName = WorldInfo.GetMapName();
-
-		lvlName = SplitString(MapName);
-
-		if(lvlName[0] != "HideMenuMap")
-		{
-			OnCurrentLevel=MapName;
-		}
-		
 		bChangeStateToGameInProgress = true;
-
-		`Log("---------> MapName: " $WorldInfo.GetMapName());
-		`Log("---------> LevelsCleared: " $LevelsCleared);
-		`Log("---------> OnCurrentLevel: " $OnCurrentLevel);
-		`Log("---------> Master Sound lvl:" $MasterVolume);
-		`Log("---------> Music Sound lvl: " $MusicVolume);
-
-		SaveConfig();
 	}
 
 	function EndState(name NextStateName)
@@ -54,7 +35,6 @@ state GameInProgress
 	function Tick(float DeltaTime)
 	{
 		local HPlayerController HPC;
-		local array<string>     lvlName;
 
 		if(HPlayer!=None)
 		{
@@ -71,12 +51,8 @@ state GameInProgress
 				`log("Creating HPC");
 				HPlayer=HPC;
 				HPlayer.hGame = self;
-				HPC.SetMusicVolume(MusicVolume);
-				HPC.SetMasterVolume(MasterVolume);
 
-				lvlName = SplitString(MapName);
-
-				if(lvlName[0] == "HideMenuMap")
+				if(WorldInfo.GetMapName() == "HideMenuMap")
 				{
 					HPC.IgnoreInput(true);
 				}else{

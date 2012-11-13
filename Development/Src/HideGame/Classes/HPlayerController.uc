@@ -20,6 +20,8 @@ var config  float    MasterVolume;
 var config  float    MusicVolume;
 var config  int      PlayerLifes;
 
+var string MapName;
+
 var     bool    bInEndOfLevel;
 var     bool    bChangedState;
 var     bool    bIgnoreInput;
