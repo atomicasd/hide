@@ -85,23 +85,11 @@ event Tick(Float DeltaTime)
 // Resets the position of the monster and its default path
 event Reset()
 {
-	local Vector Location2;
-
 	super.Reset();
 	MyController = HAIController(Controller);
 
-	Location2 = Location;
-
 	SetLocation(startingPosition);
 	SetRotation(startingRotation);
-
-	while(Location2 == Location)
-	{
-		startingPosition.Z -= 0.5;
-		SetLocation(startingPosition);
-	}
-
-	`log("Location: " $Rotation);
 
 	MyController.actual_node = 0;
 	MyController.last_node = 0;

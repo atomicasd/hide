@@ -106,15 +106,43 @@ DefaultProperties
 	ControllerClass = class'HideGame.HAIController_Nervorum'
 	HCharacterInfo = class'HideGame.HFamilyInfo_Nervorum'
 	
-	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Nervorum_Skeletal001'
-		HiddenGame=true
+	Components.Remove(WPawnSkeletalMeshComponent)
+
+	Begin Object Class=SkeletalMeshComponent Name=WPawnSkeletalMeshComponent0
+		bCacheAnimSequenceNodes=FALSE
+		AlwaysLoadOnClient=true
+		AlwaysLoadOnServer=true
+		bOwnerNoSee=true
+		CastShadow=true
+		BlockRigidBody=TRUE
+		bUpdateSkelWhenNotRendered=false
+		bIgnoreControllersWhenNotRendered=TRUE
+		bUpdateKinematicBonesFromAnimation=true
+		bCastDynamicShadow=true
+		RBChannel=RBCC_Untitled3
+		RBCollideWithChannels=(Untitled3=true)
+		LightEnvironment=MyLightEnvironment
+		bOverrideAttachmentOwnerVisibility=true
+		bAcceptsDynamicDecals=FALSE
+		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_Monsters_Nervorum_Skeletal001'
+		HiddenEditor=false
+		bHasPhysicsAssetInstance=true
+		TickGroup=TG_PreAsyncWork
+		MinDistFactorForKinematicUpdate=0.2
+		bChartDistanceFactor=true
+		//bSkipAllUpdateWhenPhysicsAsleep=TRUE
+		RBDominanceGroup=1
+		// Nice lighting for hair
+		bUseOnePassLightingOnTranslucency=TRUE
+		bPerBoneMotionBlur=true
 	End Object
+	Mesh=WPawnSkeletalMeshComponent0
+	Components.Add(WPawnSkeletalMeshComponent0)
+
+	DrawScale=10.0
 
 	bTraceNerves=false
 	bCanBeDamaged = false;
-	NPCMesh=NPCMesh0
-	Components.Add(NPCMesh0)
 
 	killPlayerOnTouch = false;
 }

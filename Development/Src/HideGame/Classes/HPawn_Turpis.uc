@@ -42,13 +42,40 @@ DefaultProperties
 	HCharacterInfo = class'HideGame.HFamilyInfo_Turpis'
 	SoundGroupClass = class'HideGame.HSoundGroup_Turpis'
 
-	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
-		SkeletalMesh = SkeletalMesh'MonsterPackage.HG_Monsters_Turpis_SkeletalMesh02'
-		HiddenGame=true
+	Components.Remove(WPawnSkeletalMeshComponent)
+
+	Begin Object Class=SkeletalMeshComponent Name=WPawnSkeletalMeshComponent0
+		bCacheAnimSequenceNodes=FALSE
+		AlwaysLoadOnClient=true
+		AlwaysLoadOnServer=true
+		bOwnerNoSee=true
+		CastShadow=true
+		BlockRigidBody=TRUE
+		bUpdateSkelWhenNotRendered=false
+		bIgnoreControllersWhenNotRendered=TRUE
+		bUpdateKinematicBonesFromAnimation=true
+		bCastDynamicShadow=true
+		RBChannel=RBCC_Untitled3
+		RBCollideWithChannels=(Untitled3=true)
+		LightEnvironment=MyLightEnvironment
+		bOverrideAttachmentOwnerVisibility=true
+		bAcceptsDynamicDecals=FALSE
+		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_Monsters_Turpis_SkeletalMesh02'
+		HiddenEditor=false
+		bHasPhysicsAssetInstance=true
+		TickGroup=TG_PreAsyncWork
+		MinDistFactorForKinematicUpdate=0.2
+		bChartDistanceFactor=true
+		//bSkipAllUpdateWhenPhysicsAsleep=TRUE
+		RBDominanceGroup=1
+		// Nice lighting for hair
+		bUseOnePassLightingOnTranslucency=TRUE
+		bPerBoneMotionBlur=true
 	End Object
-	
-	NPCMesh=NPCMesh0
-	Components.Add(NPCMesh0)
+	Mesh=WPawnSkeletalMeshComponent0
+	Components.Add(WPawnSkeletalMeshComponent0)
+
+	DrawScale=13.0
 
 	GroundSpeed = 200.0
 }

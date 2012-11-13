@@ -12,6 +12,7 @@ exec function QuitGame()
 exec function Sneak()
 {
 	bDuck=1;
+	bDuck=1;
 	SneakActivated = true;
 }
 
