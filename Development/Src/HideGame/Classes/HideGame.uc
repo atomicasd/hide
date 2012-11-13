@@ -207,7 +207,7 @@ function MakeMapTransparent()
 			inActor = InterpActor(A);
 			if(inActor != none)
 			{
-				matInstanceConstant = CreateTransparentMaterial(smActor);
+				matInstanceConstant = CreateTransparentMaterial(inActor);
 				if(matInstanceConstant == none) 
 					continue;
 				smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
@@ -240,10 +240,12 @@ function MakeMapSolid()
 	//mapOpacity = 1.0;
 }
 
-function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smActor) 
+function MaterialInstanceConstant CreateTransparentMaterial(Actor tactor) 
 { 
     local MaterialInstanceConstant matInstanceConstant; 
     local MaterialInstanceConstant oldMat; 
+	local StaticMeshActor smActor;
+	local InterpActor inActor;
     local Material matApp; 
     local float opacity; 
 	local name matGroupName;
@@ -252,10 +254,25 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     local string materialClassName; 
     local Texture textureValue; 
 	//local Material checkMaterial;
+	smActor = StaticMeshActor(tactor);
+	if( smActor != none )
+	{
+		matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
+		oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) );
+	} else {
+		inActor = InterpActor(tactor);
+		if( inActor != none )
+		{
+			matApp = inActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
+			oldMat = MaterialInstanceConstant( inActor.StaticMeshComponent.GetMaterial(0) );
+		} else
+		{
+			return none;
+		}
+	}
 
-    matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
-    oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
-    matName = matApp.Name;
+	matName = matApp.Name;
+	`log(matName);
 	packageName = matApp.GetPackageName();
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 
     //ENG: my package containing the base materials (shader_base/shader_base_translucent) 
@@ -266,6 +283,14 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
 	} else if ( string(matName) == "Lvl01_Material") 
 	{
 		matGroupName = name("lvl01");
+	}
+	else if ( string(matName) == "door") 
+	{
+		matGroupName = name("testingfacility");
+	} 
+	else if ( string(matName) == "DoorWOOORK_DoorFrameLowpoly") 
+	{
+		matGroupName = name("testingfacility");
 	}
 	else
 	{
@@ -303,36 +328,60 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     return matInstanceConstant; 
 }
 
-function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor) 
+function MaterialInstanceConstant CreateSolidMaterial(Actor tactor) 
 { 
     local MaterialInstanceConstant matInstanceConstant; 
     local MaterialInstanceConstant oldMat; 
     local Material matApp; 
+	local StaticMeshActor smActor;
+	local InterpActor inActor;
 	local name matGroupName;
     local name matName; 
     local name packageName;
     local string materialClassName; 
     local Texture textureValue; 
 	
-    matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial(); 
-    oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
-    matInstanceConstant = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0)); 
+	smActor = StaticMeshActor(tactor);
+	if( smActor != none )
+	{
+		matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
+		oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) );
+	} else {
+		inActor = InterpActor(tactor);
+		if( inActor != none )
+		{
+			matApp = inActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
+			oldMat = MaterialInstanceConstant( inActor.StaticMeshComponent.GetMaterial(0) );
+		} else
+		{
+			return none;
+		}
+	}
+    matInstanceConstant = MaterialInstanceConstant( oldMat.StaticMeshComponent.GetMaterial(0)); 
 
     //ITA: controllo il valore dell'interpolazione, se ho superato 0.9 allora creerò una nuova istanza con un materiale solido! 
     //ENG: Checking the interpolation value, if I'm past 0.9f I'm gonna create a new instance with a solid material! 
 	matName = matApp.Name;
 	packageName = matApp.GetPackageName();
-	if( string(matName) == "Lvl02_Material_Translucent")
+	if( string(matName) == "Lvl02_Material")
 	{
 		matGroupName = name("Lvl02");
-	} else if ( string(matName) == "Lvl01_Material_Translucent") 
+	} else if ( string(matName) == "Lvl01_Material") 
 	{
 		matGroupName = name("lvl01");
+	}
+	else if ( string(matName) == "door") 
+	{
+		matGroupName = name("testingfacility");
+	} 
+	else if ( string(matName) == "DoorWOOORK_DoorFrameLowpoly") 
+	{
+		matGroupName = name("testingfacility");
 	}
 	else
 	{
 		return none;
-	}
+	}   
 
 	materialClassName = string(packageName) $ "." $ string(matGroupName) $ "." $ matName;
 	`log(materialClassName);
