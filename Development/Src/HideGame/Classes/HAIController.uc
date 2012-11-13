@@ -158,7 +158,7 @@ state FollowPath
     }
 
  Begin:
-
+	
 	while(followingPath)
 	{
 		if(MyNavigationPoints.Length <= 0)
@@ -169,16 +169,10 @@ state FollowPath
 		MoveTarget = MyNavigationPoints[actual_node];
 		if(Pawn.ReachedDestination(MoveTarget))
 		{
-			if( waitAtNode > 0 )
-				aiPawn.SetAnimState(MS_Idle);
-
 			if(waitCounter >= waitAtNode)
 			{
-				if( waitAtNode > 0 )
-					aiPawn.SetAnimState(MS_Idle);
-
 				actual_node++;
-
+				
 				if (actual_node >= MyNavigationPoints.Length)
 				{
 					actual_node = 0;
@@ -186,10 +180,11 @@ state FollowPath
 				last_node = actual_node;
 
 				MoveTarget = MyNavigationPoints[actual_node];
-
+				aiPawn.SetAnimState(MS_Walk);
 				waitCounter = 0.0f;
 			} else 
 			{
+				aiPawn.SetAnimState(MS_Idle);
 				waitCounter += 0.1f;
 			}
 		}	

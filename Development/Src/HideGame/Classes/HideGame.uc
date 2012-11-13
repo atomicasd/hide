@@ -186,46 +186,37 @@ event Tick(float DeltaTime)
 	}
 }
 
-function FadeMapTransparancy(float opacity)
-{
-	local Actor A;
-	local StaticMeshActor smActor;
-	local Material matApp;
-	local MaterialInstanceConstant MIC;
-	Foreach WorldInfo.AllActors( class'Actor', A )
-	{
-		smActor = StaticMeshActor(A);
-		if(smActor == none) 
-			continue;
-
-		matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
-
-		MIC = new class'MaterialInstanceConstant';
-		MIC.SetScalarParameterValue('Opacity', opacity);
-		MIC.SetParent(matApp);
-		smActor.StaticMeshComponent.SetMaterial(0, MIC);
-	}
-}
 
 function MakeMapTransparent()
 {
 	local Actor A;
 	local StaticMeshActor smActor;
+	local InterpActor inActor;
 	local MaterialInstanceConstant matInstanceConstant;
 	Foreach WorldInfo.AllActors( class'Actor', A )
 	{
 		smActor = StaticMeshActor(A);
-		if(smActor == none) 
-			continue; 
-		
-        matInstanceConstant = CreateTransparentMaterial(smActor);
-        if(matInstanceConstant == none) 
-            continue;
-		smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
+		if(smActor != none)
+		{
+			matInstanceConstant = CreateTransparentMaterial(smActor);
+			if(matInstanceConstant == none) 
+				continue;
+			smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
+		} else 
+		{
+			inActor = InterpActor(A);
+			if(inActor != none)
+			{
+				matInstanceConstant = CreateTransparentMaterial(smActor);
+				if(matInstanceConstant == none) 
+					continue;
+				smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
+			} else 
+			{
+				continue;
+			}
+		}
 	}
-	//mapOpacity = 0.1;
-	//FadeMapTransparancy(mapOpacity);
-	//isMapTransparent = true;
 }
 
 function MakeMapSolid()
