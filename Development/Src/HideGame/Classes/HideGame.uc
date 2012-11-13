@@ -49,8 +49,6 @@ state GameInProgress
 			ForEach WorldInfo.AllControllers(class'HPlayerController', HPC)
 			{
 				`log("Creating HPC");
-				HPlayer=HPC;
-				HPlayer.hGame = self;
 
 				if(WorldInfo.GetMapName() == "HideMenuMap")
 				{
@@ -58,6 +56,10 @@ state GameInProgress
 				}else{
 					HPC.IgnoreInput(false);
 				}
+				HPC.InitConfig();
+				HPlayer=HPC;
+				HPlayer.hGame = self;
+
 			}
 			
 		}
@@ -307,7 +309,7 @@ function MaterialInstanceConstant CreateSolidMaterial(Actor tactor)
 			return none;
 		}
 	}
-    matInstanceConstant = MaterialInstanceConstant( oldMat.StaticMeshComponent.GetMaterial(0)); 
+   // matInstanceConstant = MaterialInstanceConstant( oldMat.StaticMeshComponent.GetMaterial(0)); 
 
     //ITA: controllo il valore dell'interpolazione, se ho superato 0.9 allora creerò una nuova istanza con un materiale solido! 
     //ENG: Checking the interpolation value, if I'm past 0.9f I'm gonna create a new instance with a solid material! 
@@ -382,4 +384,6 @@ DefaultProperties
 
 	mapOpacity = 0.0;
 
+	PulseMat[0] = Material'HIDE_Lvl01.lvl01.Lvl01_Material_Translucent'
+	PulseMat[1] = Material'Hide_Lvl02.lvl02.lvl02_Material_Translucent'
 }
