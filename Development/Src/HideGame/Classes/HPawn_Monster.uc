@@ -12,8 +12,6 @@ var     AnimNodeSequence        MyAnimPlayControl;
 var array<HAnimBlend_Monster>   HAnimBlend;
 
 // Sound
-var array<SoundCue>             IdleSounds;
-var AudioComponent              IdleSound;
 var bool                        bAttackSound;
 
 // Variables
@@ -125,64 +123,6 @@ simulated event SetAnimState(MonsterState stateAnimType)
 	{
 		HAnimBlend[i].SetAnimState(stateAnimType);
 	}
-}
-
-/**
- * Sound functions
- **/
-function playIdleSound()
-{
-	if(IdleSound == None)
-		newIdleSound(getIdleSound());
-	else
-		IdleSound.SoundCue = getIdleSound();
-
-	IdleSound.Play();
-}
-
-function stopIdleSound()
-{
-	if(IdleSound != None)
-		IdleSound.Stop();
-	`log("Stop sound");
-}
-
-function newIdleSound(SoundCue Sound)
-{
-	IdleSound = CreateAudioComponent(Sound, false, false, true,, true);
-}
-
-/**
- * Sound list
- */
-function SoundCue getIdleSound()
-{
-	local int i;
-
-	i = rand(IdleSounds.Length);
-
-	return IdleSounds[i];
-}
-
-function addIdleSound(SoundCue Sound)
-{
-	IdleSounds.AddItem(Sound);
-	`log("Sound length: " $IdleSounds.Length);
-}
-
-/**
- * Spesific sound
- */
-function HPlaySoundEffect(SoundCue SoundToPlay)
-{
-	IdleSound.Stop();
-
-	super.HPlaySoundEffect(SoundToPlay);
-}
-
-simulated function PlayAttackSound()
-{
-	//HPlaySoundEffect(HSoundGroup.static.getAttackSounds());
 }
 
 DefaultProperties

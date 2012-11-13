@@ -1,4 +1,5 @@
-class HPawn_Player extends HPawn;
+class HPawn_Player extends HPawn
+	placeable;
 
 var     HFamilyInfo_Player      CharacterInfo;
 var     HSoundBeacon            soundBeacon;
@@ -39,9 +40,9 @@ simulated event ActuallyPlayFootStepSound(int FootDown)
 		waitSoundStep++;
 	}else{
 		waitSoundStep=0;
-		if(HPlayerController(Controller).WalkState == Sneak)
+		if(HPlayerController(Controller).WalkState == Sneak){
 			super.ActuallyPlayFootStepSound(0);
-		else
+		}else
 			super.ActuallyPlayFootStepSound(1);
 	}
 }
@@ -84,8 +85,8 @@ event Tick(float TimeDelta)
 
 	switch(HPlayer.WalkState)   
 	{
-	case Idle:  soundRadius=160;  break;
-	case Sneak: soundRadius=200;  break;
+	case Idle:  soundRadius=140;  break;
+	case Sneak: soundRadius=180;  break;
 	case Walk:  soundRadius=400;  break;
 	case Run:   soundRadius=500; break;
 	}
@@ -137,6 +138,8 @@ event Tick(float TimeDelta)
 			cameraFadeStarted = false;
 		}
 	}
+
+	//ArmsMesh[0].SetRotation(Rotation);
 }
 
 function KillByNervorum( HPawn_Nervorum nervorum )
@@ -152,8 +155,6 @@ function KillByNervorum( HPawn_Nervorum nervorum )
 		positionAlpha = 0.0f;
 		cameraFadeStarted = false;
 	}
-
-
 }
 
 defaultproperties
@@ -161,13 +162,56 @@ defaultproperties
 	InventoryManagerClass = None
 	HCharacterInfo = class'HideGame.HFamilyInfo_Player'
 
+	Components.Remove(WPawnSkeletalMeshComponent)
+
 	/*
+	Begin Object Class=UDKSkeletalMeshComponent Name=FirstPersonArms0
+		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_PLayerArms01'
+		Translation=(Z=15)
+		Scale=4
+		PhysicsAsset=None
+		DepthPriorityGroup=SDPG_Foreground
+		bUpdateSkelWhenNotRendered=false
+		bIgnoreControllersWhenNotRendered=true
+		bOnlyOwnerSee=false
+		bOverrideAttachmentOwnerVisibility=true
+		bAcceptsDynamicDecals=FALSE
+		AbsoluteTranslation=false
+		AbsoluteRotation=true
+		AbsoluteScale=true
+		bSyncActorLocationToRootRigidBody=false
+		CastShadow=false
+		TickGroup=TG_DuringASyncWork
+	End Object
+	//ArmsMesh[0]=FirstPersonArms0
+
+	Begin Object Class=UDKSkeletalMeshComponent Name=FirstPersonArms20
+		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_PLayerArms01'
+		PhysicsAsset=None
+		DepthPriorityGroup=SDPG_Foreground
+		bUpdateSkelWhenNotRendered=false
+		bIgnoreControllersWhenNotRendered=true
+		bOnlyOwnerSee=false
+		bOverrideAttachmentOwnerVisibility=true
+		HiddenGame=false
+		bAcceptsDynamicDecals=FALSE
+		AbsoluteTranslation=false
+		AbsoluteRotation=true
+		AbsoluteScale=true
+		bSyncActorLocationToRootRigidBody=false
+		CastShadow=false
+	End Object
+	//ArmsMesh[1]=FirstPersonArms20
+
+	//Components.add(FirstPersonArms0)
+	//Components.add(FirstPersonArms20)
+	*/
+
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
 		HiddenGame=true
 	End Object
 
 	Components.Add(NPCMesh0);
-	*/
 	
 	GroundSpeed=200.0
 	CrouchHeight=40
@@ -177,6 +221,8 @@ defaultproperties
 	bNoDelete = false
 	bCanDoubleJump=false
 	RagdollLifespan = 0.1f;
+
+	IdleSounds[0] = SoundCue'SoundPackage.Enviroment.Silence_Cue'
 	
 	waitTillPull = 0.5;
 	cameraFadeStarted = false;

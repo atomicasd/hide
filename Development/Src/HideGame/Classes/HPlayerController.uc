@@ -10,6 +10,18 @@ enum PlayerWalkingState
 
 var     HideGame    hGame;
 
+/*
+ * Config variables
+ */
+
+var config  int      LevelsCleared;
+var config  string   OnCurrentLevel;
+var config  float    MasterVolume;
+var config  float    MusicVolume;
+var config  int      PlayerLifes;
+
+var string MapName;
+
 var     bool    bInEndOfLevel;
 var     bool    bChangedState;
 var     bool    bIgnoreInput;
@@ -45,8 +57,38 @@ simulated event PostBeginPlay()
 		A.ForceUpdateComponents();
 	}
 
+	SetMusicVolume(MusicVolume);
+	SetMasterVolume(MasterVolume);
+
 	WalkState = Idle;
 }
+
+function InitConfig()
+{
+	local array<string> lvlName;
+
+	MapName = WorldInfo.GetMapName();
+
+	lvlName = SplitString(MapName);
+
+	if(lvlName[0] != "HideMenuMap")
+	{
+		OnCurrentLevel=MapName;
+	}
+		
+	/* Log variables in the config file */
+	`Log("---------> MapName: " $WorldInfo.GetMapName());
+	`Log("---------> LevelsCleared: " $LevelsCleared);
+	`Log("---------> OnCurrentLevel: " $OnCurrentLevel);
+	`Log("---------> Master Sound lvl:" $MasterVolume);
+	`Log("---------> Music Sound lvl: " $MusicVolume);
+	
+	SetMusicVolume(MusicVolume);
+	SetMasterVolume(MasterVolume);
+
+	SaveToConfig();
+}
+
 simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rotation )
 {
 	local Actor TheViewTarget;
@@ -293,27 +335,64 @@ function FinishGame()
 }
 
 /**
- * Sound functions
+ * Config functions
  */
 // Set Master Volume
 function SetMasterVolume(float Volume)
 {
+	MasterVolume = Volume;
 	SetAudioGroupVolume('Master', Volume);
 }
 
 // Set Music Volume
 function SetMusicVolume(float Volume)
 {
+	MusicVolume = Volume;
 	SetAudioGroupVolume('Music', Volume);
 }
 
 // Last functions thats sets sound to the musicgroup
 function SetAudioGroupVolume( name GroupName, float Volume )
 {
+	`log("Music Volume: "$Volume);
 	super.SetAudioGroupVolume( GroupName, Volume );
+	SaveToConfig();
+}
+
+function float getMusicVolume()
+{
+	return MusicVolume;
+}
+
+function float getMasterVolume()
+{
+	return MasterVolume;
+}
+
+function saveToConfig()
+{
+	SaveConfig();
+}
+
+function increasLevelCleared()
+{
+	++LevelsCleared;
 }
 
 
+function int getLevelNumber()
+{
+	local string        MapName0;
+	local int           MapNumber;
+	local array<string> MapArray;
+
+	MapName0 = WorldInfo.GetMapName();
+	MapArray = SplitString(MapName0, "-");
+
+	MapNumber = int(MapArray[1]);
+
+	return MapNumber;
+}
 
 DefaultProperties
 {

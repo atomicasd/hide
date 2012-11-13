@@ -39,6 +39,13 @@ function Tick( float DeltaTime )
 	{
 		HAIController( Controller ).FeelPlayer();
 	}
+	
+	if(!IdleSound.IsPlaying())
+	{
+		playIdleSound();
+		bAttackSound=false;
+	}
+
 	super.Tick( DeltaTime );
 }
 
@@ -49,13 +56,6 @@ function CreateAttackSound()
 {
 	HPlaySoundEffect(HSoundGroup.static.getAttackSounds());
 }
-
-/*
-function CreateBreathingSound()
-{
-	HPlaySoundEffect(HSoundGroup.static.getBreathingSound());
-}
-*/
 
 function CreateInvestigateSound()
 {
@@ -103,5 +103,3 @@ DefaultProperties
 	followingPlayer = false;
 
 }
-
-

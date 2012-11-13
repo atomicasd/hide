@@ -32,15 +32,10 @@ simulated function PostBeginPlay()
 
 	// Sets soundgroup
 	HSoundGroup = HSoundGroup_Nervorum(new SoundGroupClass);
-	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing01_Cue');
-	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing02_Cue');
-	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing03_Cue');
-	addIdleSound(SoundCue'SoundPackage.nervorum.nervorumBreathing04_Cue');
 
 	// Find the nerves on the ground
 	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve, 60)
 	{
-		`log("---->Adding nerve<----");
 		ChildNerves.AddItem(nerve);
 		nerve.bAlreadyOwned = true;
 		nerve.nervorumOwnedBy = self;
@@ -125,8 +120,9 @@ DefaultProperties
 		bOverrideAttachmentOwnerVisibility=true
 		bAcceptsDynamicDecals=FALSE
 		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_Monsters_Nervorum_Skeletal001'
+		PhysicsAsset=PhysicsAsset'CH_AnimCorrupt.Mesh.SK_CH_Corrupt_Male_Physics'
 		HiddenEditor=false
-		bHasPhysicsAssetInstance=true
+		bHasPhysicsAssetInstance=false
 		TickGroup=TG_PreAsyncWork
 		MinDistFactorForKinematicUpdate=0.2
 		bChartDistanceFactor=true
@@ -140,6 +136,11 @@ DefaultProperties
 	Components.Add(WPawnSkeletalMeshComponent0)
 
 	DrawScale=10.0
+
+	IdleSounds[0] = SoundCue'SoundPackage.nervorum.nervorumBreathing01_Cue';
+	IdleSounds[1] = SoundCue'SoundPackage.nervorum.nervorumBreathing02_Cue';
+	IdleSounds[2] = SoundCue'SoundPackage.nervorum.nervorumBreathing03_Cue';
+	IdleSounds[3] = SoundCue'SoundPackage.nervorum.nervorumBreathing04_Cue';
 
 	bTraceNerves=false
 	bCanBeDamaged = false;

@@ -1,20 +1,8 @@
-class HideGame extends UTGame
-config(HideGame);
-
-/*
- * Config variables
- */
-
-var config  int                     LevelsCleared;
-var config  string                  OnCurrentLevel;
-var config  float                   MasterVolume;
-var config  float                   MusicVolume;
+class HideGame extends UTGame;
 
 /*
  * Variables
  */
-
-var         string                  MapName;
 
 var         bool                    isMapTransparent;
 var         float                   mapOpacity;
@@ -23,30 +11,13 @@ var         bool                    bChangeStateToGameInProgress;
 
 var HGameHud hHud;
 
+var array<Material> PulseMat;
+
 auto state SettingGame
 {
 	function BeginState(name PreviousStateName)
 	{
-		local array<string> lvlName;
-
-		MapName = WorldInfo.GetMapName();
-
-		lvlName = SplitString(MapName);
-
-		if(lvlName[0] != "HideMenuMap")
-		{
-			OnCurrentLevel=MapName;
-		}
-		
 		bChangeStateToGameInProgress = true;
-
-		`Log("---------> MapName: " $WorldInfo.GetMapName());
-		`Log("---------> LevelsCleared: " $LevelsCleared);
-		`Log("---------> OnCurrentLevel: " $OnCurrentLevel);
-		`Log("---------> Master Sound lvl:" $MasterVolume);
-		`Log("---------> Music Sound lvl: " $MusicVolume);
-
-		SaveConfig();
 	}
 
 	function EndState(name NextStateName)
@@ -64,7 +35,6 @@ state GameInProgress
 	function Tick(float DeltaTime)
 	{
 		local HPlayerController HPC;
-		local array<string>     lvlName;
 
 		if(HPlayer!=None)
 		{
@@ -81,12 +51,8 @@ state GameInProgress
 				`log("Creating HPC");
 				HPlayer=HPC;
 				HPlayer.hGame = self;
-				HPC.SetMusicVolume(MusicVolume);
-				HPC.SetMasterVolume(MasterVolume);
 
-				lvlName = SplitString(MapName);
-
-				if(lvlName[0] == "HideMenuMap")
+				if(WorldInfo.GetMapName() == "HideMenuMap")
 				{
 					HPC.IgnoreInput(true);
 				}else{
@@ -106,20 +72,18 @@ state LevelCompleted
 {
 	function BeginState(name PreviousStateName)
 	{
-		local string        NextLevel;
+		local string NextLevel;
 
 		`Log("Next Level");
 
-		if(LevelsCleared < getLevelNumber())
+		if(HPlayer.LevelsCleared < HPlayer.getLevelNumber())
 		{
-			LevelsCleared++;
+			HPlayer.increasLevelCleared();
 		}
 		
 		NextLevel = "Open HG-Lvl-";
 
-		NextLevel $= GetLevelNumber() + 1;
-
-		SaveConfig();
+		NextLevel $= HPlayer.GetLevelNumber() + 1;
 
 		// Changing level to the next level
 		ConsoleCommand(NextLevel);
@@ -129,20 +93,6 @@ state LevelCompleted
 	function EndState(name NextStateName)
 	{
 	}
-}
-
-function int getLevelNumber()
-{
-	local string        MapName0;
-	local int           MapNumber;
-	local array<string> MapArray;
-
-	MapName0 = WorldInfo.GetMapName();
-	MapArray = SplitString(MapName0, "-");
-
-	MapNumber = int(MapArray[1]);
-
-	return MapNumber;
 }
 
 function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam )
