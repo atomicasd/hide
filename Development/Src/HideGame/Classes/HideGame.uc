@@ -1,20 +1,8 @@
-class HideGame extends UTGame
-config(HideGame);
-
-/*
- * Config variables
- */
-
-var config  int                     LevelsCleared;
-var config  string                  OnCurrentLevel;
-var config  float                   MasterVolume;
-var config  float                   MusicVolume;
+class HideGame extends UTGame;
 
 /*
  * Variables
  */
-
-var         string                  MapName;
 
 var         bool                    isMapTransparent;
 var         float                   mapOpacity;
@@ -22,6 +10,8 @@ var         HPlayerController       HPlayer;
 var         bool                    bChangeStateToGameInProgress;
 
 var HGameHud hHud;
+
+var array<Material> PulseMat;
 
 auto state SettingGame
 {
@@ -121,20 +111,18 @@ state LevelCompleted
 {
 	function BeginState(name PreviousStateName)
 	{
-		local string        NextLevel;
+		local string NextLevel;
 
 		`Log("Next Level");
 
-		if(LevelsCleared < getLevelNumber())
+		if(HPlayer.LevelsCleared < HPlayer.getLevelNumber())
 		{
-			LevelsCleared++;
+			HPlayer.increasLevelCleared();
 		}
 		
 		NextLevel = "Open HG-Lvl-";
 
-		NextLevel $= GetLevelNumber() + 1;
-
-		SaveConfig();
+		NextLevel $= HPlayer.GetLevelNumber() + 1;
 
 		// Changing level to the next level
 		ConsoleCommand(NextLevel);
@@ -144,20 +132,6 @@ state LevelCompleted
 	function EndState(name NextStateName)
 	{
 	}
-}
-
-function int getLevelNumber()
-{
-	local string        MapName0;
-	local int           MapNumber;
-	local array<string> MapArray;
-
-	MapName0 = WorldInfo.GetMapName();
-	MapArray = SplitString(MapName0, "-");
-
-	MapNumber = int(MapArray[1]);
-
-	return MapNumber;
 }
 
 function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam )

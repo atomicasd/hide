@@ -23,6 +23,8 @@ simulated function PostBeginPlay()
 	HSoundGroup = HSoundGroup_Turpis(new SoundGroupClass);
 	addIdleSound(SoundCue'SoundPackage.Enviroment.Silence_Cue');
 
+	playIdleSound();
+
 	super.PostBeginPlay();
 }
 

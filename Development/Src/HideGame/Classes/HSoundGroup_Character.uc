@@ -41,4 +41,6 @@ static function SoundCue GetFootstepSound(int FootDown, name MaterialType)
 DefaultProperties
 {
 	DefaultLandingSound=SoundCue'SoundPackage.Enviroment.Silence_Cue'
+	DyingSound=SoundCue'SoundPackage.Enviroment.Silence_Cue'
+	GibSound=SoundCue'SoundPackage.Enviroment.Silence_Cue'
 }
