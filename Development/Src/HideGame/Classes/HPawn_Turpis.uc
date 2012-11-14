@@ -69,7 +69,7 @@ DefaultProperties
 		MinDistFactorForKinematicUpdate=0.2
 		bChartDistanceFactor=true
 		//bSkipAllUpdateWhenPhysicsAsleep=TRUE
-		RBDominanceGroup=1
+		RBDominanceGroup=0
 		// Nice lighting for hair
 		bUseOnePassLightingOnTranslucency=TRUE
 		bPerBoneMotionBlur=true

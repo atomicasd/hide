@@ -5,7 +5,7 @@ class HPawn_Tactus extends HPawn_Monster
 var HFamilyInfo_Tactus             CharacterInfo;
 
 // Sound
-var HSoundGroup_Obesus                 HSoundGroup;
+var HSoundGroup_Tactus             HSoundGroup;
 
 var bool followingPlayer;
 
@@ -21,12 +21,9 @@ simulated function PostBeginPlay()
 	
 	// Setting PlayerInfo
 	HSetCharacterClassFromInfo(class'HFamilyInfo_Tactus');
-	addIdleSound(SoundCue'SoundPackage.tactus.tactusHeavyBreathing01_Cue');
-	addIdleSound(SoundCue'SoundPackage.tactus.tactusHeavyBreathing02_Cue');
-	addIdleSound(SoundCue'SoundPackage.tactus.tactusHeavyBreathing03_Cue');
 
 	// Sets soundgroup
-	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
+	HSoundGroup = HSoundGroup_Tactus(new SoundGroupClass);
 	
 	super.PostBeginPlay();
 }
@@ -92,13 +89,17 @@ DefaultProperties
 		MinDistFactorForKinematicUpdate=0.2
 		bChartDistanceFactor=true
 		//bSkipAllUpdateWhenPhysicsAsleep=TRUE
-		RBDominanceGroup=1
+		RBDominanceGroup=0
 		// Nice lighting for hair
 		bUseOnePassLightingOnTranslucency=TRUE
 		bPerBoneMotionBlur=true
 	End Object
 	Mesh=WPawnSkeletalMeshComponent0
 	Components.Add(WPawnSkeletalMeshComponent0)
+
+	IdleSounds[0] = SoundCue'SoundPackage.tactus.tactusHeavyBreathing01_Cue';
+	IdleSounds[1] = SoundCue'SoundPackage.tactus.tactusHeavyBreathing02_Cue';
+	IdleSounds[2] = SoundCue'SoundPackage.tactus.tactusHeavyBreathing03_Cue';
 
 	followingPlayer = false;
 
