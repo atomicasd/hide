@@ -20,6 +20,7 @@ var config  float   MasterVolume;
 var config  float   MusicVolume;
 var config  int     PlayerLifes;
 var config  bool    Fullscreen; 
+var config  string  Resolution;
 
 var string MapName;
 
@@ -83,10 +84,12 @@ function InitConfig()
 	`Log("---------> OnCurrentLevel: " $OnCurrentLevel);
 	`Log("---------> Master Sound lvl:" $MasterVolume);
 	`Log("---------> Music Sound lvl: " $MusicVolume);
+	`Log("---------> Fullscreen: " $Fullscreen);
+	`Log("---------> Resolution: " $Resolution);
 	
 	SetMusicVolume(MusicVolume);
-	SetMasterVolume(MasterVolume);
-
+	SetMasterVolume(MasterVolume);	
+	SetFullscreen( Fullscreen ); // and resolution.
 	SaveToConfig();
 }
 
@@ -358,6 +361,22 @@ function SetAudioGroupVolume( name GroupName, float Volume )
 	`log(GroupName $" Volume: "$Volume);
 	super.SetAudioGroupVolume( GroupName, Volume );
 	SaveToConfig();
+}
+
+// Set Fullscreen
+function SetFullscreen( bool fs )
+{
+	Fullscreen = fs;
+	if ( Fullscreen )
+		ConsoleCommand( "setres " $ Resolution $ "f" );
+	else
+		ConsoleCommand( "setres " $ Resolution $ "w" );
+}
+
+function SetResolution( string res ) 
+{
+	Resolution = res;
+	ConsoleCommand( "setres " $ Resolution );
 }
 
 function float getMusicVolume()

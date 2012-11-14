@@ -52,7 +52,7 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 	case ( 'btn_level2' ):
 		us_btn_level2 = GFxClikWidget( Widget );
 		us_btn_level2.AddEventListener( 'CLIK_press', onLevel2ButtonPress );
-		//if ( HPlayer.getUnlockedLevels() < 2 )
+		if ( HPlayer.LevelsCleared < 2 )
 		us_btn_level2.GotoAndStop( "disabled" );
 		break;
 	case ('cb_fullscreen'):
@@ -78,7 +78,23 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 	case ( 'stepper_resolution' ):
 		us_stepper_resolution = GFxClikWidget( Widget );
 		us_stepper_resolution.AddEventListener( 'CLIK_change', onResolutionChange );
-		break;
+		switch ( HPlayer.Resolution )
+		{
+		case( "800x600" ):
+			us_stepper_resolution.SetFloat( "selectedIndex", 0 );
+			break;
+		case( "1024x768" ):
+			us_stepper_resolution.SetFloat( "selectedIndex", 1 );
+			break;
+		case( "1366x768" ):
+			us_stepper_resolution.SetFloat( "selectedIndex", 2 );
+			break;
+		case( "1920x1080" ):
+			us_stepper_resolution.SetFloat( "selectedIndex", 3 );
+			break;
+		default:
+			break;
+		}
 	default:
 		break;
 	}
@@ -110,11 +126,7 @@ function onLevel2ButtonPress( GFxClikWidget.EventData ev )
 
 function onFullscreenChange( GFxClikWidget.EventData ev )
 {
-	HPlayer.Fullscreen = us_cb_fullscreen.GetBool("_selected");
-	if ( HPlayer.Fullscreen )
-		ConsoleCommand( "setres 1366x768f" );
-	else
-		ConsoleCommand( "setres 1366x768w" );
+	HPlayer.SetFullscreen( us_cb_fullscreen.GetBool("_selected") );
 }
 
 function onResolutionChange( GFxClikWidget.EventData ev )
@@ -123,16 +135,18 @@ function onResolutionChange( GFxClikWidget.EventData ev )
 	switch ( us_stepper_resolution.GetFloat( "selectedIndex" ) )
 		{
 		case( 0 ):
-			ConsoleCommand( "setres 800x600" );
+			HPlayer.SetResolution( "800x600" );
 			break;
 		case( 1 ):
-			ConsoleCommand( "setres 1024x768" );
+			HPlayer.SetResolution( "1024x768" );
 			break;
 		case( 2 ):
-			ConsoleCommand( "setres 1366x768" );
+			HPlayer.SetResolution( "1366x768" );
 			break;
 		case( 3 ):
-			ConsoleCommand( "setres 1920x1080" );
+			HPlayer.SetResolution( "1920x1080" );
+			break;
+		default:
 			break;
 		}
 	//us_stepper_resolution.ActionScriptVoid(
