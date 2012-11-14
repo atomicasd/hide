@@ -102,13 +102,10 @@ function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam 
 	//Reset pawns before a player spawn is chosen to avoid spawning inside a monster
 	local HPawn_Monster p;
 
-	`log("Reset pawns");
-
 	//Reset all monster on map to default settings.
 	foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
 	{
 		p.Reset();
-		`log("Reset");
 	}
 
 	return super.ChoosePlayerStart(Player, InTeam);

@@ -20,11 +20,14 @@ var config  float    MasterVolume;
 var config  float    MusicVolume;
 var config  int      PlayerLifes;
 
+var int HPlayerLifes;
+
 var string MapName;
 
 var     bool    bInEndOfLevel;
 var     bool    bChangedState;
 var     bool    bIgnoreInput;
+var     bool    bCanJump;
 
 var     bool	pulseMade;
 var     bool    pulseFadeOut; //If the pulse should go outwards or towards the player(end of pulse)
@@ -57,6 +60,8 @@ simulated event PostBeginPlay()
 		A.ForceUpdateComponents();
 	}
 
+	HPlayerLifes = 10;
+
 	SetMusicVolume(MusicVolume);
 	SetMasterVolume(MasterVolume);
 
@@ -87,6 +92,20 @@ function InitConfig()
 	SetMasterVolume(MasterVolume);
 
 	SaveToConfig();
+}
+
+function playerDied()
+{
+	`log("Died: " $HPlayerLifes);
+
+	--HPlayerLifes;
+
+	`log("Died: " $HPlayerLifes);
+
+	if(HPlayerLifes <= 0)
+	{
+		`log("GameOver");
+	}
 }
 
 simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rotation )
@@ -322,7 +341,7 @@ function IgnoreInput(bool bIgnore)
 // Need this so player cant jump when he uses pulse
 function CheckJumpOrDuck()
 {
-	if(!bIgnoreInput){
+	if(!bIgnoreInput && bCanJump){
 		super.CheckJumpOrDuck();
 	}
 }
@@ -396,20 +415,21 @@ function int getLevelNumber()
 
 DefaultProperties
 {
-	InputClass = class'HideGame.HPlayerInput';
-	CameraClass = class'HCamera';
+	InputClass = class'HideGame.HPlayerInput'
+	CameraClass = class'HCamera'
 	
-	pulseMade = false;
-	pulseMaxRadius = 1000;
-	pulseRadius = 1;
-	pulseFadeOut = true;
-	fadeOutStart = 0.5f;
-	pulseTime = 5.0f;
-	pulseDensity = 1.0f;
-	pulseFadedIn = false;
-	pulseCooldownTimer = 5;
+	pulseMade = false
+	pulseMaxRadius = 1000
+	pulseRadius = 1
+	pulseFadeOut = true
+	fadeOutStart = 0.5f
+	pulseTime = 5.0f
+	pulseDensity = 1.0f
+	pulseFadedIn = false
+	pulseCooldownTimer = 5
+	bCanJump=true
 
-	bFinishedGame = false;
-	timeTillMainMenu = 8.0f;
+	bFinishedGame = false
+	timeTillMainMenu = 8.0f
 }
 
