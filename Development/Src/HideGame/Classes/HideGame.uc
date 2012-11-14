@@ -333,7 +333,7 @@ function MaterialInstanceConstant CreateTransparentMaterialInterp(InterpActor sm
     }
     return matInstanceConstant; 
 }
-
+    matInstanceConstant = oldMat; 
 function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor) 
 { 
     local MaterialInstanceConstant matInstanceConstant; 
