@@ -14,11 +14,12 @@ var     HideGame    hGame;
  * Config variables
  */
 
-var config  int      LevelsCleared;
-var config  string   OnCurrentLevel;
-var config  float    MasterVolume;
-var config  float    MusicVolume;
-var config  int      PlayerLifes;
+var config  int     LevelsCleared;
+var config  string  OnCurrentLevel;
+var config  float   MasterVolume;
+var config  float   MusicVolume;
+var config  int     PlayerLifes;
+var config  bool    Fullscreen; 
 
 var string MapName;
 
@@ -354,7 +355,7 @@ function SetMusicVolume(float Volume)
 // Last functions thats sets sound to the musicgroup
 function SetAudioGroupVolume( name GroupName, float Volume )
 {
-	`log("Music Volume: "$Volume);
+	`log(GroupName $" Volume: "$Volume);
 	super.SetAudioGroupVolume( GroupName, Volume );
 	SaveToConfig();
 }

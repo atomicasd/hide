@@ -11,6 +11,7 @@ var GFxClikWidget us_cb_fullscreen;
 var GFxClikWidget us_slider_soundAmbient;
 var GFxClikWidget us_slider_soundEffects;
 var GFxClikWidget us_slider_brightness;
+var GFxClikWidget us_stepper_resolution;
 
 var class<AudioComponent> Hmusic;
 var AudioComponent MenuMusic;
@@ -74,6 +75,10 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 		us_slider_brightness = GFxClikWidget( Widget );
 		us_slider_brightness.AddEventListener( 'CLIK_valueChange', onBrightnessChange );
 		break;
+	case ( 'stepper_resolution' ):
+		us_stepper_resolution = GFxClikWidget( Widget );
+		us_stepper_resolution.AddEventListener( 'CLIK_change', onResolutionChange );
+		break;
 	default:
 		break;
 	}
@@ -112,6 +117,29 @@ function onFullscreenChange( GFxClikWidget.EventData ev )
 		ConsoleCommand( "setres 1366x768w" );
 }
 
+function onResolutionChange( GFxClikWidget.EventData ev )
+{
+	//us_stepper_resolution.GetFloat( "selectedIndex" )
+	switch ( us_stepper_resolution.GetFloat( "selectedIndex" ) )
+		{
+		case( 0 ):
+			ConsoleCommand( "setres 800x600" );
+			break;
+		case( 1 ):
+			ConsoleCommand( "setres 1024x768" );
+			break;
+		case( 2 ):
+			ConsoleCommand( "setres 1366x768" );
+			break;
+		case( 3 ):
+			ConsoleCommand( "setres 1920x1080" );
+			break;
+		}
+	//us_stepper_resolution.ActionScriptVoid(
+	//`log("test: " $ us_stepper_resolution.GetElementMemberString( 1, "selectedIndex" ) );
+}
+	
+
 function onSoundAmbientChange( GFxClikWidget.EventData ev )
 {
 	HPlayer.SetMusicVolume( us_slider_soundAmbient.GetFloat("_value") / 10 );
@@ -143,6 +171,8 @@ DefaultProperties
 	WidgetBindings.Add( ( WidgetName="slider_soundAmbient", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="slider_soundEffects", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="slider_brightness", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="stepper_resolution", WidgetClass=class'GFxClikWidget' ) )
+
 	Hmusic = class'AudioComponent'
 
 	bCaptureInput = true;
