@@ -28,7 +28,6 @@ static function SoundCue GetSneakFootstepSound(int FootDown, name MaterialType)
 static function SoundCue GetFootstepSound(int FootDown, name MaterialType)
 {
 	local int i;
-	`log("Foot");
 	if(FootDown == 0){
 		return GetSneakFootstepSound(FootDown, MaterialType);
 	}else{

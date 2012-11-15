@@ -49,8 +49,6 @@ state GameInProgress
 			ForEach WorldInfo.AllControllers(class'HPlayerController', HPC)
 			{
 				`log("Creating HPC");
-				HPlayer=HPC;
-				HPlayer.hGame = self;
 
 				if(WorldInfo.GetMapName() == "HideMenuMap")
 				{
@@ -58,6 +56,10 @@ state GameInProgress
 				}else{
 					HPC.IgnoreInput(false);
 				}
+				HPC.InitConfig();
+				HPlayer=HPC;
+				HPlayer.hGame = self;
+
 			}
 			
 		}
@@ -100,13 +102,10 @@ function PlayerStart ChoosePlayerStart( Controller Player, optional byte InTeam 
 	//Reset pawns before a player spawn is chosen to avoid spawning inside a monster
 	local HPawn_Monster p;
 
-	`log("Reset pawns");
-
 	//Reset all monster on map to default settings.
 	foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
 	{
 		p.Reset();
-		`log("Reset");
 	}
 
 	return super.ChoosePlayerStart(Player, InTeam);
@@ -334,7 +333,7 @@ function MaterialInstanceConstant CreateTransparentMaterialInterp(InterpActor sm
     }
     return matInstanceConstant; 
 }
-
+    matInstanceConstant = oldMat; 
 function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor) 
 { 
     local MaterialInstanceConstant matInstanceConstant; 
@@ -476,4 +475,6 @@ DefaultProperties
 
 	mapOpacity = 0.0;
 
+	PulseMat[0] = Material'HIDE_Lvl01.lvl01.Lvl01_Material_Translucent'
+	PulseMat[1] = Material'Hide_Lvl02.lvl02.lvl02_Material_Translucent'
 }

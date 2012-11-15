@@ -73,12 +73,12 @@ DefaultProperties
 		bAcceptsDynamicDecals=FALSE
 		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_Monsters_Obesus_SkeletalMesh01'
 		HiddenEditor=false
-		bHasPhysicsAssetInstance=true
+		bHasPhysicsAssetInstance=false
 		TickGroup=TG_PreAsyncWork
 		MinDistFactorForKinematicUpdate=0.2
 		bChartDistanceFactor=true
 		//bSkipAllUpdateWhenPhysicsAsleep=TRUE
-		RBDominanceGroup=1
+		RBDominanceGroup=0
 		// Nice lighting for hair
 		bUseOnePassLightingOnTranslucency=TRUE
 		bPerBoneMotionBlur=true

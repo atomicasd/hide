@@ -103,7 +103,7 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 {
 	local HAnimBlend_Monster BlendState;
 
-	super.PostInitAnimTree(SkelComp);
+	//super.PostInitAnimTree(SkelComp);\
 
 	if(SkelComp == Mesh)
 	{
