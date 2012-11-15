@@ -5,7 +5,7 @@ var float timer;
 function Tick(float DeltaTime)
 {
 	timer += DeltaTime;
-
+ 
 	if(timer > 12)
 	{
 		//HPawn_Tactus(Pawn).CreateBreathingSound();
@@ -20,7 +20,7 @@ DefaultProperties
 	shouldFollowPath = true;
 	canHear = false;
 
-	WalkSpeed = 280
-	ChaseSpeed = 220
+	WalkSpeed = 420
+	ChaseSpeed = 420
 }
 

@@ -250,13 +250,13 @@ function PlayerTick(float DeltaTime)
 			case Idle: 
 				break;
 			case Walk:
-				Pawn.GroundSpeed = 150;
+				Pawn.GroundSpeed = 180;
 				break;
 			case Sneak:
-				Pawn.GroundSpeed = 150;
+				Pawn.GroundSpeed = 180;
 				break;
 			case Run:
-				Pawn.GroundSpeed = 200;
+				Pawn.GroundSpeed = 250;
 				break;
 			}
 			bChangedState=false;	

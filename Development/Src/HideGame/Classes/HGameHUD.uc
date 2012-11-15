@@ -200,11 +200,41 @@ function DrawGameHud()
 		DrawIconStretched( thankYouPicture, 0, 0, );
 	}
 	UpdateDamage();
+	DisplayLocalMessages();
+	DisplayConsoleMessages();
 }
 
 function ShowFinishGamePicture()
 {
 	bShowFinishGamePicture = true;
+}
+
+function DrawMessageText(HudLocalizedMessage LocalMessage, float ScreenX, float ScreenY)
+{
+	local color CanvasColor;
+	local string StringMessage;
+
+	if ( Canvas.Font == none )
+	{
+		Canvas.Font = GetFontSizeIndex(0);
+	}
+
+	StringMessage = LocalMessage.StringMessage;
+	if ( LocalMessage.Count > 0 )
+	{
+		if ( Right(StringMessage, 1) ~= "." )
+		{
+			StringMessage = Left(StringMessage, Len(StringMessage) -1);
+		}
+		StringMessage = StringMessage$" X "$LocalMessage.Count;
+	}
+
+	CanvasColor = Canvas.DrawColor;
+
+	// now draw string with normal color
+	Canvas.DrawColor = CanvasColor;
+	Canvas.SetPos( ScreenX, ScreenY );
+	Canvas.DrawText( StringMessage, false, , , TextRenderInfo );
 }
 
 DefaultProperties

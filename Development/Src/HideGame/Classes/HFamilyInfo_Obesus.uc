@@ -11,4 +11,5 @@ DefaultProperties
 	// Animation asstes
 	HAnimSet(0) = AnimSet'MonsterPackage.Anims.ObesusAnimFinal'
 	HAnimTreeTemplate = AnimTree'MonsterPackage.Anims.ObesusAnimTree'
+	
 }
