@@ -302,6 +302,21 @@ defaultproperties
 	ArmMaterials[8] = Material'PlayerPackage.Materials.HandMaterial08'
 	ArmMaterials[9] = Material'PlayerPackage.Materials.HandMaterial09'
 	ArmMaterials[10] = Material'PlayerPackage.Materials.HandMaterial010'
+	ArmMaterials[11] = Material'PlayerPackage.Materials.HandMaterial011'
+	ArmMaterials[12] = Material'PlayerPackage.Materials.HandMaterial012'
+	ArmMaterials[13] = Material'PlayerPackage.Materials.HandMaterial013'
+	ArmMaterials[14] = Material'PlayerPackage.Materials.HandMaterial014'
+	ArmMaterials[15] = Material'PlayerPackage.Materials.HandMaterial015'
+	ArmMaterials[16] = Material'PlayerPackage.Materials.HandMaterial016'
+	ArmMaterials[17] = Material'PlayerPackage.Materials.HandMaterial017'
+	ArmMaterials[18] = Material'PlayerPackage.Materials.HandMaterial018'
+	ArmMaterials[19] = Material'PlayerPackage.Materials.HandMaterial019'
+	ArmMaterials[20] = Material'PlayerPackage.Materials.HandMaterial020'
+	ArmMaterials[21] = Material'PlayerPackage.Materials.HandMaterial021'
+	ArmMaterials[22] = Material'PlayerPackage.Materials.HandMaterial022'
+	ArmMaterials[23] = Material'PlayerPackage.Materials.HandMaterial023'
+	ArmMaterials[24] = Material'PlayerPackage.Materials.HandMaterial024'
+	ArmMaterials[25] = Material'PlayerPackage.Materials.HandMaterial025'
 	
 	waitTillPull = 0.5;
 	cameraFadeStarted = false;
