@@ -1,14 +1,18 @@
 class HPawn_Player extends HPawn
 	placeable;
 
-var     SkeletalMeshComponent   PlayerArms;
-var    array<MaterialInterface> ArmMaterials;
+/**
+ * Player
+ */
 var     HFamilyInfo_Player      CharacterInfo;
 var     HSoundBeacon            soundBeacon;
 var     int                     waitSoundStep;
 var     float                   waitForJump;
 var     bool                    canJump;
 
+/**
+ * Monster cases
+ */
 var     bool                    steppedOnNerve;
 var     Vector                  steppedLocation;
 var     Rotator                 steppedRotation;
@@ -18,7 +22,17 @@ var     float                   waitTillPull;
 var     float                   positionAlpha;
 var     bool                    cameraFadeStarted;
 
-var array<HAnimBlend_PlayerHand> HAnimBlend;
+/**
+ * Animations
+ */
+var     SkeletalMeshComponent           PlayerArms;
+var     array<MaterialInterface>        ArmMaterials;
+var     array<HAnimBlend_PlayerHand>    HAnimBlend;
+var     float                           AnimationPulseTimer;
+var     float                           NextAnimationChange;
+var     bool                            bActivatedPulse;
+var     bool                            bDeactivatedPulse;
+var     bool                            bGetAnimDuration;
 
 simulated function PostBeginPlay()
 {
@@ -34,6 +48,9 @@ simulated function PostBeginPlay()
 	SetAnimState(HS_IDLE);
 }
 
+/*********************
+ * Sound functions
+ *********************/
 
 simulated event ActuallyPlayFootStepSound(int FootDown)
 {
@@ -56,11 +73,24 @@ simulated event ActuallyPlayFootStepSound(int FootDown)
 	}
 }
 
+
+/********************
+ * Player funtions 
+ ********************/
 function bool Died(Controller Killer, class<DamageType> damageType, vector HitLocation)
 {
 	soundBeacon.bIsPlayerDead=true;
 	HPlayer.playerDied();
 	return super.Died(Killer, damageType, HitLocation);
+}
+
+event Landed(vector HitNormal, actor FloorActor)
+{
+	super.Landed(HitNormal, FloorActor);
+	HPlayer.bCanJump=false;
+	waitForJump=0;
+	Velocity.X *= 0.1;
+	Velocity.Y *= 0.1;
 }
 
 function PlayTeleportEffect(bool bOut, bool bSound)
@@ -72,10 +102,8 @@ function PlayTeleportEffect(bool bOut, bool bSound)
 	soundBeacon.bIsPlayerDead=false;
 
 	setHandMaterial(HPlayerController(Controller).HPlayerLifes);
-	SetAnimState(HS_IDLE);
+	SetAnimState(HS_SPAWNED);
 }
-
-
 
 exec function KillYourself()
 {
@@ -86,16 +114,20 @@ exec function KillYourself()
 }
 
 /*
- * Spawnes the soundBeacon
+ * Ticks
  */
 event Tick(float TimeDelta)
 {
+	local int i;
 	local int soundRadius;
 	local Vector vectorToNervorum;
 	local HPlayerController pController;
 	local HCamera pCamera;
 	local HNervorum_GroundNerve nerve;
 
+	/**
+	 * Create the soundPulse
+	 */
 	switch(HPlayer.WalkState)   
 	{
 	case Idle:  soundRadius=140;  break;
@@ -116,6 +148,9 @@ event Tick(float TimeDelta)
 		}
 	}
 	
+	/**
+	 * Nervorum check
+	 */
 	if( steppedOnNerve )
 	{
 		if( waitTillPull < 0.0 )
@@ -150,6 +185,9 @@ event Tick(float TimeDelta)
 		}
 	}
 
+	/**
+	 * Disables jump for a while
+	 */
 	if(!canJump)
 	{
 		waitForJump += TimeDelta;
@@ -157,6 +195,79 @@ event Tick(float TimeDelta)
 		if(waitForJump >= 0.2)
 		{
 			HPlayer.bCanJump=true;
+		}
+	}
+
+	/**
+	 * Animation
+	 */
+	if(bActivatedPulse)
+	{
+		if(bGetAnimDuration)
+		{
+			for(i = 0; i < HAnimBlend.Length; i++)
+			{
+				NextAnimationChange = HAnimBlend[i].GetAnimDuration(1);
+
+				if(NextAnimationChange != 0){
+					bGetAnimDuration = false;
+					HAnimBlend[i].BlendTime = NextAnimationChange;
+				}
+			}
+		}else{
+			AnimationPulseTimer += TimeDelta;
+		
+			if(AnimationPulseTimer >= NextAnimationChange)
+			{
+				SetAnimState(HS_DURING);
+				bActivatedPulse = false;
+			}
+		}
+	}else if(bDeactivatedPulse){
+		if(bGetAnimDuration)
+		{
+			for(i = 0; i < HAnimBlend.Length; i++)
+			{
+				NextAnimationChange = HAnimBlend[i].GetAnimDuration(3);
+
+				if(NextAnimationChange != 0){
+					bGetAnimDuration = false;
+					HAnimBlend[i].BlendTime = NextAnimationChange;
+				}
+			}
+		}else{
+			AnimationPulseTimer += TimeDelta;
+		
+			if(AnimationPulseTimer >= NextAnimationChange)
+			{
+				SetAnimState(HS_IDLE);
+				bDeactivatedPulse = false;
+			}
+		}
+	}
+
+	if(HAnimBlend[0].HGetStateName() == HS_PRESSBUTTON)
+	{
+		if(bGetAnimDuration)
+		{
+			for(i = 0; i < HAnimBlend.Length; i++)
+			{
+				NextAnimationChange = HAnimBlend[i].GetAnimDuration(4);
+
+				if(NextAnimationChange != 0){
+					bGetAnimDuration = false;
+					HAnimBlend[i].BlendTime = NextAnimationChange;
+				}
+			}
+		}else{
+			AnimationPulseTimer += TimeDelta;
+		
+			if(AnimationPulseTimer >= NextAnimationChange)
+			{
+				SetAnimState(HS_IDLE);
+				bDeactivatedPulse = false;
+
+			}
 		}
 	}
 
@@ -178,20 +289,10 @@ function KillByNervorum( HPawn_Nervorum nervorum )
 	}
 }
 
-event Landed(vector HitNormal, actor FloorActor)
-{
-	super.Landed(HitNormal, FloorActor);
-	HPlayer.bCanJump=false;
-	waitForJump=0;
-	Velocity.X *= 0.1;
-	Velocity.Y *= 0.1;
-}
-
 
 /*************************
  * Animation
  *************************/
-
 
 /*
  * Sets CharacterInfo for pawn
@@ -246,6 +347,31 @@ function setHandMaterial(int LifeLeft)
     PlayerArms.SetMaterial(0, ArmMaterials[LifeLeft]);
 }
 
+function ActivatedPulse()
+{
+	SetAnimState(HS_ACTIVATE);
+	bGetAnimDuration = true;
+	AnimationPulseTimer=0;
+	bActivatedPulse = true;
+}
+
+function DeactivatedPulse()
+{
+	SetAnimState(HS_DEACTIVATE);
+	bGetAnimDuration = true;
+	bDeactivatedPulse = true;
+	bActivatedPulse = false;
+	AnimationPulseTimer=0;
+}
+
+function Use()
+{
+	SetAnimState(HS_PRESSBUTTON);
+	bGetAnimDuration = true;
+	bActivatedPulse = false;
+	AnimationPulseTimer = 0;
+}
+
 defaultproperties
 {
 	InventoryManagerClass = None
@@ -261,7 +387,7 @@ defaultproperties
 		bPerBoneMotionBlur=true
 		bAcceptsLights=true
 		bAcceptsDynamicLights=true
-		Translation=(Z=15)
+		Translation=(Z=20)
 		Scale=1
 		PhysicsAsset=None
 		DepthPriorityGroup=SDPG_Foreground
@@ -280,14 +406,22 @@ defaultproperties
 	PlayerArms=FirstPersonArms0
 	Components.add(FirstPersonArms0)
 	
+	/**
+	 * Player variables
+	 */
 	GroundSpeed=200.0
 	CrouchHeight=40
-	AirSpeed = 1;
+	AirSpeed = 0.1;
 	CrouchedPct=+0.65
+
 	bStatic = false
 	bNoDelete = false
 	bCanDoubleJump=false
-	RagdollLifespan = 0.1f;
+	RagdollLifespan = 0.1f
+
+	waitTillPull = 0.5;
+	cameraFadeStarted = false;
+	AnimationPulseTimer=0
 
 	IdleSounds[0] = SoundCue'SoundPackage.Enviroment.Silence_Cue'
 
@@ -301,23 +435,20 @@ defaultproperties
 	ArmMaterials[7] = Material'PlayerPackage.Materials.HandMaterial07'
 	ArmMaterials[8] = Material'PlayerPackage.Materials.HandMaterial08'
 	ArmMaterials[9] = Material'PlayerPackage.Materials.HandMaterial09'
-	ArmMaterials[10] = Material'PlayerPackage.Materials.HandMaterial010'
-	ArmMaterials[11] = Material'PlayerPackage.Materials.HandMaterial011'
-	ArmMaterials[12] = Material'PlayerPackage.Materials.HandMaterial012'
-	ArmMaterials[13] = Material'PlayerPackage.Materials.HandMaterial013'
-	ArmMaterials[14] = Material'PlayerPackage.Materials.HandMaterial014'
-	ArmMaterials[15] = Material'PlayerPackage.Materials.HandMaterial015'
-	ArmMaterials[16] = Material'PlayerPackage.Materials.HandMaterial016'
-	ArmMaterials[17] = Material'PlayerPackage.Materials.HandMaterial017'
-	ArmMaterials[18] = Material'PlayerPackage.Materials.HandMaterial018'
-	ArmMaterials[19] = Material'PlayerPackage.Materials.HandMaterial019'
-	ArmMaterials[20] = Material'PlayerPackage.Materials.HandMaterial020'
-	ArmMaterials[21] = Material'PlayerPackage.Materials.HandMaterial021'
-	ArmMaterials[22] = Material'PlayerPackage.Materials.HandMaterial022'
-	ArmMaterials[23] = Material'PlayerPackage.Materials.HandMaterial023'
-	ArmMaterials[24] = Material'PlayerPackage.Materials.HandMaterial024'
-	ArmMaterials[25] = Material'PlayerPackage.Materials.HandMaterial025'
-	
-	waitTillPull = 0.5;
-	cameraFadeStarted = false;
+	ArmMaterials[10] = Material'PlayerPackage.Materials.HandMaterial10'
+	ArmMaterials[11] = Material'PlayerPackage.Materials.HandMaterial11'
+	ArmMaterials[12] = Material'PlayerPackage.Materials.HandMaterial12'
+	ArmMaterials[13] = Material'PlayerPackage.Materials.HandMaterial13'
+	ArmMaterials[14] = Material'PlayerPackage.Materials.HandMaterial14'
+	ArmMaterials[15] = Material'PlayerPackage.Materials.HandMaterial15'
+	ArmMaterials[16] = Material'PlayerPackage.Materials.HandMaterial16'
+	ArmMaterials[17] = Material'PlayerPackage.Materials.HandMaterial17'
+	ArmMaterials[18] = Material'PlayerPackage.Materials.HandMaterial18'
+	ArmMaterials[19] = Material'PlayerPackage.Materials.HandMaterial19'
+	ArmMaterials[20] = Material'PlayerPackage.Materials.HandMaterial20'
+	ArmMaterials[21] = Material'PlayerPackage.Materials.HandMaterial21'
+	ArmMaterials[22] = Material'PlayerPackage.Materials.HandMaterial22'
+	ArmMaterials[23] = Material'PlayerPackage.Materials.HandMaterial23'
+	ArmMaterials[24] = Material'PlayerPackage.Materials.HandMaterial24'
+	ArmMaterials[25] = Material'PlayerPackage.Materials.HandMaterial25'
 }

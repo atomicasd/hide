@@ -100,11 +100,7 @@ function InitConfig()
 
 function playerDied()
 {
-	`log("Died: " $HPlayerLifes);
-
 	--HPlayerLifes;
-
-	`log("Died: " $HPlayerLifes);
 
 	if(HPlayerLifes <= 0)
 	{
@@ -315,6 +311,7 @@ exec function makePulseCircle()
 // Activate the pulse ability and freezes the player
 exec function ActivatePulse()
 {
+	HPawn_Player(Pawn).ActivatedPulse();
 	hGame.MakeMapTransparent();
 	IgnoreInput(true);
 	pulseMade = true;
@@ -328,10 +325,21 @@ exec function ActivatePulse()
 // Disable the pulse effect, and starts the cooldown
 exec function DisablePulse()
 {
+	HPawn_Player(Pawn).DeactivatedPulse();
 	IgnoreInput(false);
 	pulseFadeOut = false;
 	pulseFadedIn = true;
 //	startPulseTimer = true;
+}
+
+exec function Use()
+{
+	if(!bIgnoreInput)
+	{
+		super.Use();
+
+		HPawn_Player(Pawn).Use();
+	}
 }
 
 // Ignores mouse and move input
