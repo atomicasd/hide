@@ -158,7 +158,7 @@ state FollowPath
     }
 
  Begin:
-	
+	aiPawn.SetAnimRateScale( 2 );
 	while(followingPath)
 	{
 		if(MyNavigationPoints.Length <= 0)
@@ -216,7 +216,7 @@ state Chaseplayer
 {
   Begin:
 	aiPawn.SetAnimState(MS_Run);
-
+	aiPawn.SetAnimRateScale( 3 );
 	bChasePlayer=true;
 	aiPawn.SetAttacking(false);
     Pawn.Acceleration = vect(0,0,1);

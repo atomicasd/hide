@@ -38,6 +38,6 @@ DefaultProperties
 	shouldFollowPath = true;
 
 	WalkSpeed = 200
-	ChaseSpeed = 220
+	ChaseSpeed = 330
 }
 
