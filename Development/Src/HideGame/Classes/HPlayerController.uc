@@ -19,12 +19,12 @@ var config  string  OnCurrentLevel;
 var config  float   MasterVolume;
 var config  float   MusicVolume;
 var config  int     PlayerLifes;
-var config  bool    Fullscreen; 
+var config  bool    Fullscreen;
 var config  string  Resolution;
+	
+var     int     HPlayerLifes;
 
-var int HPlayerLifes;
-
-var string MapName;
+var     string  MapName;
 
 var     bool    bInEndOfLevel;
 var     bool    bChangedState;
@@ -330,16 +330,6 @@ exec function DisablePulse()
 	pulseFadeOut = false;
 	pulseFadedIn = true;
 //	startPulseTimer = true;
-}
-
-exec function Use()
-{
-	if(!bIgnoreInput)
-	{
-		super.Use();
-
-		HPawn_Player(Pawn).Use();
-	}
 }
 
 // Ignores mouse and move input

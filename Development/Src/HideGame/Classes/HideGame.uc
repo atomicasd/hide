@@ -363,7 +363,6 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 	else if ( string(matName) == "DoorFrame_Translucent") 
 	{
 		matGroupName = name("testingfacility");
-		`log("----------------------------------------------------------------------");
 	}
 	else
 	{
@@ -371,7 +370,6 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 	}
 
 	materialClassName = string(packageName) $ "." $ string(matGroupName) $ "." $ matName;
-	`log(materialClassName);
 	if( InStr(matName, "_Translucent") != -1 )
 	{
 		materialClassName = Repl(materialClassName, "_Translucent", ""); 
@@ -419,7 +417,6 @@ function MaterialInstanceConstant CreateSolidMaterialInterp(InterpActor smActor)
 	if ( string(matName) == "door_Translucent") 
 	{
 		matGroupName = name("testingfacility");
-		//`log("----------------------------------------------------------------------");
 	}
 	else
 	{
@@ -427,7 +424,6 @@ function MaterialInstanceConstant CreateSolidMaterialInterp(InterpActor smActor)
 	}
 
 	materialClassName = string(packageName) $ "." $ string(matGroupName) $ "." $ matName;
-	`log(materialClassName);
 	if( InStr(matName, "_Translucent") != -1 )
 	{
 		materialClassName = Repl(materialClassName, "_Translucent", ""); 
