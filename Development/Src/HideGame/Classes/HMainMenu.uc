@@ -4,6 +4,7 @@ class HMainMenu extends GFxMoviePlayer;
 var HPlayerController HPlayer;
 
 var GFxClikWidget us_btn_newgame;
+var GFxClikWidget us_btn_continue;
 var GFxClikWidget us_btn_exitgame;
 var GFxClikWidget us_btn_level1;
 var GFxClikWidget us_btn_level2;
@@ -41,6 +42,10 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 		us_btn_newgame = GFxClikWidget( Widget );
 		us_btn_newgame.AddEventListener( 'CLIK_press', onNewGameButtonPress );
 		break;
+	case ( 'btn_continue' ):
+		us_btn_continue = GFxClikWidget( Widget );
+		us_btn_continue.AddEventListener( 'CLIK_press', onContinueButtonPress );
+		break;
 	case ( 'btn_exitgame' ):
 		us_btn_exitgame = GFxClikWidget( Widget );
 		us_btn_exitgame.AddEventListener( 'CLIK_press', onExitButtonPress );
@@ -51,9 +56,13 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 		break;
 	case ( 'btn_level2' ):
 		us_btn_level2 = GFxClikWidget( Widget );
-		us_btn_level2.AddEventListener( 'CLIK_press', onLevel2ButtonPress );
-		if ( HPlayer.LevelsCleared < 2 )
-		us_btn_level2.GotoAndStop( "disabled" );
+		if ( HPlayer.LevelsCleared >= 1 )
+		{
+			us_btn_level2.GotoAndStop( "disabled" );
+			ActionScriptVoid( "setLevel2btnDisabled" );			
+		} else {
+			us_btn_level2.AddEventListener( 'CLIK_press', onLevel2ButtonPress );
+		}
 		break;
 	case ('cb_fullscreen'):
 		us_cb_fullscreen = GFxClikWidget(Widget);
@@ -73,7 +82,8 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 		break;
 	case ( 'slider_brightness' ):
 		us_slider_brightness = GFxClikWidget( Widget );
-		us_slider_brightness.AddEventListener( 'CLIK_valueChange', onBrightnessChange );
+		us_slider_brightness.AddEventListener( 'CLIK_change', onBrightnessChange );
+		us_slider_brightness.SetFloat( "value", HPlayer.Brightness );
 		break;
 	case ( 'stepper_resolution' ):
 		us_stepper_resolution = GFxClikWidget( Widget );
@@ -111,6 +121,12 @@ function onNewGameButtonPress( GFxClikWidget.EventData ev )
 	saveToConfig();
 	ConsoleCommand( "Open HG-Lvl-1" );
 }
+function onContinueButtonPress( GFxClikWidget.EventData ev )
+{
+	saveToConfig();
+	ConsoleCommand( "Open HG-" $ HPlayer.OnCurrentLevel );
+}
+
 
 function onLevel1ButtonPress( GFxClikWidget.EventData ev )
 {
@@ -128,6 +144,8 @@ function onFullscreenChange( GFxClikWidget.EventData ev )
 {
 	HPlayer.SetFullscreen( us_cb_fullscreen.GetBool("_selected") );
 }
+
+
 
 function onResolutionChange( GFxClikWidget.EventData ev )
 {
@@ -165,8 +183,7 @@ function onSoundEffectsChange( GFxClikWidget.EventData ev )
 
 function onBrightnessChange( GFxClikWidget.EventData ev )
 {
-	`log("yes");
-	//ConsoleCommand( "Open HG-Lvl02" );
+	HPlayer.SetBrightnessValue( us_slider_brightness.GetFloat("_value") );
 }
 
 function saveToConfig()
@@ -178,6 +195,7 @@ function saveToConfig()
 DefaultProperties
 {
 	WidgetBindings.Add( ( WidgetName="btn_newgame", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_continue", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_exitgame", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_level1", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_level2", WidgetClass=class'GFxClikWidget' ) )
@@ -186,7 +204,7 @@ DefaultProperties
 	WidgetBindings.Add( ( WidgetName="slider_soundEffects", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="slider_brightness", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="stepper_resolution", WidgetClass=class'GFxClikWidget' ) )
-
+	
 	Hmusic = class'AudioComponent'
 
 	bCaptureInput = true;

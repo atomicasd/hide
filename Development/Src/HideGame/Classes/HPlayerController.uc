@@ -21,6 +21,7 @@ var config  float   MusicVolume;
 var config  int     PlayerLifes;
 var config  bool    Fullscreen; 
 var config  string  Resolution;
+var config  float   Brightness;
 
 var string MapName;
 
@@ -70,7 +71,6 @@ function InitConfig()
 	local array<string> lvlName;
 
 	MapName = WorldInfo.GetMapName();
-
 	lvlName = SplitString(MapName);
 
 	if(lvlName[0] != "HideMenuMap")
@@ -90,6 +90,7 @@ function InitConfig()
 	SetMusicVolume(MusicVolume);
 	SetMasterVolume(MasterVolume);	
 	SetFullscreen( Fullscreen ); // and resolution.
+	SetBrightnessValue( Brightness );
 	SaveToConfig();
 }
 
@@ -355,6 +356,13 @@ function SetMusicVolume(float Volume)
 	SetAudioGroupVolume('Music', Volume);
 }
 
+// set Brightness value;
+function SetBrightnessValue( float value )
+{
+	Brightness = value;
+	`log(" Brightness: " $ Brightness);
+	ConsoleCommand( "GAMMA " $ Brightness );
+}
 // Last functions thats sets sound to the musicgroup
 function SetAudioGroupVolume( name GroupName, float Volume )
 {
@@ -432,4 +440,3 @@ DefaultProperties
 	bFinishedGame = false;
 	timeTillMainMenu = 8.0f;
 }
-
