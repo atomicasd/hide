@@ -149,6 +149,16 @@ event Tick(float TimeDelta)
 			KillByNervorum( nerve.nervorumOwnedBy );
 		}
 	}
+
+	/**
+	 * Sounds
+	 */
+
+	// Idle sound check
+	if(!IdleSound.IsPlaying())
+	{
+		playIdleSound();
+	}
 	
 	/**
 	 * Nervorum check
@@ -203,7 +213,6 @@ event Tick(float TimeDelta)
 	/**
 	 * Animation
 	 */
-
 
 	if(!bAnimationUsed && bActivatedPulse)
 	{
@@ -425,7 +434,10 @@ defaultproperties
 	cameraFadeStarted = false;
 	AnimationPulseTimer=0
 
-	IdleSounds[0] = SoundCue'SoundPackage.Enviroment.Silence_Cue'
+	IdleSounds[0] = SoundCue'SoundPackage.Player.playerCharacterIdleBreathing01_Cue'
+	IdleSounds[1] = SoundCue'SoundPackage.Player.playerCharacterIdleBreathing02_Cue'
+	IdleSounds[2] = SoundCue'SoundPackage.Player.playerCharacterIdleBreathing03_Cue'
+	IdleSounds[3] = SoundCue'SoundPackage.Player.playerCharacterIdleBreathing05_Cue'
 
 	ArmMaterials[0] = Material'PlayerPackage.Materials.HandMaterial01'
 	ArmMaterials[1] = Material'PlayerPackage.Materials.HandMaterial01'

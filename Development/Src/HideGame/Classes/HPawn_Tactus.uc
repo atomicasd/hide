@@ -5,7 +5,7 @@ class HPawn_Tactus extends HPawn_Monster
 var HFamilyInfo_Tactus             CharacterInfo;
 
 // Sound
-var HSoundGroup_Tactus             HSoundGroup;
+//var HSoundGroup_Tactus             HSoundGroup;
 
 var bool followingPlayer;
 
@@ -23,7 +23,7 @@ simulated function PostBeginPlay()
 	HSetCharacterClassFromInfo(class'HFamilyInfo_Tactus');
 
 	// Sets soundgroup
-	HSoundGroup = HSoundGroup_Tactus(new SoundGroupClass);
+	HSoundGroup = HSoundGroup_Tactus(new SoundGroup);
 	
 	super.PostBeginPlay();
 }
@@ -63,6 +63,7 @@ DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Tactus'
 	HCharacterInfo = class'HideGame.HFamilyInfo_Tactus'
+	SoundGroup = class'HSoundGroup_Tactus'
 	
 	Components.Remove(WPawnSkeletalMeshComponent)
 

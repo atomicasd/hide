@@ -95,6 +95,16 @@ event Reset()
 }
 
 /**
+ * Sound
+ */
+
+simulated function PlayAttackSound()
+{
+	`log("Attack-uu!");
+	HPlaySoundEffect(HSoundGroup_Monster( HSoundGroup ).static.getAttackSounds());
+}
+
+/**
  * Animation
  */
 
@@ -129,6 +139,8 @@ DefaultProperties
 {
     bJumpCapable=false
     bCanJump=false
+
+	SoundGroup=class'HSoundGroup_Monster'
  
     GroundSpeed=200.0
 	PeripheralVision = 0.7

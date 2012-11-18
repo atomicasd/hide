@@ -1,20 +1,41 @@
 class HSoundGroup_Character extends UTPawnSoundGroup;
 
-struct HFootstepSoundInfo
+var Array<SoundCue> HFootstepSounds;
+
+var array<SoundCue> HSneakFootstepSounds;
+
+var Array<SoundCue> HAttackSounds;
+
+var Array<SoundCue> HInvestigateSounds;
+
+var array<SoundCue> HJumpSounds;
+
+static function SoundCue GetJumpSound(name MaterialType)
 {
-	var int Type;
-	var SoundCue Sound;
-};
+	local int i;
 
-struct HSneakFootstepSoundInfo
+	i = Rand(default.HJumpSounds.Length);
+
+	return default.HJumpSounds[i];
+}
+
+static function SoundCue getInvestigateSounds()
 {
-	var int Type;
-	var SoundCue Sound;
-};
+	local int i;
 
-var Array<HFootstepSoundInfo> HFootstepSounds;
+	i = Rand(default.HInvestigateSounds.Length);
 
-var array<HSneakFootstepSoundInfo> HSneakFootstepSounds;
+	return default.HInvestigateSounds[i];
+}
+
+static function SoundCue getAttackSounds()
+{
+	local int i;
+
+	i = Rand(default.HAttackSounds.Length);
+
+	return default.HAttackSounds[i];
+}
 
 static function SoundCue GetSneakFootstepSound(int FootDown, name MaterialType)
 {
@@ -22,18 +43,18 @@ static function SoundCue GetSneakFootstepSound(int FootDown, name MaterialType)
 
 	i = Rand(default.HSneakFootstepSounds.Length);
 
-	return default.HSneakFootstepSounds[i].Sound;
+	return default.HSneakFootstepSounds[i];
 }
 
 static function SoundCue GetFootstepSound(int FootDown, name MaterialType)
 {
 	local int i;
-	if(FootDown == 0){
+	if(FootDown == 1){
 		return GetSneakFootstepSound(FootDown, MaterialType);
 	}else{
 		i = Rand(default.HFootstepSounds.Length);
 
-		return default.HFootstepSounds[i].Sound;
+		return default.HFootstepSounds[i];
 	}
 }
 
