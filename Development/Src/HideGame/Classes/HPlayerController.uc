@@ -45,8 +45,18 @@ var     float   pulseCooldownTimer;
 
 var     PlayerWalkingState          WalkState;
 
+/*****
+ * Sound
+ */
+var     AudioComponent              HDeathSound;
+var     array<SoundCue>             DeathSounds;
+var     bool                        PlayDeathSound;
+var     float                       WaitDeathSound;
+
 var bool bFinishedGame;
 var float timeTillMainMenu;
+
+
 
 simulated event PostBeginPlay()
 {
@@ -61,6 +71,9 @@ simulated event PostBeginPlay()
 		A.DensityComponent.StartDistance = 20000;
 		A.ForceUpdateComponents();
 	}
+
+	HDeathSound = CreateAudioComponent(SoundCue'SoundPackage.Enviroment.monsterChewing01_Cue', 
+										false, true, true, Location, true);
 
 	HPlayerLifes = 10;
 
@@ -102,10 +115,19 @@ function playerDied()
 {
 	--HPlayerLifes;
 
+	PlayDeathSound = true;
+	WaitDeathSound = 0;
+
 	if(HPlayerLifes <= 0)
 	{
 		`log("GameOver");
 	}
+}
+
+function Spawned()
+{
+	PlayDeathSound = false;
+	HDeathSound.Stop();
 }
 
 simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rotation )
@@ -189,6 +211,8 @@ function PlayerTick(float DeltaTime)
 {
 	local FogVolumeSphericalDensityInfo A;
 	local FogVolumeSphericalDensityComponent B;
+
+
 	if( pulseMade )
 	{
 		if( pulseFadeOut )
@@ -257,6 +281,20 @@ function PlayerTick(float DeltaTime)
 		}else{
 			startPulseTimer = false;
 		}   
+	}
+
+	if(PlayDeathSound)
+	{
+		WaitDeathSound += DeltaTime;
+		if(WaitDeathSound >= 1)
+		{
+			if(!HDeathSound.IsPlaying())
+			{
+				`log("kjndfjklsd");
+				HDeathSound.SoundCue = getDeathSound();
+				HDeathSound.Play();
+			}
+		}
 	}
 	
 	if(HPawn_Player(Pawn) != None)
@@ -416,7 +454,6 @@ function increasLevelCleared()
 	++LevelsCleared;
 }
 
-
 function int getLevelNumber()
 {
 	local string        MapName0;
@@ -429,6 +466,15 @@ function int getLevelNumber()
 	MapNumber = int(MapArray[1]);
 
 	return MapNumber;
+}
+
+/*****************
+ * DeathSound
+ * ***************/
+
+function SoundCue getDeathSound()
+{
+	return DeathSounds[rand(DeathSounds.Length)];
 }
 
 DefaultProperties
@@ -449,5 +495,9 @@ DefaultProperties
 
 	bFinishedGame = false
 	timeTillMainMenu = 8.0f
+
+	DeathSounds[0] = SoundCue'SoundPackage.Enviroment.monsterChewing01_Cue';
+	DeathSounds[1] = SoundCue'SoundPackage.Enviroment.monsterChewing02_Cue';
+	DeathSounds[2] = SoundCue'SoundPackage.Enviroment.monsterChewing03_Cue';
 }
 

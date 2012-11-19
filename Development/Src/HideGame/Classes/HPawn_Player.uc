@@ -42,6 +42,9 @@ simulated function PostBeginPlay()
 	// Sets the FamilyInfo
 	HSetCharacterClassFromInfo(class'HFamilyInfo_Player');
 
+	// Sound
+	HSoundGroup = HSoundGroup_Player(new SoundGroup);
+
 	// Creates players SoundBeacon
 	soundBeacon = Spawn(class'HSoundBeacon',,, Location,,, true);
 	soundBeacon.bIsPlayerSpawned=true;
@@ -102,6 +105,8 @@ function PlayTeleportEffect(bool bOut, bool bSound)
 	pCamera = HCamera( HPlayerController( GetALocalPlayerController() ).PlayerCamera);
 	pCamera.FadeToNormal( 0.5 );
 	soundBeacon.bIsPlayerDead=false;
+	
+	HPlayerController( GetALocalPlayerController() ).Spawned();
 
 	setHandMaterial(HPlayerController(Controller).HPlayerLifes);
 	SetAnimState(HS_SPAWNED);
@@ -282,6 +287,7 @@ function KillByNervorum( HPawn_Nervorum nervorum )
 		waitTillPull = 0.5;
 		positionAlpha = 0.0f;
 		cameraFadeStarted = false;
+		nervorum.PlayAttackSound();
 	}
 }
 
@@ -330,8 +336,6 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 simulated event SetAnimState(HandState stateAnimType)
 {
 	local int i;
-
-	`log("ChangeToAnimState: " $stateAnimType);
 
 	for ( i = 0; i < HAnimBlend.Length; i++)
 	{
@@ -386,6 +390,7 @@ defaultproperties
 {
 	InventoryManagerClass = None
 	HCharacterInfo = class'HideGame.HFamilyInfo_Player'
+	SoundGroup = class'HSoundGroup_Player'
 
 	Components.Remove(WPawnSkeletalMeshComponent)
 

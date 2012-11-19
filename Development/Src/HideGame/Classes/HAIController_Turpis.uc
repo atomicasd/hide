@@ -8,6 +8,7 @@ event Tick(float DeltaTime)
 	{
 		if(!SoundPlayed)
 		{
+			HPawn_Monster(Pawn).PlayAttackSound();
 			SoundPlayed=true;
 		}
 	}else{

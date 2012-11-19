@@ -8,7 +8,7 @@ var Array<SoundCue> HAttackSounds;
 
 var Array<SoundCue> HInvestigateSounds;
 
-var array<SoundCue> HJumpSounds;
+var Array<SoundCue> HJumpSounds;
 
 static function SoundCue GetJumpSound(name MaterialType)
 {
@@ -49,7 +49,7 @@ static function SoundCue GetSneakFootstepSound(int FootDown, name MaterialType)
 static function SoundCue GetFootstepSound(int FootDown, name MaterialType)
 {
 	local int i;
-	if(FootDown == 1){
+	if(FootDown == 0){
 		return GetSneakFootstepSound(FootDown, MaterialType);
 	}else{
 		i = Rand(default.HFootstepSounds.Length);
@@ -63,4 +63,6 @@ DefaultProperties
 	DefaultLandingSound=SoundCue'SoundPackage.Enviroment.Silence_Cue'
 	DyingSound=SoundCue'SoundPackage.Enviroment.Silence_Cue'
 	GibSound=SoundCue'SoundPackage.Enviroment.Silence_Cue'
+
+	HSneakFootstepSounds[0] = SoundCue'SoundPackage.Enviroment.Silence_Cue'
 }
