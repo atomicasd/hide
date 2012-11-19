@@ -21,6 +21,8 @@ var config  float   MusicVolume;
 var config  int     PlayerLifes;
 var config  bool    Fullscreen;
 var config  string  Resolution;
+var config  float   Brightness;
+var config  float   Sensitivity;
 	
 var     int     HPlayerLifes;
 
@@ -88,7 +90,6 @@ function InitConfig()
 	local array<string> lvlName;
 
 	MapName = WorldInfo.GetMapName();
-
 	lvlName = SplitString(MapName);
 
 	if(lvlName[0] != "HideMenuMap")
@@ -108,6 +109,8 @@ function InitConfig()
 	SetMusicVolume(MusicVolume);
 	SetMasterVolume(MasterVolume);	
 	SetFullscreen( Fullscreen ); // and resolution.
+	SetBrightnessValue( Brightness );
+	SetSensitivity( Sensitivity );
 	SaveToConfig();
 }
 
@@ -410,6 +413,20 @@ function SetMusicVolume(float Volume)
 	SetAudioGroupVolume('Music', Volume);
 }
 
+// set Brightness value;
+function SetBrightnessValue( float value )
+{
+	Brightness = value;
+	`log(" Brightness: " $ Brightness);
+	ConsoleCommand( "GAMMA " $ Brightness );
+}
+
+// set Sensitivity value;
+function SetSensitivity( float sens )
+{
+	Sensitivity = sens;
+	ConsoleCommand( "SetSensitivity " $ Sensitivity );
+}
 // Last functions thats sets sound to the musicgroup
 function SetAudioGroupVolume( name GroupName, float Volume )
 {
@@ -500,4 +517,3 @@ DefaultProperties
 	DeathSounds[1] = SoundCue'SoundPackage.Enviroment.monsterChewing02_Cue';
 	DeathSounds[2] = SoundCue'SoundPackage.Enviroment.monsterChewing03_Cue';
 }
-

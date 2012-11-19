@@ -238,6 +238,14 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
 	{
 		matGroupName = name("testingfacility");
 	}
+	else if ( string(matName) == "rust") 
+	{
+		matGroupName = name("barrel_rust");
+	}
+	else if ( string(matName) == "Crate") 
+	{
+		matGroupName = name("crate_green");
+	}
 	else
 	{
 		return none;
@@ -298,6 +306,10 @@ function MaterialInstanceConstant CreateTransparentMaterialInterp(InterpActor sm
 	{
 		matGroupName = name("testingfacility");
 	}
+	else if( string(matName) == "Floor")
+	{
+		matGroupName = name("elevator");
+	}
 	else
 	{
 		return none;
@@ -333,7 +345,6 @@ function MaterialInstanceConstant CreateTransparentMaterialInterp(InterpActor sm
     }
     return matInstanceConstant; 
 }
-//    matInstanceConstant = oldMat; 
 function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor) 
 { 
     local MaterialInstanceConstant matInstanceConstant; 
@@ -363,6 +374,14 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
 	else if ( string(matName) == "DoorFrame_Translucent") 
 	{
 		matGroupName = name("testingfacility");
+	}
+	else if ( string(matName) == "rust_Translucent") 
+	{
+		matGroupName = name("barrel_rust");
+	}
+	else if ( string(matName) == "Crate_Translucent") 
+	{
+		matGroupName = name("crate_green");
 	}
 	else
 	{
@@ -417,6 +436,11 @@ function MaterialInstanceConstant CreateSolidMaterialInterp(InterpActor smActor)
 	if ( string(matName) == "door_Translucent") 
 	{
 		matGroupName = name("testingfacility");
+
+	}
+	else if( string(matName) == "Floor_Translucent")
+	{
+		matGroupName = name("elevator");
 	}
 	else
 	{
