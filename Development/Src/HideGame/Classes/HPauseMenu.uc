@@ -41,8 +41,8 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 			us_btn_mainMenu.AddEventListener( 'CLIK_press', onMenuButtonPress );
 			break;
 		case ('btn_exitgame'):
-			us_btn_exit = GFxClikWidget(Widget);
-			us_btn_exit.AddEventListener( 'CLIK_press', onExitButtonPress );
+			us_btn_exitgame = GFxClikWidget(Widget);
+			us_btn_exitgame.AddEventListener( 'CLIK_press', onExitButtonPress );
 			break;
 		case ('cb_fullscreen'):
 		us_cb_fullscreen = GFxClikWidget(Widget);
