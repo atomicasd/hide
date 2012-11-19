@@ -9,6 +9,11 @@ var bool bShowFinishGamePicture;
 var CanvasIcon thankYouPicture;
 
 var HideGame hGame;
+
+var float helpMessageTime;
+var float helpMessageTimeMax;
+var int activeMessageId;
+var bool bDdrawHelpMessage;
 exec function ShowMenu()
 {
 	// if using GFx HUD, use GFx pause menu
@@ -71,6 +76,15 @@ function Tick(float DeltaTime)
 {
 	hGame = HPlayerController( GetALocalPlayerController() ).hGame;
 	hGame.hHud = self;
+
+	if( helpMessageTime > 0.0f )
+	{
+		helpMessageTime -= DeltaTime;
+	} else 
+	{
+		bDdrawHelpMessage = false;
+	}
+
 	super.Tick( DeltaTime );
 }
 
@@ -193,6 +207,38 @@ final function DrawIconStretched(CanvasIcon Icon, float X, float Y, optional flo
    }
 }
 
+function SetHelpMessage( int id )
+{
+	activeMessageId = id;
+	helpMessageTime = helpMessageTimeMax;
+	bDdrawHelpMessage = true;
+}
+
+function DrawHelpMessage()
+{
+	if( !bDdrawHelpMessage )
+		return;
+
+	if( activeMessageId == 1 )
+	{
+		DrawMessage1( thankYouPicture,0,0 );
+	}
+	else if (activeMessageId == 2)
+	{
+		DrawMessage2( thankYouPicture,0,0 );
+	}
+}
+
+function DrawMessage1( CanvasIcon Icon, float X, float Y, optional float ScaleX, optional float ScaleY)
+{
+	`log("help message 1");
+}
+
+function DrawMessage2( CanvasIcon Icon, float X, float Y, optional float ScaleX, optional float ScaleY)
+{
+	`log("help message 2");
+}
+
 function DrawGameHud()
 {
 	if(bShowFinishGamePicture)
@@ -202,6 +248,8 @@ function DrawGameHud()
 	UpdateDamage();
 	DisplayLocalMessages();
 	DisplayConsoleMessages();
+
+	DrawHelpMessage();
 }
 
 function ShowFinishGamePicture()
@@ -239,6 +287,10 @@ function DrawMessageText(HudLocalizedMessage LocalMessage, float ScreenX, float 
 
 DefaultProperties
 {
+	helpMessageTime = 0;
+	helpMessageTimeMax = 5;
+	activeMessageId = 0;
+	bDdrawHelpMessage = false;
 	bFadeInHitEffect = false;
 	bShowFinishGamePicture = false;
 	thankYouPicture = (Texture=Texture2D'MenuPackage.thankyou')
