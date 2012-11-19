@@ -17,8 +17,6 @@ var GFxClikWidget us_stepper_resolution;
 var class<AudioComponent> Hmusic;
 var AudioComponent MenuMusic;
 
-//var class<PlayerController> pc;
-
 function bool Start( optional bool StartPaused = false )
 {
 	super.Start();
@@ -67,7 +65,6 @@ event bool WidgetInitialized( name WidgetName, name WidgetPath, GFxObject Widget
 	case ('cb_fullscreen'):
 		us_cb_fullscreen = GFxClikWidget(Widget);
 		us_cb_fullscreen.AddEventListener('CLIK_select', onFullscreenChange );
-		//"check om fullscreen er paa:
 		us_cb_fullscreen.SetBool("selected", HPlayer.Fullscreen);
 		break;
 	case ('slider_soundAmbient'):
