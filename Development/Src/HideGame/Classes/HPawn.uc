@@ -1,11 +1,13 @@
 class HPawn extends UTPawn;
 
-var     class<HFamilyInfo_Character>  HCharacterInfo;
-var     HPlayerController   HPlayer;
+var     class<HFamilyInfo_Character>    HCharacterInfo;
+var     HPlayerController               HPlayer;
 
 // Sounds
-var array<SoundCue>             IdleSounds;
-var AudioComponent              IdleSound;
+var     class<HSoundGroup_Character>    SoundGroup;
+var     HSoundGroup_Character           HSoundGroup;
+var     array<SoundCue>                 IdleSounds;
+var     AudioComponent                  IdleSound;
 
 simulated function PostBeginPlay()
 {
@@ -110,5 +112,6 @@ DefaultProperties
 	MultiJumpRemaining=0
 	bCanCrouch=true
 	IdleSounds[0] = SoundCue'SoundPackage.Enviroment.Silence_Cue'
-	IdleSounds[1] = SoundCue'SoundPackage.Enviroment.Silence_Cue'
+
+	SoundGroup = class'HSoundGroup_Character'
 }

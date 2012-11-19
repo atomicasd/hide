@@ -8,7 +8,6 @@ event Tick(float DeltaTime)
 	{
 		if(!SoundPlayed)
 		{
-			HPawn_Turpis(Pawn).PlayHissingSound();
 			SoundPlayed=true;
 		}
 	}else{

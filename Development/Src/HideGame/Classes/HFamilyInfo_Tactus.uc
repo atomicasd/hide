@@ -3,7 +3,7 @@ class HFamilyInfo_Tactus extends HFamilyInfo_Character;
 DefaultProperties
 {
 	// Sound
-	SoundGroupClass=class'HSoundGroup_Obesus'
+	SoundGroupClass=class'HSoundGroup_Tactus'
 	
 	// Mesh and physical assets
 	PhysAsset = PhysicsAsset'CH_AnimCorrupt.Mesh.SK_CH_Corrupt_Male_Physics'

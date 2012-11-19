@@ -1,35 +1,18 @@
 class HSoundGroup_Player extends HSoundGroup_Character;
 
-var bool bSkipSoundStep;
-
-struct HJumpingSoundInfo
-{
-	var int Type;
-	var SoundCue Sound;
-};
-
-var array<HJumpingSoundInfo> HJumpSounds;
-
-static function SoundCue GetJumpSound(name MaterialType)
-{
-	local int i;
-
-	i = Rand(3);
-
-	return default.HJumpSounds[i].Sound;
-}
-
 DefaultProperties
 {
-	HFootstepSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.Player.playerStep02_Cue');
-	HFootstepSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.Player.playerStep03_Cue');
-	HFootstepSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.Player.playerStep06_Cue');
+	HFootstepSounds[0]=SoundCue'SoundPackage.Player.playerCharacterFootstep01_Cue';
+	HFootstepSounds[1]=SoundCue'SoundPackage.Player.playerCharacterFootstep02_Cue';
+	HFootstepSounds[2]=SoundCue'SoundPackage.Player.playerCharacterFootstep03_Cue';
+	HFootstepSounds[3]=SoundCue'SoundPackage.Player.playerCharacterFootstep04_Cue';
+	HFootstepSounds[4]=SoundCue'SoundPackage.Player.playerCharacterFootstep05_Cue';
+	HFootstepSounds[5]=SoundCue'SoundPackage.Player.playerCharacterFootstep06_Cue';
+	HFootstepSounds[6]=SoundCue'SoundPackage.Player.playerCharacterFootstep07_Cue';
+	HFootstepSounds[7]=SoundCue'SoundPackage.Player.playerCharacterFootstep08_Cue';
+	HFootstepSounds[8]=SoundCue'SoundPackage.Player.playerCharacterFootstep09_Cue';
 
-	HSneakFootstepSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.Player.playerStepSneak02_Cue');
-	HSneakFootstepSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.Player.playerStepSneak03_Cue');
-	HSneakFootstepSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.Player.playerStepSneak06_Cue');
-
-	HJumpSounds[0]=(Type=0, Sound=SoundCue'SoundPackage.Player.playerJump01_Cue');
-	HJumpSounds[1]=(Type=1, Sound=SoundCue'SoundPackage.Player.playerJump02_Cue');
-	HJumpSounds[2]=(Type=2, Sound=SoundCue'SoundPackage.Player.playerJump03_Cue');
+	HJumpSounds[0]=SoundCue'SoundPackage.Player.playerJump01_Cue';
+	HJumpSounds[1]=SoundCue'SoundPackage.Player.playerJump02_Cue';
+	HJumpSounds[2]=SoundCue'SoundPackage.Player.playerJump03_Cue';
 }

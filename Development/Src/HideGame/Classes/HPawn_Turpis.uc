@@ -5,7 +5,7 @@ class HPawn_Turpis extends HPawn_Monster
 var HFamilyInfo_Turpis CharacterInfo;
 
 // Sound
-var HSoundGroup_Turpis HSoundGroup;
+//var HSoundGroup_Turpis HSoundGroup;
 
 simulated function PostBeginPlay()
 {
@@ -20,29 +20,18 @@ simulated function PostBeginPlay()
 	HSetCharacterClassFromInfo(class'HFamilyInfo_Turpis');
 
 	// Sound
-	HSoundGroup = HSoundGroup_Turpis(new SoundGroupClass);
-	addIdleSound(SoundCue'SoundPackage.Enviroment.Silence_Cue');
+	HSoundGroup = HSoundGroup_Turpis(new SoundGroup);
 
 	playIdleSound();
 
 	super.PostBeginPlay();
 }
 
-/**
- * Sound
- */
-
-// Play hissing sound
-function PlayHissingSound()
-{
-	HPlaySoundEffect(HSoundGroup.GetHHissingSound());
-}
-
 DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Turpis';
 	HCharacterInfo = class'HideGame.HFamilyInfo_Turpis'
-	SoundGroupClass = class'HideGame.HSoundGroup_Turpis'
+	SoundGroup = class'HSoundGroup_Turpis'
 
 	Components.Remove(WPawnSkeletalMeshComponent)
 
@@ -76,6 +65,10 @@ DefaultProperties
 	End Object
 	Mesh=WPawnSkeletalMeshComponent0
 	Components.Add(WPawnSkeletalMeshComponent0)
+
+	IdleSounds[0] = SoundCue'SoundPackage.turpis.turpisBreathing01_Cue';
+	IdleSounds[1] = SoundCue'SoundPackage.turpis.turpisBreathing02_Cue';
+	IdleSounds[2] = SoundCue'SoundPackage.turpis.turpisBreathing03_Cue';
 
 	DrawScale=13.0
 

@@ -5,7 +5,7 @@ class HPawn_Obesus extends HPawn_Monster
 var HFamilyInfo_Obesus      CharacterInfo;
      
 // Sound
-var HSoundGroup_Obesus      HSoundGroup;
+//var HSoundGroup_Obesus      HSoundGroup;
 
 simulated function PostBeginPlay()
 {
@@ -20,12 +20,7 @@ simulated function PostBeginPlay()
 	HSetCharacterClassFromInfo(class'HFamilyInfo_Obesus');
 
 	// Sets soundgroup
-	HSoundGroup = HSoundGroup_Obesus(new SoundGroupClass);
-
-	addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing01_Cue');
-	addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing02_Cue');
-	addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing03_Cue');
-	addIdleSound(SoundCue'SoundPackage.obesus.obesusBreathing04_Cue');
+	HSoundGroup = HSoundGroup_Obesus(new SoundGroup);
 
 	// Sound
 	playIdleSound();
@@ -42,16 +37,11 @@ function CreateInvestigateSound()
 	HPlaySoundEffect(HSoundGroup.static.getInvestigateSounds());
 }
 
-simulated function PlayAttackSound()
-{
-	`log("Attack-uu!");
-	HPlaySoundEffect(HSoundGroup.static.getAttackSounds());
-}
-
 DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Obesus'
 	HCharacterInfo = class'HideGame.HFamilyInfo_Obesus'
+	SoundGroup = class'HSoundGroup_Obesus'
 
 	Components.Remove(WPawnSkeletalMeshComponent)
 
@@ -87,6 +77,11 @@ DefaultProperties
 	Components.Add(WPawnSkeletalMeshComponent0)
 
 	DrawScale=30.0
+
+	IdleSounds[0] = SoundCue'SoundPackage.obesus.obesusBreathing01_Cue';
+	IdleSounds[1] = SoundCue'SoundPackage.obesus.obesusBreathing02_Cue';
+	IdleSounds[2] = SoundCue'SoundPackage.obesus.obesusBreathing03_Cue';
+	IdleSounds[3] = SoundCue'SoundPackage.obesus.obesusBreathing04_Cue';
 	
 	/*
 	Begin Object Class=SkeletalMeshComponent Name=NPCMesh0
