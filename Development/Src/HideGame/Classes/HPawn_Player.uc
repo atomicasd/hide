@@ -33,6 +33,7 @@ var     float                           NextAnimationChange;
 var     bool                            bActivatedPulse;
 var     bool                            bDeactivatedPulse;
 var     bool                            bGetAnimDuration;
+var     bool                            bAnimationUsed;
 
 simulated function PostBeginPlay()
 {
@@ -55,6 +56,7 @@ simulated function PostBeginPlay()
 simulated event ActuallyPlayFootStepSound(int FootDown)
 {
 	local int skipSteps;
+
 	switch(HPlayerController(Controller).WalkState)
 	{
 	case Idle: skipSteps=0; break;
@@ -118,12 +120,12 @@ exec function KillYourself()
  */
 event Tick(float TimeDelta)
 {
-	local int i;
 	local int soundRadius;
 	local Vector vectorToNervorum;
 	local HPlayerController pController;
 	local HCamera pCamera;
 	local HNervorum_GroundNerve nerve;
+	local vector HandHeight;
 
 	/**
 	 * Create the soundPulse
@@ -146,6 +148,16 @@ event Tick(float TimeDelta)
 			nerve.nervorumOwnedBy.RotateTowardsPawn( self );
 			KillByNervorum( nerve.nervorumOwnedBy );
 		}
+	}
+
+	/**
+	 * Sounds
+	 */
+
+	// Idle sound check
+	if(!IdleSound.IsPlaying())
+	{
+		playIdleSound();
 	}
 	
 	/**
@@ -201,77 +213,61 @@ event Tick(float TimeDelta)
 	/**
 	 * Animation
 	 */
-	if(bActivatedPulse)
+
+	if(!bAnimationUsed && bActivatedPulse)
 	{
-		if(bGetAnimDuration)
+		CheckAnimChange(TimeDelta, 1);
+	}
+	else if(!bAnimationUsed && bDeactivatedPulse)
+	{
+		CheckAnimChange(TimeDelta, 3);
+	}
+	else
+	{
+		if(HAnimBlend[0].HGetStateName() == HS_PRESSBUTTON)
 		{
-			for(i = 0; i < HAnimBlend.Length; i++)
-			{
-				NextAnimationChange = HAnimBlend[i].GetAnimDuration(1);
-
-				if(NextAnimationChange != 0){
-					bGetAnimDuration = false;
-					HAnimBlend[i].BlendTime = NextAnimationChange;
-				}
-			}
-		}else{
-			AnimationPulseTimer += TimeDelta;
-		
-			if(AnimationPulseTimer >= NextAnimationChange)
-			{
-				SetAnimState(HS_DURING);
-				bActivatedPulse = false;
-			}
-		}
-	}else if(bDeactivatedPulse){
-		if(bGetAnimDuration)
-		{
-			for(i = 0; i < HAnimBlend.Length; i++)
-			{
-				NextAnimationChange = HAnimBlend[i].GetAnimDuration(3);
-
-				if(NextAnimationChange != 0){
-					bGetAnimDuration = false;
-					HAnimBlend[i].BlendTime = NextAnimationChange;
-				}
-			}
-		}else{
-			AnimationPulseTimer += TimeDelta;
-		
-			if(AnimationPulseTimer >= NextAnimationChange)
-			{
-				SetAnimState(HS_IDLE);
-				bDeactivatedPulse = false;
-			}
+			CheckAnimChange(TimeDelta, 4);
 		}
 	}
 
-	if(HAnimBlend[0].HGetStateName() == HS_PRESSBUTTON)
-	{
-		if(bGetAnimDuration)
-		{
-			for(i = 0; i < HAnimBlend.Length; i++)
-			{
-				NextAnimationChange = HAnimBlend[i].GetAnimDuration(4);
+	HandHeight.Z = GetEyeHeight() - 15;
 
-				if(NextAnimationChange != 0){
-					bGetAnimDuration = false;
-					HAnimBlend[i].BlendTime = NextAnimationChange;
-				}
-			}
-		}else{
-			AnimationPulseTimer += TimeDelta;
-		
-			if(AnimationPulseTimer >= NextAnimationChange)
-			{
-				SetAnimState(HS_IDLE);
-				bDeactivatedPulse = false;
-
-			}
-		}
-	}
+	PlayerArms.SetTranslation(HandHeight);
 
 	PlayerArms.SetRotation(Rotation);
+}
+
+function CheckAnimChange(float TimeDelta, int AnimationSequence)
+{
+	local int i;
+	if(bGetAnimDuration)
+	{
+		for(i = 0; i < HAnimBlend.Length; i++)
+		{
+			NextAnimationChange = HAnimBlend[i].GetAnimDuration(AnimationSequence);
+
+			if(NextAnimationChange != 0){
+				bGetAnimDuration = false;
+				if(AnimationSequence == 4)
+					NextAnimationChange -= 0.33;
+				HAnimBlend[i].BlendTime = NextAnimationChange;
+			}
+		}
+	}else{
+		AnimationPulseTimer += TimeDelta;
+		
+		if(AnimationPulseTimer >= NextAnimationChange)
+		{
+			if(AnimationSequence != 1)
+			{
+				SetAnimState(HS_IDLE);
+				bAnimationUsed = false;
+				bActivatedPulse = false;
+			}else{
+				SetAnimState(HS_DURING);
+			}
+		}
+	}
 }
 
 function KillByNervorum( HPawn_Nervorum nervorum )
@@ -335,10 +331,19 @@ simulated event SetAnimState(HandState stateAnimType)
 {
 	local int i;
 
+	`log("ChangeToAnimState: " $stateAnimType);
+
 	for ( i = 0; i < HAnimBlend.Length; i++)
 	{
 		HAnimBlend[i].SetAnimState(stateAnimType);
 	}
+}
+
+event OnAnimEnd(AnimNodeSequence SeqNode, float PlayedTime, float ExcessTime)
+{
+	super.OnAnimEnd(SeqNode, PlayedTime, ExcessTime);
+
+	SetAnimState(HS_IDLE);
 }
 
 function setHandMaterial(int LifeLeft)
@@ -364,14 +369,19 @@ function DeactivatedPulse()
 	AnimationPulseTimer=0;
 }
 
+/* Removed cause of bugs
 function Use()
 {
-	SetAnimState(HS_PRESSBUTTON);
-	bGetAnimDuration = true;
-	bActivatedPulse = false;
-	AnimationPulseTimer = 0;
+	if(HAnimBlend[0].HGetStateName() != HS_PRESSBUTTON)
+	{
+		SetAnimState(HS_PRESSBUTTON);
+		bGetAnimDuration = true;
+		bActivatedPulse = false;
+		bAnimationUsed = true;
+		AnimationPulseTimer = 0;
+	}
 }
-
+*/
 defaultproperties
 {
 	InventoryManagerClass = None
@@ -411,8 +421,9 @@ defaultproperties
 	 */
 	GroundSpeed=200.0
 	CrouchHeight=40
-	AirSpeed = 0.1;
+	AirSpeed = 0;
 	CrouchedPct=+0.65
+	JumpZ=300
 
 	bStatic = false
 	bNoDelete = false
@@ -423,7 +434,10 @@ defaultproperties
 	cameraFadeStarted = false;
 	AnimationPulseTimer=0
 
-	IdleSounds[0] = SoundCue'SoundPackage.Enviroment.Silence_Cue'
+	IdleSounds[0] = SoundCue'SoundPackage.Player.playerCharacterIdleBreathing01_Cue'
+	IdleSounds[1] = SoundCue'SoundPackage.Player.playerCharacterIdleBreathing02_Cue'
+	IdleSounds[2] = SoundCue'SoundPackage.Player.playerCharacterIdleBreathing03_Cue'
+	IdleSounds[3] = SoundCue'SoundPackage.Player.playerCharacterIdleBreathing05_Cue'
 
 	ArmMaterials[0] = Material'PlayerPackage.Materials.HandMaterial01'
 	ArmMaterials[1] = Material'PlayerPackage.Materials.HandMaterial01'

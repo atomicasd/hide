@@ -167,6 +167,7 @@ state FollowPath
 			GotoState('Idle');
 		}
 		MoveTarget = MyNavigationPoints[actual_node];
+
 		if(Pawn.ReachedDestination(MoveTarget))
 		{
 			if(waitCounter >= waitAtNode)
@@ -192,12 +193,11 @@ state FollowPath
 		if (ActorReachable(MoveTarget)) 
 		{
 			MoveToward(MoveTarget, MoveTarget,,false);	
-			aiPawn.SetAnimState(MS_Walk);
 		}
 		else
 		{
 			MoveTo( MoveTarget.Location );
-			aiPawn.SetAnimState(MS_Walk);
+			
 			/*`log("Finding path towards");
 			MoveTarget = FindPathToward(MyNavigationPoints[actual_node]);
 			if (MoveTarget != none)
@@ -340,6 +340,7 @@ Begin:
 		if( Pawn.ReachedDestination( lastPlayerSpot ) )
 		{
 			playerSeen = false;
+			aiPawn.SetAnimState(MS_Idle);
 			Sleep(8);
 			GotoState('Idle');
 		}

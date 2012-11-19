@@ -29,13 +29,52 @@ event Tick(float DeltaTime)
 // This creates the pulse
 function MakeSoundPulse()
 {
+	local Vector        TraceFrom;
 	local HSoundSpot    soundSpot;
 	local HPawn_Monster target;
 
+	// Trace
+	local vector            hitlocation, hitnormal;
+	local TraceHitInfo      hitInfo;
+	local BlockingVolume    traced;
+	local bool              SoundTroughWall;
+
+	TraceFrom = Location;
+
 	foreach OverlappingActors(class'HPawn_Monster', target, Radius)
 	{
-		soundSpot = Spawn(class'HSoundSpot',,,Location,,,true);
-		target.OnSoundHeard(soundSpot);
+		foreach TraceActors(class'BlockingVolume', traced, hitlocation, hitnormal, target.Location, TraceFrom, ,hitInfo)
+		{
+			`log("What A wall?");
+			SoundTroughWall = true;
+		}
+		if(!SoundTroughWall)
+		{
+			soundSpot = Spawn(class'HSoundSpot',,,Location,,,true);
+			target.OnSoundHeard(soundSpot);
+		}
+		/*
+		Foreach WorldInfo.TraceActors(class'actor', traced, hitlocation, hitnormal, target.Location, TraceFrom)
+		{
+			`log("Traced: " $traced);
+			/*
+			if( traceHit != None )
+			{
+				if(traceHit.IsA('BlockingVolume')){
+					stillTrace = false;
+				}else if (traceHit.IsA('HPawn_Turpis')){
+					stillTrace = false;
+				}else{
+					`log("TraceHit: " $traceHit);
+				}
+
+				TraceFrom = traceHit.Location;
+			}else{
+				stillTrace = false;
+			}
+			*/
+		}
+		*/
 	}
 	bSoundCreated=true;
 }
@@ -48,7 +87,9 @@ DefaultProperties
 		HiddenEditor=false
 	End Object
 
-	Components.add(sprite1);
+	Components.add(sprite1)
+
+	
 
 	Radius=1000
 	CreateSound=true

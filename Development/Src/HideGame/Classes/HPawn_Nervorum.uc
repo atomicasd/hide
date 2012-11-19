@@ -10,7 +10,7 @@ var HVolume_Nervorum                vol;
 var HFamilyInfo_Nervorum            CharacterInfo;
 
 // Sound
-var HSoundGroup_Nervorum            HSoundGroup;
+//var HSoundGroup_Nervorum            HSoundGroup;
 
 var Rotator lastTouchedRotation;
 
@@ -31,7 +31,7 @@ simulated function PostBeginPlay()
 	HSetCharacterClassFromInfo(class'HFamilyInfo_Nervorum');
 
 	// Sets soundgroup
-	HSoundGroup = HSoundGroup_Nervorum(new SoundGroupClass);
+	HSoundGroup = HSoundGroup_Nervorum(new SoundGroup);
 
 	// Find the nerves on the ground
 	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve, 60)
@@ -100,6 +100,7 @@ DefaultProperties
 {
 	ControllerClass = class'HideGame.HAIController_Nervorum'
 	HCharacterInfo = class'HideGame.HFamilyInfo_Nervorum'
+	SoundGroup = class'HSoundGroup_Nervorum'
 	
 	Components.Remove(WPawnSkeletalMeshComponent)
 
