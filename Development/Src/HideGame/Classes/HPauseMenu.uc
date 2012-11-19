@@ -9,6 +9,7 @@ var GFxClikWidget us_cb_fullscreen;
 var GFxClikWidget us_slider_soundAmbient;
 var GFxClikWidget us_slider_soundEffects;
 var GFxClikWidget us_slider_brightness;
+var GFxClikWidget us_slider_sensitivity;
 var GFxClikWidget us_stepper_resolution;
 
 var class<AudioComponent> Hmusic;
@@ -63,6 +64,11 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 			us_slider_brightness = GFxClikWidget( Widget );
 			us_slider_brightness.AddEventListener( 'CLIK_change', onBrightnessChange );
 			us_slider_brightness.SetFloat( "value", HPlayer.Brightness );
+			break;
+		case ( 'slider_sensitivity' ):
+			us_slider_sensitivity = GFxClikWidget( Widget );
+			us_slider_sensitivity.AddEventListener( 'CLIK_change', onSensitivityChange );
+			us_slider_sensitivity.SetFloat( "value", HPlayer.Sensitivity / 10 );
 			break;
 		case ( 'stepper_resolution' ):
 			us_stepper_resolution = GFxClikWidget( Widget );
@@ -160,6 +166,11 @@ function onBrightnessChange( GFxClikWidget.EventData ev )
 	HPlayer.SetBrightnessValue( us_slider_brightness.GetFloat("_value") );
 }
 
+function onSensitivityChange( GFxClikWidget.EventData ev )
+{
+	HPlayer.SetSensitivity( us_slider_sensitivity.GetFloat( "_value" ) * 10 );
+}
+
 function saveToConfig()
 {
 	HPlayer.saveToConfig();
@@ -174,6 +185,7 @@ defaultproperties
 	WidgetBindings.Add( ( WidgetName="slider_soundAmbient", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="slider_soundEffects", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="slider_brightness", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="slider_sensitivity", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="stepper_resolution", WidgetClass=class'GFxClikWidget' ) )
 	
 	Hmusic = class'AudioComponent'

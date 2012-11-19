@@ -22,6 +22,7 @@ var config  int     PlayerLifes;
 var config  bool    Fullscreen;
 var config  string  Resolution;
 var config  float   Brightness;
+var config  float   Sensitivity;
 	
 var     int     HPlayerLifes;
 
@@ -96,6 +97,7 @@ function InitConfig()
 	SetMasterVolume(MasterVolume);	
 	SetFullscreen( Fullscreen ); // and resolution.
 	SetBrightnessValue( Brightness );
+	SetSensitivity( Sensitivity );
 	SaveToConfig();
 }
 
@@ -379,6 +381,13 @@ function SetBrightnessValue( float value )
 	Brightness = value;
 	`log(" Brightness: " $ Brightness);
 	ConsoleCommand( "GAMMA " $ Brightness );
+}
+
+// set Sensitivity value;
+function SetSensitivity( float sens )
+{
+	Sensitivity = sens;
+	ConsoleCommand( "SetSensitivity " $ Sensitivity );
 }
 // Last functions thats sets sound to the musicgroup
 function SetAudioGroupVolume( name GroupName, float Volume )
