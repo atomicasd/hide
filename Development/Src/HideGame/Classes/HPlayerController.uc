@@ -21,6 +21,7 @@ var config  float   MusicVolume;
 var config  int     PlayerLifes;
 var config  bool    Fullscreen;
 var config  string  Resolution;
+var config  float   Brightness;
 	
 var     int     HPlayerLifes;
 
