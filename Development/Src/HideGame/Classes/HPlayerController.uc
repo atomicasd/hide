@@ -98,13 +98,13 @@ function InitConfig()
 	}
 		
 	/* Log variables in the config file */
-	`Log("---------> MapName: " $WorldInfo.GetMapName());
-	`Log("---------> LevelsCleared: " $LevelsCleared);
-	`Log("---------> OnCurrentLevel: " $OnCurrentLevel);
+	`Log("---------> MapName :        " $WorldInfo.GetMapName());
+	`Log("---------> LevelsCleared:   " $LevelsCleared);
+	`Log("---------> OnCurrentLevel:  " $OnCurrentLevel);
 	`Log("---------> Master Sound lvl:" $MasterVolume);
 	`Log("---------> Music Sound lvl: " $MusicVolume);
-	`Log("---------> Fullscreen: " $Fullscreen);
-	`Log("---------> Resolution: " $Resolution);
+	`Log("---------> Fullscreen:      " $Fullscreen);
+	`Log("---------> Resolution:      " $Resolution);
 	
 	SetMusicVolume(MusicVolume);
 	SetMasterVolume(MasterVolume);	

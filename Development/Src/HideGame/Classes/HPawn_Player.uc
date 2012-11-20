@@ -221,17 +221,17 @@ event Tick(float TimeDelta)
 
 	if(!bAnimationUsed && bActivatedPulse)
 	{
-		CheckAnimChange(TimeDelta, 1);
+		CheckAnimChange(TimeDelta, HS_ACTIVATE);
 	}
 	else if(!bAnimationUsed && bDeactivatedPulse)
 	{
-		CheckAnimChange(TimeDelta, 3);
+		CheckAnimChange(TimeDelta, HS_DEACTIVATE);
 	}
 	else
 	{
 		if(HAnimBlend[0].HGetStateName() == HS_PRESSBUTTON)
 		{
-			CheckAnimChange(TimeDelta, 4);
+			CheckAnimChange(TimeDelta, HS_PRESSBUTTON);
 		}
 	}
 
@@ -326,7 +326,6 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 	{
 		foreach PlayerArms.AllAnimNodes(class'HAnimBlend_PlayerHand', BlendState)
 		{
-			`Log("---------------->Derp<---------------------");
 			HAnimBlend[HAnimBlend.Length] = BlendState;
 		}
 	}
