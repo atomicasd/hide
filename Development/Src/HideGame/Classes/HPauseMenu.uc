@@ -11,6 +11,7 @@ function bool Start(optional bool StartPaused = false)
 {
     super.Start();
     Advance(0);
+	
 	//AddCaptureKey('Enter');
 	//AddCaptureKey('Space');
 	//AddFocusIgnoreKey('Escape');
@@ -69,7 +70,6 @@ defaultproperties
 	bPauseGameWhileActive = true;
 	bCaptureInput = true;
 	WidgetBindings.Add( ( WidgetName="btn_restartLevel", WidgetClass=class'GFxClikWidget' ) )
-
 	WidgetBindings.Add( ( WidgetName="btn_quitToMenu", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_exitgame", WidgetClass=class'GFxClikWidget' ) )
 }

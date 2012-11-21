@@ -21,6 +21,7 @@ var     float                   pullSpeed;
 var     float                   waitTillPull;
 var     float                   positionAlpha;
 var     bool                    cameraFadeStarted;
+var     HNervorum_Tentacle      nervorumTentacle;
 
 /**
  * Animations
@@ -194,7 +195,11 @@ event Tick(float TimeDelta)
 			KillYourself();
 			steppedOnNerve = false;
 			cameraFadeStarted = false;
+			nervorumTentacle.Destroy();
 		}
+
+		//Set tentacle location
+		nervorumTentacle.SetTentacleLocation( nervorumKilledBy.Location, Location );
 	}
 
 	/**
@@ -282,6 +287,7 @@ function KillByNervorum( HPawn_Nervorum nervorum )
 		waitTillPull = 0.5;
 		positionAlpha = 0.0f;
 		cameraFadeStarted = false;
+		nervorumTentacle = Spawn(class'HNervorum_Tentacle');
 	}
 }
 
