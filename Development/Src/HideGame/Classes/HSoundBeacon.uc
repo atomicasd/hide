@@ -36,16 +36,22 @@ function MakeSoundPulse()
 	// Trace
 	local vector            hitlocation, hitnormal;
 	local TraceHitInfo      hitInfo;
-	local BlockingVolume    traced;
+	local BlockingVolume    tracedBlocking;
+	local InterpActor       TracedInter;
 	local bool              SoundTroughWall;
 
 	TraceFrom = Location;
 
 	foreach OverlappingActors(class'HPawn_Monster', target, Radius)
 	{
-		foreach TraceActors(class'BlockingVolume', traced, hitlocation, hitnormal, target.Location, TraceFrom, ,hitInfo)
+		foreach TraceActors(class'BlockingVolume', tracedBlocking, hitlocation, hitnormal, target.Location, TraceFrom, ,hitInfo)
 		{
 			`log("What A wall?");
+			SoundTroughWall = true;
+		}
+		foreach TraceActors(class'InterpActor', TracedInter, hitlocation, hitnormal, target.Location, TraceFrom,, hitInfo)
+		{
+			`log("What a door?");
 			SoundTroughWall = true;
 		}
 		if(!SoundTroughWall)
@@ -53,28 +59,6 @@ function MakeSoundPulse()
 			soundSpot = Spawn(class'HSoundSpot',,,Location,,,true);
 			target.OnSoundHeard(soundSpot);
 		}
-		/*
-		Foreach WorldInfo.TraceActors(class'actor', traced, hitlocation, hitnormal, target.Location, TraceFrom)
-		{
-			`log("Traced: " $traced);
-			/*
-			if( traceHit != None )
-			{
-				if(traceHit.IsA('BlockingVolume')){
-					stillTrace = false;
-				}else if (traceHit.IsA('HPawn_Turpis')){
-					stillTrace = false;
-				}else{
-					`log("TraceHit: " $traceHit);
-				}
-
-				TraceFrom = traceHit.Location;
-			}else{
-				stillTrace = false;
-			}
-			*/
-		}
-		*/
 	}
 	bSoundCreated=true;
 }

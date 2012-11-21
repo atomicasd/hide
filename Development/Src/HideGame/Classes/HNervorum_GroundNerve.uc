@@ -93,6 +93,15 @@ function bool CheckCollision()
 DefaultProperties
 {
 	Begin Object Class=SkeletalMeshComponent Name=Mesh01
+		LightEnvironment=MyLightEnvironment
+		bAcceptsDynamicDecals=FALSE
+		bChartDistanceFactor=true
+		bUseOnePassLightingOnTranslucency=TRUE
+		bPerBoneMotionBlur=true
+		CastShadow=true
+		bCastDynamicShadow=true
+		bAcceptsLights=true
+		bAcceptsDynamicLights=true
 		SkeletalMesh=SkeletalMesh'MonsterPackage.nerve'
 		BlockActors=true
 		CollideActors=true
