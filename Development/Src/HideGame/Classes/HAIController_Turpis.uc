@@ -4,7 +4,7 @@ var bool SoundPlayed;
 
 event Tick(float DeltaTime)
 {
-	if(soundHeard)
+	if(bChasePlayer)
 	{
 		if(!SoundPlayed)
 		{

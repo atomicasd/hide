@@ -2,7 +2,7 @@ class HNervorum_GroundNerve extends Actor
 	placeable;
 
 // Mesh
-var     SkeletalMeshComponent           Mesh;
+var(Mesh)     SkeletalMeshComponent           Mesh;
 
 // Nerves
 var     array<HNervorum_GroundNerve>    ChildNerves;  
@@ -18,6 +18,8 @@ var     Vector      Location2;
 
 var     bool        bAlreadyOwned;
 
+var     bool        LightSet;
+
 simulated event PostBeginPlay()
 {
 	super.PostBeginPlay();
@@ -29,8 +31,8 @@ simulated event PostBeginPlay()
 	Location2 = Mesh.GetBoneLocation(Point2);
 
 	// Needed for trace to work.
-	Location1.Z += 2;
-	Location2.Z += 2;
+	Location1.Z += 0.30;
+	Location2.Z += 0.30;
 }
 
 /*
@@ -40,6 +42,7 @@ simulated event PostBeginPlay()
 function findChildNerves()
 {
 	local HNervorum_GroundNerve nerve;
+
 	foreach OverlappingActors(class'HNervorum_GroundNerve', nerve, 30)
 	{
 		if(!nerve.bAlreadyOwned){
@@ -48,6 +51,14 @@ function findChildNerves()
 			nerve.findChildNerves();
 			ChildNerves.AddItem(nerve);
 		}
+	}
+}
+
+function Tick(float DeltaTime)
+{
+	if(!LightSet){
+		Mesh.SetLightEnvironment(GetALocalPlayerController().Pawn.Mesh.LightEnvironment);
+		LightSet=true;
 	}
 }
 
@@ -93,7 +104,6 @@ function bool CheckCollision()
 DefaultProperties
 {
 	Begin Object Class=SkeletalMeshComponent Name=Mesh01
-		LightEnvironment=MyLightEnvironment
 		bAcceptsDynamicDecals=FALSE
 		bChartDistanceFactor=true
 		bUseOnePassLightingOnTranslucency=TRUE
