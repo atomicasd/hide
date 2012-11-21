@@ -10,6 +10,7 @@ var HVolume_Nervorum                vol;
 var HFamilyInfo_Nervorum            CharacterInfo;
 
 // Sound
+var     bool                        bMakeAttackSound;
 //var HSoundGroup_Nervorum            HSoundGroup;
 
 var Rotator lastTouchedRotation;
@@ -71,7 +72,6 @@ event Tick(float DeltaTime)
 			{
 				if( pPawn != none && pPawn.Health > 0 ) 
 				{
-					
 					pPawn.KillByNervorum( self );
 					RotateTowardsPawn( pPawn );
 				}
@@ -88,7 +88,7 @@ function RotateTowardsPawn( Pawn thePawn )
 
 function EncroachedBy( Actor other )
 {
-	
+
 }
 
 simulated function PlayAttackSound()
@@ -121,7 +121,6 @@ DefaultProperties
 		bOverrideAttachmentOwnerVisibility=true
 		bAcceptsDynamicDecals=FALSE
 		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_Monsters_Nervorum_Skeletal001'
-		PhysicsAsset=PhysicsAsset'CH_AnimCorrupt.Mesh.SK_CH_Corrupt_Male_Physics'
 		HiddenEditor=false
 		bHasPhysicsAssetInstance=false
 		TickGroup=TG_PreAsyncWork
@@ -147,4 +146,5 @@ DefaultProperties
 	bCanBeDamaged = false;
 
 	killPlayerOnTouch = false;
+	bMakeAttackSound = true;
 }

@@ -21,6 +21,8 @@ var config  float   MusicVolume;
 var config  int     PlayerLifes;
 var config  bool    Fullscreen;
 var config  string  Resolution;
+var config  float   Brightness;
+var config  float   Sensitivity;
 	
 var     int     HPlayerLifes;
 
@@ -45,8 +47,18 @@ var     float   pulseCooldownTimer;
 
 var     PlayerWalkingState          WalkState;
 
+/*****
+ * Sound
+ */
+var     AudioComponent              HDeathSound;
+var     array<SoundCue>             DeathSounds;
+var     bool                        PlayDeathSound;
+var     float                       WaitDeathSound;
+
 var bool bFinishedGame;
 var float timeTillMainMenu;
+
+
 
 simulated event PostBeginPlay()
 {
@@ -62,6 +74,9 @@ simulated event PostBeginPlay()
 		A.ForceUpdateComponents();
 	}
 
+	HDeathSound = CreateAudioComponent(SoundCue'SoundPackage.Enviroment.monsterChewing01_Cue', 
+										false, true, true, Location, true);
+
 	HPlayerLifes = 10;
 
 	SetMusicVolume(MusicVolume);
@@ -75,7 +90,6 @@ function InitConfig()
 	local array<string> lvlName;
 
 	MapName = WorldInfo.GetMapName();
-
 	lvlName = SplitString(MapName);
 
 	if(lvlName[0] != "HideMenuMap")
@@ -84,17 +98,19 @@ function InitConfig()
 	}
 		
 	/* Log variables in the config file */
-	`Log("---------> MapName: " $WorldInfo.GetMapName());
-	`Log("---------> LevelsCleared: " $LevelsCleared);
-	`Log("---------> OnCurrentLevel: " $OnCurrentLevel);
+	`Log("---------> MapName :        " $WorldInfo.GetMapName());
+	`Log("---------> LevelsCleared:   " $LevelsCleared);
+	`Log("---------> OnCurrentLevel:  " $OnCurrentLevel);
 	`Log("---------> Master Sound lvl:" $MasterVolume);
 	`Log("---------> Music Sound lvl: " $MusicVolume);
-	`Log("---------> Fullscreen: " $Fullscreen);
-	`Log("---------> Resolution: " $Resolution);
+	`Log("---------> Fullscreen:      " $Fullscreen);
+	`Log("---------> Resolution:      " $Resolution);
 	
 	SetMusicVolume(MusicVolume);
 	SetMasterVolume(MasterVolume);	
 	SetFullscreen( Fullscreen ); // and resolution.
+	SetBrightnessValue( Brightness );
+	SetSensitivity( Sensitivity );
 	SaveToConfig();
 }
 
@@ -102,10 +118,19 @@ function playerDied()
 {
 	--HPlayerLifes;
 
+	PlayDeathSound = true;
+	WaitDeathSound = 0;
+
 	if(HPlayerLifes <= 0)
 	{
 		`log("GameOver");
 	}
+}
+
+function Spawned()
+{
+	PlayDeathSound = false;
+	HDeathSound.Stop();
 }
 
 simulated event GetPlayerViewPoint( out vector out_Location, out Rotator out_Rotation )
@@ -189,6 +214,8 @@ function PlayerTick(float DeltaTime)
 {
 	local FogVolumeSphericalDensityInfo A;
 	local FogVolumeSphericalDensityComponent B;
+
+
 	if( pulseMade )
 	{
 		if( pulseFadeOut )
@@ -257,6 +284,20 @@ function PlayerTick(float DeltaTime)
 		}else{
 			startPulseTimer = false;
 		}   
+	}
+
+	if(PlayDeathSound)
+	{
+		WaitDeathSound += DeltaTime;
+		if(WaitDeathSound >= 1)
+		{
+			if(!HDeathSound.IsPlaying())
+			{
+				`log("kjndfjklsd");
+				HDeathSound.SoundCue = getDeathSound();
+				HDeathSound.Play();
+			}
+		}
 	}
 	
 	if(HPawn_Player(Pawn) != None)
@@ -372,6 +413,20 @@ function SetMusicVolume(float Volume)
 	SetAudioGroupVolume('Music', Volume);
 }
 
+// set Brightness value;
+function SetBrightnessValue( float value )
+{
+	Brightness = value;
+	`log(" Brightness: " $ Brightness);
+	ConsoleCommand( "GAMMA " $ Brightness );
+}
+
+// set Sensitivity value;
+function SetSensitivity( float sens )
+{
+	Sensitivity = sens;
+	ConsoleCommand( "SetSensitivity " $ Sensitivity );
+}
 // Last functions thats sets sound to the musicgroup
 function SetAudioGroupVolume( name GroupName, float Volume )
 {
@@ -416,7 +471,6 @@ function increasLevelCleared()
 	++LevelsCleared;
 }
 
-
 function int getLevelNumber()
 {
 	local string        MapName0;
@@ -429,6 +483,15 @@ function int getLevelNumber()
 	MapNumber = int(MapArray[1]);
 
 	return MapNumber;
+}
+
+/*****************
+ * DeathSound
+ * ***************/
+
+function SoundCue getDeathSound()
+{
+	return DeathSounds[rand(DeathSounds.Length)];
 }
 
 DefaultProperties
@@ -449,5 +512,8 @@ DefaultProperties
 
 	bFinishedGame = false
 	timeTillMainMenu = 8.0f
-}
 
+	DeathSounds[0] = SoundCue'SoundPackage.Enviroment.monsterChewing01_Cue';
+	DeathSounds[1] = SoundCue'SoundPackage.Enviroment.monsterChewing02_Cue';
+	DeathSounds[2] = SoundCue'SoundPackage.Enviroment.monsterChewing03_Cue';
+}

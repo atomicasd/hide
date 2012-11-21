@@ -57,10 +57,6 @@ event Tick(Float DeltaTime)
 	{
 		foreach self.OverlappingActors(class'HPawn_Player', victim, 50)
 		{
-			if(!bAttackSound){
-				PlayAttackSound();
-				bAttackSound=true;
-			}
 			victim.KillYourself();
 
 			pCamera = HCamera( HPlayerController( GetALocalPlayerController() ).PlayerCamera);
@@ -100,7 +96,6 @@ event Reset()
 
 simulated function PlayAttackSound()
 {
-	`log("Attack-uu!");
 	HPlaySoundEffect(HSoundGroup_Monster( HSoundGroup ).static.getAttackSounds());
 }
 

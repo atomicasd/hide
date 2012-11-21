@@ -43,6 +43,9 @@ simulated function PostBeginPlay()
 	// Sets the FamilyInfo
 	HSetCharacterClassFromInfo(class'HFamilyInfo_Player');
 
+	// Sound
+	HSoundGroup = HSoundGroup_Player(new SoundGroup);
+
 	// Creates players SoundBeacon
 	soundBeacon = Spawn(class'HSoundBeacon',,, Location,,, true);
 	soundBeacon.bIsPlayerSpawned=true;
@@ -103,6 +106,8 @@ function PlayTeleportEffect(bool bOut, bool bSound)
 	pCamera = HCamera( HPlayerController( GetALocalPlayerController() ).PlayerCamera);
 	pCamera.FadeToNormal( 0.5 );
 	soundBeacon.bIsPlayerDead=false;
+	
+	HPlayerController( GetALocalPlayerController() ).Spawned();
 
 	setHandMaterial(HPlayerController(Controller).HPlayerLifes);
 	SetAnimState(HS_SPAWNED);
@@ -221,17 +226,17 @@ event Tick(float TimeDelta)
 
 	if(!bAnimationUsed && bActivatedPulse)
 	{
-		CheckAnimChange(TimeDelta, 1);
+		CheckAnimChange(TimeDelta, HS_ACTIVATE);
 	}
 	else if(!bAnimationUsed && bDeactivatedPulse)
 	{
-		CheckAnimChange(TimeDelta, 3);
+		CheckAnimChange(TimeDelta, HS_DEACTIVATE);
 	}
 	else
 	{
 		if(HAnimBlend[0].HGetStateName() == HS_PRESSBUTTON)
 		{
-			CheckAnimChange(TimeDelta, 4);
+			CheckAnimChange(TimeDelta, HS_PRESSBUTTON);
 		}
 	}
 
@@ -287,6 +292,7 @@ function KillByNervorum( HPawn_Nervorum nervorum )
 		waitTillPull = 0.5;
 		positionAlpha = 0.0f;
 		cameraFadeStarted = false;
+		nervorum.PlayAttackSound();
 		nervorumTentacle = Spawn(class'HNervorum_Tentacle');
 	}
 }
@@ -326,7 +332,6 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 	{
 		foreach PlayerArms.AllAnimNodes(class'HAnimBlend_PlayerHand', BlendState)
 		{
-			`Log("---------------->Derp<---------------------");
 			HAnimBlend[HAnimBlend.Length] = BlendState;
 		}
 	}
@@ -336,8 +341,6 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 simulated event SetAnimState(HandState stateAnimType)
 {
 	local int i;
-
-	`log("ChangeToAnimState: " $stateAnimType);
 
 	for ( i = 0; i < HAnimBlend.Length; i++)
 	{
@@ -392,6 +395,7 @@ defaultproperties
 {
 	InventoryManagerClass = None
 	HCharacterInfo = class'HideGame.HFamilyInfo_Player'
+	SoundGroup = class'HSoundGroup_Player'
 
 	Components.Remove(WPawnSkeletalMeshComponent)
 

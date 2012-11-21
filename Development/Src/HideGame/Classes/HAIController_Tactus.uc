@@ -1,21 +1,23 @@
 class HAIController_Tactus extends HAIController;
 
-var float timer;
+var bool SoundPlayed;
 
 function Tick(float DeltaTime)
 {
-	timer += DeltaTime;
- 
-	if(timer > 12)
+	if(soundHeard)
 	{
-		//HPawn_Tactus(Pawn).CreateBreathingSound();
-		timer = 0;
+		if(!SoundPlayed)
+		{
+			HPawn_Monster(Pawn).PlayAttackSound();
+			SoundPlayed=true;
+		}
+	}else{
+		SoundPlayed=false;
 	}
 }
 
 DefaultProperties
 {
-	timer = 12
 	canSee = false;
 	shouldFollowPath = true;
 	canHear = false;

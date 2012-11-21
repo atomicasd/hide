@@ -51,7 +51,7 @@ DefaultProperties
 		LightEnvironment=MyLightEnvironment
 		bOverrideAttachmentOwnerVisibility=true
 		bAcceptsDynamicDecals=FALSE
-		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_Monsters_Turpis_SkeletalMesh02'
+		SkeletalMesh=SkeletalMesh'MonsterPackage.HG_Monsters_Turpis_SkeletalMesh01'
 		HiddenEditor=false
 		bHasPhysicsAssetInstance=true
 		TickGroup=TG_PreAsyncWork
