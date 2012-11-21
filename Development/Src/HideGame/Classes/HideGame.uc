@@ -143,6 +143,8 @@ function FadeMapTransparancy(float opacity)
 
 function MakeMapTransparent()
 {
+	local int numMaterials;
+	local int i;
 	local Actor A;
 	local StaticMeshActor smActor;
 	local InterpActor inActor;
@@ -152,10 +154,14 @@ function MakeMapTransparent()
 		smActor = StaticMeshActor(A);
 		if(smActor != none) 
 		{
-			matInstanceConstant = CreateTransparentMaterial(smActor);
-			if(matInstanceConstant == none) 
-				continue;
-			smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
+			numMaterials = smActor.StaticMeshComponent.GetNumElements();
+			for(i = 0; i < numMaterials; ++i )
+			{
+				matInstanceConstant = CreateTransparentMaterial(smActor, i);
+				if(matInstanceConstant == none) 
+					continue;
+				smActor.StaticMeshComponent.SetMaterial(i, matInstanceConstant);				
+			}
 		} else 
 		{
 			inActor = InterpActor(A);
@@ -177,6 +183,8 @@ function MakeMapTransparent()
 
 function MakeMapSolid()
 {
+	local int numMaterials;
+	local int i;
 	local Actor A;
 	local StaticMeshActor smActor;
 	local InterpActor inActor;
@@ -187,10 +195,14 @@ function MakeMapSolid()
 		smActor = StaticMeshActor(A);
 		if(smActor != none) 
 		{
-			matInstanceConstant = CreateSolidMaterial(smActor);
-			if(matInstanceConstant == none) 
-				continue;
-			smActor.StaticMeshComponent.SetMaterial(0, matInstanceConstant);
+			numMaterials = smActor.StaticMeshComponent.GetNumElements();
+			for(i = 0; i < numMaterials; ++i )
+			{
+				matInstanceConstant = CreateSolidMaterial(smActor, i);
+				if(matInstanceConstant == none) 
+					continue;
+				smActor.StaticMeshComponent.SetMaterial(i, matInstanceConstant);				
+			}
 		} else 
 		{
 			inActor = InterpActor(A);
@@ -207,7 +219,7 @@ function MakeMapSolid()
 	}
 }
 
-function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smActor) 
+function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smActor, int i) 
 { 
     local MaterialInstanceConstant matInstanceConstant; 
     local MaterialInstanceConstant oldMat; 
@@ -220,31 +232,72 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
     local Texture textureValue; 
 	//local Material checkMaterial;
 
-    matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial();
-    oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
+    matApp = smActor.StaticMeshComponent.GetMaterial(i).GetMaterial();
+    oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(i) ); 
     matName = matApp.Name;
 	packageName = matApp.GetPackageName();
     //ITA: il mio pacchetto contenente i materiali base (shader_base/shader_base_translucent) 
     //ENG: my package containing the base materials (shader_base/shader_base_translucent) 
-    //packageName = name("HIDE_Lvl02"); 
-	if( string(matName) == "Lvl02_Material")
+    //packageName = name("HIDE_Lvl02");
+ 
+	if( string(matName) == "Concrete" ||
+		string(matName) == "Concrete_Blood2" ||
+		string(matName) == "07-Default" ||
+		string(matName) == "Concrete_with_Blood" ||
+		string(matName) == "08-Default" ||
+		string(matName) == "Concrete_5" ||
+		string(matName) == "Concrete_6" ||
+		string(matName) == "Material_211")
 	{
-		matGroupName = name("Lvl02");
-	} else if ( string(matName) == "Lvl01_Material") 
-	{
-		matGroupName = name("lvl01");
+		matGroupName = name("level1_v5");
 	}
-	else if ( string(matName) == "DoorFrame") 
+	else if( string(matName) == "01-Default" )
 	{
-		matGroupName = name("testingfacility");
+		matGroupName = name("room1");
 	}
-	else if ( string(matName) == "rust") 
+	else if( string(matName) == "02-Default" )
+	{
+		matGroupName = name("room2");
+	}
+	else if( string(matName) == "room3" )
+	{
+		matGroupName = name("room3");
+	}
+	else if( string(matName) == "room4" )
+	{
+		matGroupName = name("room4");
+	}
+	else if( string(matName) == "room5" )
+	{
+		matGroupName = name("room5");
+	}
+	else if( string(matName) == "room6" )
+	{
+		matGroupName = name("room6");
+	}
+	else if( string(matName) == "room7" )
+	{
+		matGroupName = name("room7");
+	}
+	else if( string(matName) == "room8" )
+	{
+		matGroupName = name("room8");
+	}
+	else if ( string(matName) == "Rust") 
 	{
 		matGroupName = name("barrel_rust");
 	}
-	else if ( string(matName) == "Crate") 
+	else if ( string(matName) == "doorframe") 
+	{
+		matGroupName = name("doorframe");
+	}
+	else if ( string(matName) == "crate_green") 
 	{
 		matGroupName = name("crate_green");
+	}
+	else if ( string(matName) == "crate_red") 
+	{
+		matGroupName = name("crate_red");
 	}
 	else
 	{
@@ -345,7 +398,7 @@ function MaterialInstanceConstant CreateTransparentMaterialInterp(InterpActor sm
     }
     return matInstanceConstant; 
 }
-function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor) 
+function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor, int i) 
 { 
     local MaterialInstanceConstant matInstanceConstant; 
     local MaterialInstanceConstant oldMat; 
@@ -356,32 +409,72 @@ function MaterialInstanceConstant CreateSolidMaterial(StaticMeshActor smActor)
     local string materialClassName; 
     local Texture textureValue; 
 	
-    matApp = smActor.StaticMeshComponent.GetMaterial(0).GetMaterial(); 
-    oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0) ); 
-    matInstanceConstant = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(0)); 
+    matApp = smActor.StaticMeshComponent.GetMaterial(i).GetMaterial(); 
+    oldMat = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(i) ); 
+    matInstanceConstant = MaterialInstanceConstant( smActor.StaticMeshComponent.GetMaterial(i)); 
 
     //ITA: controllo il valore dell'interpolazione, se ho superato 0.9 allora creerò una nuova istanza con un materiale solido! 
     //ENG: Checking the interpolation value, if I'm past 0.9f I'm gonna create a new instance with a solid material! 
 	matName = matApp.Name;
 	packageName = matApp.GetPackageName();
-	if( string(matName) == "Lvl02_Material_Translucent")
+	if( string(matName) == "07-Default_Translucent" ||
+		string(matName) == "08-Default_Translucent" ||
+		string(matName) == "Concrete_Translucent" ||
+		string(matName) == "Concrete_5_Translucent" ||
+		string(matName) == "Concrete_6_Translucent" ||
+		string(matName) == "Concrete_Blood2_Translucent" ||
+		string(matName) == "Concrete_with_Blood_Translucent" ||
+		string(matName) == "Material_211_Translucent")
 	{
-		matGroupName = name("Lvl02");
-	} else if ( string(matName) == "Lvl01_Material_Translucent") 
+		matGroupName = name("level1_v5");
+	}
+	else if( string(matName) == "01-Default_Translucent" )
 	{
-		matGroupName = name("lvl01");
+		matGroupName = name("room1");
+	}
+	else if( string(matName) == "02-Default_Translucent" )
+	{
+		matGroupName = name("room2");
+	}
+	else if( string(matName) == "Room3_Translucent" )
+	{
+		matGroupName = name("room3");
+	}
+	else if( string(matName) == "Room4_Translucent" )
+	{
+		matGroupName = name("room4");
+	}
+	else if( string(matName) == "Room5_Translucent" )
+	{
+		matGroupName = name("room5");
+	}
+	else if( string(matName) == "Room6_Translucent" )
+	{
+		matGroupName = name("room6");
+	}
+	else if( string(matName) == "Room7_Translucent" )
+	{
+		matGroupName = name("room7");
+	}
+	else if( string(matName) == "Room8_Translucent" )
+	{
+		matGroupName = name("room8");
 	}
 	else if ( string(matName) == "DoorFrame_Translucent") 
 	{
-		matGroupName = name("testingfacility");
+		matGroupName = name("doorframe");
 	}
-	else if ( string(matName) == "rust_Translucent") 
+	else if ( string(matName) == "Rust_Translucent") 
 	{
 		matGroupName = name("barrel_rust");
 	}
-	else if ( string(matName) == "Crate_Translucent") 
+	else if ( string(matName) == "Crate_Green_Translucent") 
 	{
 		matGroupName = name("crate_green");
+	}
+	else if ( string(matName) == "Crate_Red_Translucent") 
+	{
+		matGroupName = name("crate_red");
 	}
 	else
 	{

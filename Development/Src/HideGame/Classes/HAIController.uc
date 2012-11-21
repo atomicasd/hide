@@ -87,6 +87,26 @@ function Possess(Pawn aPawn, bool bVehicleTransition)
     }
 }
 
+function SetWalkAnimSpeed()
+{
+	aiPawn.SetAnimRateScale( 1 );
+}
+
+function SetRunAnimSpeed()
+{
+	aiPawn.SetAnimRateScale( 1 );
+}
+
+function SetIdleAnimSpeed()
+{
+	aiPawn.SetAnimRateScale( 1 );
+}
+
+function SetInvestigateAnimSpeed()
+{
+	aiPawn.SetAnimRateScale( 1 );
+}
+
 auto state Idle
 {
 	event SeePlayer(Pawn SeenPlayer)
@@ -114,7 +134,7 @@ auto state Idle
     }
 Begin:
 	aiPawn.SetAnimState(MS_Idle);
-
+	SetIdleAnimSpeed();
 	Pawn.Acceleration = vect(0,0,0);
 	aiPawn.SetAttacking(false);
 	Pawn.GroundSpeed = WalkSpeed;
@@ -158,7 +178,6 @@ state FollowPath
     }
 
  Begin:
-	aiPawn.SetAnimRateScale( 2 );
 	while(followingPath)
 	{
 		if(MyNavigationPoints.Length <= 0)
@@ -182,10 +201,12 @@ state FollowPath
 
 				MoveTarget = MyNavigationPoints[actual_node];
 				aiPawn.SetAnimState(MS_Walk);
+				SetWalkAnimSpeed();
 				waitCounter = 0.0f;
 			} else 
 			{
 				aiPawn.SetAnimState(MS_Idle);
+				SetIdleAnimSpeed();
 				waitCounter += 0.1f;
 			}
 		}	
@@ -216,6 +237,7 @@ state Chaseplayer
 {
   Begin:
 	aiPawn.SetAnimState(MS_Run);
+	SetRunAnimSpeed();
 	aiPawn.SetAnimRateScale( 3 );
 	bChasePlayer=true;
 	aiPawn.SetAttacking(false);
