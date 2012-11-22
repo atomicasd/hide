@@ -119,8 +119,6 @@ DefaultProperties
 	End Object
 
 	bAlreadyOwned = false
-	bCollideActors = true
-	CollisionType=COLLIDE_TouchAll
 
 	Mesh = Mesh01
 	Components.add(Mesh01)
