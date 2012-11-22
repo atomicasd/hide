@@ -1,9 +1,10 @@
 class HGameHUD extends UTHUD;
 
-var HPauseMenu PauseMenu;
+var HPauseMenu          PauseMenu;
+var HLevelFailedMenu    LevelFailedMenu;
+var HideGame            hGame;
 
 var bool bFadeInHitEffect;
-
 var bool bShowFinishGamePicture;
 
 var CanvasIcon thankYouPicture;
@@ -17,12 +18,12 @@ var CanvasIcon tut7;
 var CanvasIcon tut8;
 var CanvasIcon tut9;
 
-var HideGame hGame;
+var float       helpMessageTime;
+var float       helpMessageTimeMax;
+var int         activeMessageId;
+var bool        bDdrawHelpMessage;
 
-var float helpMessageTime;
-var float helpMessageTimeMax;
-var int activeMessageId;
-var bool bDdrawHelpMessage;
+
 exec function ShowMenu()
 {
 	// if using GFx HUD, use GFx pause menu
@@ -43,16 +44,32 @@ function TogglePauseMenu()
         {
             PauseMenu = new class'HPauseMenu';
             PauseMenu.MovieInfo = SwfMovie'MenuPackage.HPauseMenu';
-            PauseMenu.bEnableGammaCorrection = FALSE;
+            PauseMenu.bEnableGammaCorrection = false;
             PauseMenu.LocalPlayerOwnerIndex = class'Engine'.static.GetEngine().GamePlayers.Find(LocalPlayer(PlayerOwner.Player));
             PauseMenu.SetTimingMode(TM_Real);
             PlayerOwner.SetPause(True);
-			`log("eee");
         }
 
         SetVisible(false);
         PauseMenu.Start();
     }
+}
+
+function ShowLevelFailedMenu()
+{
+	CloseOtherMenus();
+	if ( LevelFailedMenu == None )
+	{
+		LevelFailedMenu = new class'HLevelFailedMenu';
+		LevelFailedMenu.MovieInfo = SwfMovie'MenuPackage.HLevelFailedMenu';
+		LevelFailedMenu.bEnableGammaCorrection = false;
+		LevelFailedMenu.LocalPlayerOwnerIndex = class'Engine'.static.GetEngine().GamePlayers.Find(LocalPlayer(PlayerOwner.Player));
+		LevelFailedMenu.SetTimingMode(TM_Real);
+		PlayerOwner.SetPause(True);
+	}
+	SetVisible(false);
+	LevelFailedMenu.Start();
+
 }
  
 /**

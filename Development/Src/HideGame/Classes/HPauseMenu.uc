@@ -4,13 +4,23 @@ var HPlayerController HPlayer;
 
 var GFxClikWidget us_btn_restart;
 var GFxClikWidget us_btn_mainMenu;
-var GFxClikWidget us_btn_exitgame;
+var GFxClikWidget us_btn_exitgameYeah;
+var GFxClikWidget us_btn_resetToDefault;
 var GFxClikWidget us_cb_fullscreen;
 var GFxClikWidget us_slider_soundAmbient;
 var GFxClikWidget us_slider_soundEffects;
 var GFxClikWidget us_slider_brightness;
 var GFxClikWidget us_slider_sensitivity;
 var GFxClikWidget us_stepper_resolution;
+
+var String        toChange;
+var GFxClikWidget us_btn_controlsNextToChange;
+var GFxClikWidget us_btn_controlsNoButton;
+var GFxClikWidget us_btn_controlsUse;
+var GFxClikWidget us_btn_controlsRun;
+var GFxClikWidget us_btn_controlsSneak;
+var GFxClikWidget us_btn_controlsPulse;
+var GFxClikWidget us_btn_controlsJump;
 
 var class<AudioComponent> Hmusic;
 var AudioComponent MenuMusic;
@@ -25,6 +35,7 @@ function bool Start(optional bool StartPaused = false)
 	MenuMusic.Play();
 
 	HPlayer = HPlayerController(GetPC());
+	AddCaptureKey( 'Escape' );
 	
     return TRUE;
 }
@@ -41,9 +52,9 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 			us_btn_mainMenu = GFxClikWidget(Widget);
 			us_btn_mainMenu.AddEventListener( 'CLIK_press', onMenuButtonPress );
 			break;
-		case ('btn_exitgame'):
-			us_btn_exitgame = GFxClikWidget(Widget);
-			us_btn_exitgame.AddEventListener( 'CLIK_press', onExitButtonPress );
+		case ('btn_exitgameYeah'):
+			us_btn_exitgameYeah = GFxClikWidget(Widget);
+			us_btn_exitgameYeah.AddEventListener( 'CLIK_press', onExitButtonPress );
 			break;
 		case ('cb_fullscreen'):
 		us_cb_fullscreen = GFxClikWidget(Widget);
@@ -63,7 +74,7 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 		case ( 'slider_brightness' ):
 			us_slider_brightness = GFxClikWidget( Widget );
 			us_slider_brightness.AddEventListener( 'CLIK_change', onBrightnessChange );
-			us_slider_brightness.SetFloat( "value", HPlayer.Brightness );
+			us_slider_brightness.SetFloat( "value", ( HPlayer.Brightness * 5 ) - 1 );
 			break;
 		case ( 'slider_sensitivity' ):
 			us_slider_sensitivity = GFxClikWidget( Widget );
@@ -90,6 +101,35 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 			default:
 				break;
 			}
+		case ( 'btn_controlsUse' ):
+			us_btn_controlsUse = GFxClikWidget( Widget );
+			us_btn_controlsUse.AddEventListener( 'CLIK_press', onUseButtonPress );
+			us_btn_controlsUse.SetString( "label", ""$HPlayer.UseBind );
+			break;
+		case ( 'btn_controlsRun' ):
+			us_btn_controlsRun = GFxClikWidget( Widget );
+			us_btn_controlsRun.AddEventListener( 'CLIK_press', onRunButtonPress );
+			us_btn_controlsRun.SetString( "label", ""$HPlayer.RunBind );
+			break;
+		case ( 'btn_controlsSneak' ):
+			us_btn_controlsSneak = GFxClikWidget( Widget );
+			us_btn_controlsSneak.AddEventListener( 'CLIK_press', onSneakButtonPress );
+			us_btn_controlsSneak.SetString( "label", ""$HPlayer.SneakBind );
+			break;
+		case ( 'btn_controlsPulse' ):
+			us_btn_controlsPulse = GFxClikWidget( Widget );
+			us_btn_controlsPulse.AddEventListener( 'CLIK_press', onPulseButtonPress );
+			us_btn_controlsPulse.SetString( "label", ""$HPlayer.PulseBind );
+			break;
+		case ( 'btn_controlsJump' ):
+			us_btn_controlsJump = GFxClikWidget( Widget );
+			us_btn_controlsJump.AddEventListener( 'CLIK_press', onJumpButtonPress );
+			us_btn_controlsJump.SetString( "label", ""$HPlayer.JumpBind );
+			break;
+		case ( 'btn_resetToDefault'):
+			us_btn_resetToDefault = GFxClikWidget( WIdget );
+			us_btn_resetToDefault.AddEventListener( 'CLIK_press', onResetButtonPress );
+			break;
 		Default:
 			break;
 	}
@@ -100,6 +140,10 @@ function onRestartButtonPress( GFxClikWidget.EventData ev )
 {
 	saveToConfig();
 	ConsoleCommand( "RestartLevel" );
+}
+
+function callconsolecommand( String cmd ) {
+	ConsoleCommand( cmd );
 }
 
 function onMenuButtonPress( GFxClikWidget.EventData ev )
@@ -117,6 +161,7 @@ function onExitButtonPress( GFxClikWidget.EventData ev )
 
 function ClosePauseMenu()
 {
+	MenuMusic.Stop();
 	Close();
 }
 
@@ -163,7 +208,7 @@ function onSoundEffectsChange( GFxClikWidget.EventData ev )
 
 function onBrightnessChange( GFxClikWidget.EventData ev )
 {
-	HPlayer.SetBrightnessValue( us_slider_brightness.GetFloat("_value") );
+	HPlayer.SetBrightnessValue( ( us_slider_brightness.GetFloat("_value") / 5 ) + 1 );
 }
 
 function onSensitivityChange( GFxClikWidget.EventData ev )
@@ -176,11 +221,82 @@ function saveToConfig()
 	HPlayer.saveToConfig();
 }
 
+function onUseButtonPress( GFxClikWidget.EventData ev )
+{
+	//if ( us_btn_controlsNextToChange == us_btn_controlsUse )
+	//us_btn_controlsUse.SetString( "label", "Press Key" );
+	us_btn_controlsNextToChange = us_btn_controlsUse;
+	toChange = "Use";
+	ActionScriptVoid( "enableCustomizeMode" );
+}
+function onRunButtonPress( GFxClikWidget.EventData ev )
+{
+	//us_btn_controlsRun.SetString( "label", "Press Key" );
+	us_btn_controlsNextToChange = us_btn_controlsRun;
+	toChange = "Run";
+	ActionScriptVoid( "enableCustomizeMode" );
+}
+function onSneakButtonPress( GFxClikWidget.EventData ev )
+{
+	//us_btn_controlsSneak.SetString( "label", "Press Key" );
+	us_btn_controlsNextToChange = us_btn_controlsSneak;
+	toChange = "Sneak";
+	ActionScriptVoid( "enableCustomizeMode" );
+}
+function onPulseButtonPress( GFxClikWidget.EventData ev )
+{
+	//us_btn_controlsPulse.SetString( "label", "Press Key" );
+	us_btn_controlsNextToChange = us_btn_controlsPulse;
+	toChange = "Pulse";
+	ActionScriptVoid( "enableCustomizeMode" );
+}
+function onJumpButtonPress( GFxClikWidget.EventData ev )
+{
+	//us_btn_controlsJump.SetString( "label", "Press Key" );
+	us_btn_controlsNextToChange = us_btn_controlsJump;
+	toChange = "Jump";
+	ActionScriptVoid( "enableCustomizeMode" );
+}
+function whatKey( bool esc )
+{
+	local name theKey;
+
+	theKey = HPlayer.PlayerInput.PressedKeys[0];
+
+	us_btn_controlsNextToChange.SetString( "label", ""$theKey );
+	`log("test: " $ theKey );
+	HPlayer.setKeyBinding( theKey, toChange );
+
+	us_btn_controlsNextToChange = us_btn_controlsNoButton;
+	toChange = "";
+
+	ActionScriptVoid( "disableCustomizeMode" );
+}
+
+function onResetButtonPress( GFxClikWidget.EventData ev )
+{
+	HPlayer.setKeyBinding( 'LeftMouseButton', "Use" );
+	us_btn_controlsUse.SetString( "label", ""$Hplayer.UseBind );
+
+	HPlayer.setKeyBinding( 'LeftShift', "Run" );
+	us_btn_controlsRun.SetString( "label", ""$Hplayer.RunBind );
+
+	HPlayer.setKeyBinding( 'LeftControl', "Sneak" );
+	us_btn_controlsSneak.SetString( "label", ""$Hplayer.SneakBind );
+
+	HPlayer.setKeyBinding( 'RightMouseButton', "Pulse" );
+	us_btn_controlsPulse.SetString( "label", ""$Hplayer.PulseBind );
+
+	HPlayer.setKeyBinding( 'Spacebar', "Jump" );
+	us_btn_controlsJump.SetString( "label", ""$Hplayer.JumpBind );
+}
+
 defaultproperties
 {
 	WidgetBindings.Add( ( WidgetName="btn_restart", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_quitToMenu", WidgetClass=class'GFxClikWidget' ) )
-	WidgetBindings.Add( ( WidgetName="btn_exitgame", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_exitgameYeah", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_resetToDefault", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="cb_fullscreen", WidgetClass=class'GFxClikWidget') )
 	WidgetBindings.Add( ( WidgetName="slider_soundAmbient", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="slider_soundEffects", WidgetClass=class'GFxClikWidget' ) )
@@ -188,11 +304,15 @@ defaultproperties
 	WidgetBindings.Add( ( WidgetName="slider_sensitivity", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="stepper_resolution", WidgetClass=class'GFxClikWidget' ) )
 	
+	WidgetBindings.Add( ( WidgetName="btn_controlsUse", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_controlsRun", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_controlsSneak", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_controlsPulse", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_controlsJump", WidgetClass=class'GFxClikWidget' ) )
+	
 	Hmusic = class'AudioComponent'
 
-	bCaptureInput = true;
-	bShowHardwareMouseCursor = true;
-    bEnableGammaCorrection=FALSE
+	bShowHardwareMouseCursor = true
 	bIgnoreMouseInput = false
-	bPauseGameWhileActive = true;
+	bPauseGameWhileActive = true
 }
