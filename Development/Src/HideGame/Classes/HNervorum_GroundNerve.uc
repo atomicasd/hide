@@ -113,8 +113,8 @@ DefaultProperties
 		bAcceptsLights=true
 		bAcceptsDynamicLights=true
 		SkeletalMesh=SkeletalMesh'MonsterPackage.nerve'
-		BlockActors=true
-		CollideActors=true
+		BlockActors=false
+		CollideActors=false
 		Scale3D=(X=0.009143,Y=0.009143,Z=0.009143)
 	End Object
 
