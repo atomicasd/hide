@@ -7,6 +7,15 @@ var bool bFadeInHitEffect;
 var bool bShowFinishGamePicture;
 
 var CanvasIcon thankYouPicture;
+var CanvasIcon tut1;
+var CanvasIcon tut2;
+var CanvasIcon tut3;
+var CanvasIcon tut4;
+var CanvasIcon tut5;
+var CanvasIcon tut6;
+var CanvasIcon tut7;
+var CanvasIcon tut8;
+var CanvasIcon tut9;
 
 var HideGame hGame;
 
@@ -221,7 +230,7 @@ function DrawHelpMessage()
 
 	if( activeMessageId == 1 )
 	{
-		DrawMessage1( thankYouPicture,0,0 );
+		DrawMessage1( tut1,0,0 );
 	}
 	else if (activeMessageId == 2)
 	{
@@ -231,7 +240,38 @@ function DrawHelpMessage()
 
 function DrawMessage1( CanvasIcon Icon, float X, float Y, optional float ScaleX, optional float ScaleY)
 {
-	`log("help message 1");
+   if (Icon.Texture != None)
+   {
+		
+      // verify properties are valid
+      if (ScaleX <= 0.f)
+      {
+         ScaleX = ViewX/1920.0f;
+		 
+      }
+
+      if (ScaleY <= 0.f)
+      {
+         ScaleY = ViewY/1080.0f;
+      }
+
+      if (Icon.UL == 0.f)
+      {
+         Icon.UL = Icon.Texture.GetSurfaceWidth();
+      }
+
+      if (Icon.VL == 0.f)
+      {
+         Icon.VL = Icon.Texture.GetSurfaceHeight();
+      }
+
+      // set the canvas position
+      Canvas.SetPos(X, Y);
+
+      // and draw the texture
+      Canvas.DrawTileStretched(Icon.Texture, Abs(Icon.UL) * ScaleX, Abs(Icon.VL) * ScaleY,
+                           Icon.U, Icon.V, Icon.UL, Icon.VL,, true, true);
+   }
 }
 
 function DrawMessage2( CanvasIcon Icon, float X, float Y, optional float ScaleX, optional float ScaleY)
@@ -246,8 +286,8 @@ function DrawGameHud()
 		DrawIconStretched( thankYouPicture, 0, 0, );
 	}
 	UpdateDamage();
-	DisplayLocalMessages();
-	DisplayConsoleMessages();
+	//DisplayLocalMessages();
+	//DisplayConsoleMessages();
 
 	DrawHelpMessage();
 }
@@ -294,4 +334,8 @@ DefaultProperties
 	bFadeInHitEffect = false;
 	bShowFinishGamePicture = false;
 	thankYouPicture = (Texture=Texture2D'MenuPackage.thankyou')
+	tut1 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial1');
+	tut2 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial2');
+	tut3 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial3');
+	tut4 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial4');
 }

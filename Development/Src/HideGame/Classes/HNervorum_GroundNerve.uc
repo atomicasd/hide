@@ -114,12 +114,13 @@ DefaultProperties
 		bAcceptsDynamicLights=true
 		SkeletalMesh=SkeletalMesh'MonsterPackage.nerve'
 		BlockActors=false
-		CollideActors=false
+		CollideActors=true
 		Scale3D=(X=0.009143,Y=0.009143,Z=0.009143)
 	End Object
 
 	bAlreadyOwned = false
-
+	bCollideActors = true
+	CollisionType=COLLIDE_TouchAll
 	Mesh = Mesh01
 	Components.add(Mesh01)
 }

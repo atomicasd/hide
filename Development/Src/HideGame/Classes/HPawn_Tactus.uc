@@ -98,7 +98,7 @@ DefaultProperties
 	Mesh=WPawnSkeletalMeshComponent0
 	Components.Add(WPawnSkeletalMeshComponent0)
 
-	DrawScale=1.5
+	DrawScale=1.0
 
 	IdleSounds[0] = SoundCue'SoundPackage.tactus.tactusHeavyBreathing01_Cue';
 	IdleSounds[1] = SoundCue'SoundPackage.tactus.tactusHeavyBreathing02_Cue';

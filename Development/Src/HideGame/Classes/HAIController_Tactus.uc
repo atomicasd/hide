@@ -16,6 +16,25 @@ function Tick(float DeltaTime)
 	}
 }
 
+function SetWalkAnimSpeed()
+{
+	aiPawn.SetAnimRateScale( 6 );
+}
+
+function SetRunAnimSpeed()
+{
+	aiPawn.SetAnimRateScale( 10 );
+}
+
+function SetIdleAnimSpeed()
+{
+	aiPawn.SetAnimRateScale( 1 );
+}
+
+function SetInvestigateAnimSpeed()
+{
+	aiPawn.SetAnimRateScale( 3 );
+}
 DefaultProperties
 {
 	canSee = false;

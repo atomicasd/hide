@@ -37,11 +37,11 @@ DefaultProperties
 		HiddenGame=false
 		CollisionRadius=400
 		CollisionHeight=100
-		CollideActors=true
+		CollideActors=false
 		bDrawBoundingBox=true
 		bDrawNonColliding=true
 	End Object
-
+	bCollideActors = false
 	HCylinder = Cylinder0
 
 	bStatic=false
