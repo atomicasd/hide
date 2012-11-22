@@ -54,7 +54,7 @@ DefaultProperties
 		BlockRigidBody=TRUE
 		bUpdateSkelWhenNotRendered=false
 		bIgnoreControllersWhenNotRendered=TRUE
-		bUpdateKinematicBonesFromAnimation=true
+		bUpdateKinematicBonesFromAnimation=false
 		bCastDynamicShadow=true
 		RBChannel=RBCC_Untitled3
 		RBCollideWithChannels=(Untitled3=true)

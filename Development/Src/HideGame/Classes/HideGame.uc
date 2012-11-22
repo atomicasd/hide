@@ -40,7 +40,6 @@ state GameInProgress
 		{
 			if(HPlayer.bInEndOfLevel)
 			{
-				`log("Player reached end of level!");
 				GoToState('LevelCompleted');
 			}
 		}
@@ -588,6 +587,16 @@ DefaultProperties
 
 	mapOpacity = 0.0;
 
-	PulseMat[0] = Material'HIDE_Lvl01.lvl01.Lvl01_Material_Translucent'
-	PulseMat[1] = Material'Hide_Lvl02.lvl02.lvl02_Material_Translucent'
+	PulseMat[0] = Material'HIDE_Lvl01.Level1_V5.07-Default_Translucent'
+	PulseMat[1] = Material'HIDE_Lvl01.Level1_V5.08-Default_Translucent'
+	PulseMat[2] = Material'HIDE_Lvl01.Level1_V5.Concrete_5_Translucent'
+	PulseMat[3] = Material'HIDE_Lvl01.Level1_V5.Concrete_6_Translucent'
+	PulseMat[4] = Material'HIDE_Lvl01.Level1_V5.Concrete_Blood2_Translucent'
+	PulseMat[5] = Material'HIDE_Lvl01.Level1_V5.Concrete_Translucent'
+	PulseMat[6] = Material'HIDE_Lvl01.Level1_V5.Material_211_Translucent'
+	PulseMat[7] = Material'HIDE_Lvl01.Level1_V5.Concrete_with_Blood_Translucent'
+	PulseMat[8] = Material'HIDE_Lvl02.room1.01-Default_Translucent'
+	PulseMat[9] = Material'HIDE_Lvl02.room2.02-Default_Translucent'
+	PulseMat[10] = Material'HIDE_Lvl02.room3.Room3_Translucent'
+	PulseMat[11] = Material'HIDE_Lvl02.room4.Room4_Translucent'
 }

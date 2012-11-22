@@ -29,6 +29,7 @@ var     HNervorum_Tentacle      nervorumTentacle;
 var     SkeletalMeshComponent           PlayerArms;
 var     array<MaterialInterface>        ArmMaterials;
 var     array<HAnimBlend_PlayerHand>    HAnimBlend;
+var     array<HAnimBlend_PlayerFoot>    HFootAnimBlend;
 var     float                           AnimationPulseTimer;
 var     float                           NextAnimationChange;
 var     bool                            bActivatedPulse;
@@ -57,6 +58,7 @@ simulated function PostBeginPlay()
  * Sound functions
  *********************/
 
+/*
 simulated event ActuallyPlayFootStepSound(int FootDown)
 {
 	local int skipSteps;
@@ -73,12 +75,12 @@ simulated event ActuallyPlayFootStepSound(int FootDown)
 	}else{
 		waitSoundStep=0;
 		if(HPlayerController(Controller).WalkState == Sneak){
-			super.ActuallyPlayFootStepSound(0);
-		}else
 			super.ActuallyPlayFootStepSound(1);
+		}else
+			super.ActuallyPlayFootStepSound(0);
 	}
 }
-
+*/
 
 /********************
  * Player funtions 
@@ -119,6 +121,7 @@ exec function KillYourself()
 	PC = HPlayerController( GetALocalPlayerController() );
 	Suicide();
 	PC.DisablePulse();
+
 }
 
 /*
@@ -139,9 +142,15 @@ event Tick(float TimeDelta)
 	switch(HPlayer.WalkState)   
 	{
 	case Idle:  soundRadius=140;  break;
-	case Sneak: soundRadius=180;  break;
-	case Walk:  soundRadius=400;  break;
-	case Run:   soundRadius=500; break;
+	case Sneak: soundRadius=180;  
+				SetFootAnimState(FS_Sneak);
+				break;
+	case Walk:  soundRadius=400;  
+				SetFootAnimState(FS_Walk);
+				break;
+	case Run:   soundRadius=500; 
+				SetFootAnimState(FS_Run);
+				break;
 	}
 	
 	soundBeacon.SetLocation(Location);
@@ -224,21 +233,16 @@ event Tick(float TimeDelta)
 	 * Animation
 	 */
 
-	if(!bAnimationUsed && bActivatedPulse)
+	if(bAnimationUsed && bActivatedPulse)
 	{
 		CheckAnimChange(TimeDelta, HS_ACTIVATE);
 	}
-	else if(!bAnimationUsed && bDeactivatedPulse)
+	else if(bAnimationUsed && bDeactivatedPulse)
 	{
 		CheckAnimChange(TimeDelta, HS_DEACTIVATE);
 	}
-	else
-	{
-		if(HAnimBlend[0].HGetStateName() == HS_PRESSBUTTON)
-		{
-			CheckAnimChange(TimeDelta, HS_PRESSBUTTON);
-		}
-	}
+
+	
 
 	HandHeight.Z = GetEyeHeight() - 15;
 
@@ -274,6 +278,7 @@ function CheckAnimChange(float TimeDelta, int AnimationSequence)
 				bAnimationUsed = false;
 				bActivatedPulse = false;
 			}else{
+				bAnimationUsed = false;
 				SetAnimState(HS_DURING);
 			}
 		}
@@ -307,12 +312,19 @@ function KillByNervorum( HPawn_Nervorum nervorum )
  */
 function HSetCharacterClassFromInfo(class<HFamilyInfo_Character> HInfo)
 {
-	super.HSetCharacterClassFromInfo(HInfo);
+	//super.HSetCharacterClassFromInfo(HInfo);
 
 	if(HInfo != None)
 	{
-		PlayerArms.AnimSets = HInfo.default.HAnimSet;
-		PlayerArms.SetAnimTreeTemplate(HInfo.default.HAnimTreeTemplate);
+		Mesh.SetSkeletalMesh(HInfo.Default.CharacterMesh);
+
+		Mesh.AnimSets = HInfo.default.HAnimSet;
+		Mesh.SetAnimTreeTemplate(HInfo.default.HAnimTreeTemplate);
+
+		PlayerArms.AnimSets = HInfo.default.HArmAnimSet;
+		PlayerArms.SetAnimTreeTemplate(HInfo.default.HArmAnimTreeTemplate);
+
+		`log("------------->Setting info");
 		
 	}else{
 		`Log("---->Player information class not set <----");
@@ -325,6 +337,7 @@ function HSetCharacterClassFromInfo(class<HFamilyInfo_Character> HInfo)
 simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 {
 	local HAnimBlend_PlayerHand BlendState;
+	local HAnimBlend_PlayerFoot BlendState1;
 
 	//super.PostInitAnimTree(SkelComp);
 
@@ -335,6 +348,13 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 			HAnimBlend[HAnimBlend.Length] = BlendState;
 		}
 	}
+
+	
+	foreach mesh.AllAnimNodes(class'HAnimBlend_PlayerFoot', BlendState1)
+	{
+		`log("---------------------------> Set beldn");
+		HFootAnimBlend[HFootAnimBlend.Length] = BlendState1;
+	}
 }
 
 // Sets what animation we want to play
@@ -342,9 +362,20 @@ simulated event SetAnimState(HandState stateAnimType)
 {
 	local int i;
 
+
 	for ( i = 0; i < HAnimBlend.Length; i++)
 	{
 		HAnimBlend[i].SetAnimState(stateAnimType);
+	}
+}
+
+simulated event SetFootAnimState(FootState stateAnimType)
+{
+	local int i;
+
+	for ( i = 0; i < HFootAnimBlend.Length; i++)
+	{
+		HFootAnimBlend[i].SetAnimState(stateAnimType);
 	}
 }
 
@@ -352,19 +383,26 @@ event OnAnimEnd(AnimNodeSequence SeqNode, float PlayedTime, float ExcessTime)
 {
 	super.OnAnimEnd(SeqNode, PlayedTime, ExcessTime);
 
+	`log("Anim End");
+
 	SetAnimState(HS_IDLE);
 }
 
 function setHandMaterial(int LifeLeft)
 {
 	`Log("----------------------------------->HandMeterial: " $LifeLeft);
-    PlayerArms.SetMaterial(0, ArmMaterials[LifeLeft]);
+	if(LifeLeft > 25)
+		PlayerArms.SetMaterial(0, ArmMaterials[26]);
+	else
+		PlayerArms.SetMaterial(0, ArmMaterials[LifeLeft]);
 }
 
 function ActivatedPulse()
 {
 	SetAnimState(HS_ACTIVATE);
+	bAnimationUsed=true;
 	bGetAnimDuration = true;
+	bDeactivatedPulse = false;
 	AnimationPulseTimer=0;
 	bActivatedPulse = true;
 }
@@ -372,6 +410,7 @@ function ActivatedPulse()
 function DeactivatedPulse()
 {
 	SetAnimState(HS_DEACTIVATE);
+	bAnimationUsed=true;
 	bGetAnimDuration = true;
 	bDeactivatedPulse = true;
 	bActivatedPulse = false;
@@ -475,4 +514,5 @@ defaultproperties
 	ArmMaterials[23] = Material'PlayerPackage.Materials.HandMaterial23'
 	ArmMaterials[24] = Material'PlayerPackage.Materials.HandMaterial24'
 	ArmMaterials[25] = Material'PlayerPackage.Materials.HandMaterial25'
+	ArmMaterials[26] = Material'PlayerPackage.Materials.HandMaterial26'
 }

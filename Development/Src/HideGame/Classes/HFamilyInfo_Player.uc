@@ -7,9 +7,12 @@ DefaultProperties
 
 	// Mesh and physical assets
 	//PhysAsset = PhysicsAsset'CH_AnimCorrupt.Mesh.SK_CH_Corrupt_Male_Physics'
-	//CharacterMesh = SkeletalMesh'PlayerPackage.HG_PLayer_ArmRight01'
+	CharacterMesh = SkeletalMesh'PlayerPackage.HG_Player_JunkBoneBox01'
+
+	HAnimSet(0) = AnimSet'PlayerPackage.animation.JunkBox'
+	HAnimTreeTemplate = AnimTree'PlayerPackage.animation.JunkTree'
 
 	// Animation asstes
-	HAnimSet(0) = AnimSet'PlayerPackage.animation.PlayerArmAnimSet'
-	HAnimTreeTemplate = AnimTree'PlayerPackage.animation.PlayerArmTree'
+	HArmAnimSet(0) = AnimSet'PlayerPackage.animation.PlayerArmAnimSet'
+	HArmAnimTreeTemplate = AnimTree'PlayerPackage.animation.PlayerArmTree'
 }

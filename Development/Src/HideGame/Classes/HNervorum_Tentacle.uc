@@ -14,13 +14,13 @@ simulated event PostBeginPlay()
 
 function SetTentacleLocation( Vector nervorumPos, Vector playerPos )
 {
-	local Vector halfPos;
+	//local Vector halfPos;
 	local Vector dScale;
 	local float  distance;
 	local float newscale;
-	halfPos.X = (playerPos.X - nervorumPos.X) * 0.5;
-	halfPos.Y = (playerPos.Y - nervorumPos.Y) * 0.5;
-	halfPos.Z = (playerPos.Z - nervorumPos.Z) * 0.5;
+	//halfPos.X = (playerPos.X - nervorumPos.X) * 0.5;
+	//halfPos.Y = (playerPos.Y - nervorumPos.Y) * 0.5;
+	//halfPos.Z = (playerPos.Z - nervorumPos.Z) * 0.5;
 	distance = VSize( playerPos - nervorumPos );
 	//the value is the X value of the bounding box of the tentacle
 	newscale = (distance/28.565821);

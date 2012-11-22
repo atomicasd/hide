@@ -49,11 +49,12 @@ static function SoundCue GetSneakFootstepSound(int FootDown, name MaterialType)
 static function SoundCue GetFootstepSound(int FootDown, name MaterialType)
 {
 	local int i;
-	if(FootDown == 0){
+
+	if(FootDown == 1){
+		`log("asdasdasdSD");
 		return GetSneakFootstepSound(FootDown, MaterialType);
 	}else{
 		i = Rand(default.HFootstepSounds.Length);
-
 		return default.HFootstepSounds[i];
 	}
 }
