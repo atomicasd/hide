@@ -108,10 +108,10 @@ DefaultProperties
 		bChartDistanceFactor=true
 		bUseOnePassLightingOnTranslucency=TRUE
 		bPerBoneMotionBlur=true
-		CastShadow=true
-		bCastDynamicShadow=true
+		CastShadow=false
+		bCastDynamicShadow=false
 		bAcceptsLights=true
-		bAcceptsDynamicLights=true
+		bAcceptsDynamicLights=false
 		SkeletalMesh=SkeletalMesh'MonsterPackage.nerve'
 		BlockActors=false
 		CollideActors=true

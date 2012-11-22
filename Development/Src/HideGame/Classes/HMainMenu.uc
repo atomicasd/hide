@@ -310,6 +310,7 @@ function onResetButtonPress( GFxClikWidget.EventData ev )
 
 function saveToConfig()
 {
+	HPlayer.SetBinds();
 	HPlayer.saveToConfig();
 }
 

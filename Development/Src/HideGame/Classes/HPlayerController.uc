@@ -29,6 +29,12 @@ var config  name    SneakBind;
 var config  name    PulseBind;
 var config  name    JumpBind;
 
+var config  name    OldUseBind;
+var config  name    OldRunBind;
+var config  name    OldSneakBind;
+var config  name    OldPulseBind;
+var config  name    OldJumpBind;
+
 	
 var     int     HPlayerLifes;
 
@@ -64,7 +70,26 @@ var     float                       WaitDeathSound;
 var bool bFinishedGame;
 var float timeTillMainMenu;
 
+function SetBinds()
+{
+	PlayerInput.SetBind( OldUseBind, "" );
+	PlayerInput.SetBind( OldRunBind, "" );
+	PlayerInput.SetBind( OldSneakBind, "" );
+	PlayerInput.SetBind( OldPulseBind, "" );
+	PlayerInput.SetBind( OldJumpBind, "" );
 
+	PlayerInput.SetBind( UseBind, "GBA_Use" );
+	PlayerInput.SetBind( RunBind, "Run | Onrelease RunReleased" );
+	PlayerInput.SetBind( SneakBind, "Sneak | Onrelease SneakReleased" );
+	PlayerInput.SetBind( PulseBind, "FadeInHitEffect | Onrelease FadeOutHitEffect" );
+	PlayerInput.SetBind( JumpBind, "GBA_Jump" );
+
+	OldUseBind = UseBind;
+	OldRunBind = RunBind;
+	OldSneakBind = SneakBind;
+	OldPulseBind = PulseBind;
+	OldJumpBind = JumpBind;
+}
 
 simulated event PostBeginPlay()
 {
@@ -83,7 +108,7 @@ simulated event PostBeginPlay()
 	HDeathSound = CreateAudioComponent(SoundCue'SoundPackage.Enviroment.monsterChewing01_Cue', 
 										false, true, true, Location, true);
 
-	HPlayerLifes = 1;
+	HPlayerLifes = 30;
 
 	SetMusicVolume(MusicVolume);
 	SetMasterVolume(MasterVolume);

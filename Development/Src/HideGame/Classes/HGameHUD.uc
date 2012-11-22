@@ -245,13 +245,37 @@ function DrawHelpMessage()
 	if( !bDdrawHelpMessage )
 		return;
 
-	if( activeMessageId == 1 )
+	switch( activeMessageId )
 	{
+	case 1:
 		DrawMessage1( tut1,0,0 );
-	}
-	else if (activeMessageId == 2)
-	{
-		DrawMessage2( thankYouPicture,0,0 );
+		break;
+	case 2:
+		DrawMessage1( tut2,0,0 );
+		break;
+	case 3:
+		DrawMessage1( tut3,0,0 );
+		break;
+	case 4:
+		DrawMessage1( tut4,0,0 );
+		break;
+	case 5:
+		DrawMessage1( tut5,0,0 );
+		break;
+	case 6:
+		DrawMessage1( tut6,0,0 );
+		break;
+	case 7:
+		DrawMessage1( tut7,0,0 );
+		break;
+	case 8:
+		DrawMessage1( tut8,0,0 );
+		break;
+	case 9:
+		DrawMessage1( tut9,0,0 );
+		break;
+	default:
+		break;
 	}
 }
 
@@ -355,4 +379,9 @@ DefaultProperties
 	tut2 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial2');
 	tut3 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial3');
 	tut4 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial4');
+	tut5 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial5');
+	tut6 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial6');
+	tut7 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial7');
+	tut8 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial8');
+	tut9 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial9');
 }

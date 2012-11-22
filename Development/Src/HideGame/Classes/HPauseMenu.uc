@@ -161,6 +161,7 @@ function onExitButtonPress( GFxClikWidget.EventData ev )
 
 function ClosePauseMenu()
 {
+	saveToConfig();
 	MenuMusic.Stop();
 	Close();
 }
@@ -218,6 +219,7 @@ function onSensitivityChange( GFxClikWidget.EventData ev )
 
 function saveToConfig()
 {
+	HPlayer.SetBinds();
 	HPlayer.saveToConfig();
 }
 

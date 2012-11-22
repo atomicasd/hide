@@ -61,7 +61,6 @@ function Tick( float DeltaTime )
 			WalkState = Idle;
 		}
 	}
-
 }
 
 DefaultProperties
