@@ -117,6 +117,7 @@ function onExitButtonPress( GFxClikWidget.EventData ev )
 
 function ClosePauseMenu()
 {
+	MenuMusic.Stop();
 	Close();
 }
 

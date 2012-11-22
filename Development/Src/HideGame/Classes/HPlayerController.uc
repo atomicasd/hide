@@ -77,7 +77,7 @@ simulated event PostBeginPlay()
 	HDeathSound = CreateAudioComponent(SoundCue'SoundPackage.Enviroment.monsterChewing01_Cue', 
 										false, true, true, Location, true);
 
-	HPlayerLifes = 10;
+	HPlayerLifes = PlayerLifes;
 
 	SetMusicVolume(MusicVolume);
 	SetMasterVolume(MasterVolume);
@@ -311,12 +311,15 @@ function PlayerTick(float DeltaTime)
 				break;
 			case Walk:
 				Pawn.GroundSpeed = 180;
+				HPawn_Player( Pawn ).SetFootAnimState(FS_Walk);
 				break;
 			case Sneak:
 				Pawn.GroundSpeed = 180;
+				HPawn_Player( Pawn ).SetFootAnimState(FS_Sneak);
 				break;
 			case Run:
 				Pawn.GroundSpeed = 250;
+				HPawn_Player( Pawn ).SetFootAnimState(FS_Run);
 				break;
 			}
 			bChangedState=false;	

@@ -4,11 +4,12 @@ var bool SoundPlayed;
 
 event Tick(float DeltaTime)
 {
-	if(bChasePlayer)
+	if(soundHeard)
 	{
 		if(!SoundPlayed)
 		{
 			HPawn_Monster(Pawn).PlayAttackSound();
+			`log("SOUND ATTACKU!");
 			SoundPlayed=true;
 		}
 	}else{
