@@ -13,7 +13,6 @@ var     HideGame    hGame;
 /*
  * Config variables
  */
-
 var config  int     LevelsCleared;
 var config  string  OnCurrentLevel;
 var config  float   MasterVolume;
@@ -23,6 +22,13 @@ var config  bool    Fullscreen;
 var config  string  Resolution;
 var config  float   Brightness;
 var config  float   Sensitivity;
+
+var config  name    UseBind;
+var config  name    RunBind;
+var config  name    SneakBind;
+var config  name    PulseBind;
+var config  name    JumpBind;
+
 	
 var     int     HPlayerLifes;
 
@@ -67,7 +73,7 @@ simulated event PostBeginPlay()
 	super.PostBeginPlay();
 
 	ServerSetCharacterClass(class'HFamilyInfo_Player');
-
+	
 	ForEach WorldInfo.AllActors(class'FogVolumeSphericalDensityInfo', A)
 	{
 		A.DensityComponent.StartDistance = 20000;
@@ -120,10 +126,9 @@ function playerDied()
 
 	PlayDeathSound = true;
 	WaitDeathSound = 0;
-
 	if(HPlayerLifes <= 0)
 	{
-		`log("GameOver");
+		hGame.hHud.ShowLevelFailedMenu();	
 	}
 }
 
@@ -214,7 +219,7 @@ function PlayerTick(float DeltaTime)
 {
 	local FogVolumeSphericalDensityInfo A;
 	local FogVolumeSphericalDensityComponent B;
-
+	
 
 	if( pulseMade )
 	{
@@ -293,7 +298,6 @@ function PlayerTick(float DeltaTime)
 		{
 			if(!HDeathSound.IsPlaying())
 			{
-				`log("kjndfjklsd");
 				HDeathSound.SoundCue = getDeathSound();
 				HDeathSound.Play();
 			}
@@ -462,6 +466,34 @@ function float getMusicVolume()
 function float getMasterVolume()
 {
 	return MasterVolume;
+}
+
+// This is where u set the Config vars. but how to actually "use" these idk.
+// something like PlayerInput.SetBind( UseBind, "GBA_USE" ); but ehduntknow.
+function setKeyBinding( name theKey, string cmd ) {
+	
+	switch ( cmd ) {
+	case "Use":
+		UseBind = theKey;
+		break;
+	case "Run":
+		RunBind = theKey;
+		break;
+	case "Sneak":
+		SneakBind = theKey;
+		PlayerInput.SetBind( SneakBind, "GBA_Duck" );
+		break;
+	case "Pulse":
+		PulseBind = theKey;
+		break;
+	case "Jump":
+		JumpBind = theKey;
+		break;
+	default:
+		break;
+	}
+
+
 }
 
 function saveToConfig()
