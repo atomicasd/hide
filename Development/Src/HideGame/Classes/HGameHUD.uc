@@ -18,12 +18,22 @@ var CanvasIcon tut7;
 var CanvasIcon tut8;
 var CanvasIcon tut9;
 
+var CanvasIcon cred1;
+var CanvasIcon cred2;
+var CanvasIcon cred3;
+
+var CanvasIcon currentCreditsIcon;
+
 var float       helpMessageTime;
 var float       helpMessageTimeMax;
 var int         activeMessageId;
 var bool        bDdrawHelpMessage;
 
+var float       creditsTime;
+var bool        bShowCredits;
+var float       creditsIndex;
 
+var HCamera pCamera;
 exec function ShowMenu()
 {
 	// if using GFx HUD, use GFx pause menu
@@ -109,6 +119,42 @@ function Tick(float DeltaTime)
 	} else 
 	{
 		bDdrawHelpMessage = false;
+	}
+
+	if( bShowCredits )
+	{
+		if( creditsIndex == 0)
+		{
+			if( creditsTime <= 0 )
+			{
+				creditsTime = 3;
+				creditsIndex = 1;
+			}
+		}
+		if( creditsIndex == 1)
+		{
+			if( creditsTime <= 0 )
+			{
+				creditsTime = 10;
+				creditsIndex = 2;
+			}
+		}
+		else if( creditsIndex == 2)
+		{
+			if( creditsTime <= 0 )
+			{
+				creditsTime = 5;
+				creditsIndex = 3;
+			}
+		}
+		else if( creditsIndex == 3)
+		{
+			if( creditsTime <= 0 )
+			{
+				creditsTime = 4;
+			}
+		}
+		creditsTime -= DeltaTime;
 	}
 
 	super.Tick( DeltaTime );
@@ -199,6 +245,11 @@ exec function FadeOutHitEffect()
 
 final function DrawIconStretched(CanvasIcon Icon, float X, float Y, optional float ScaleX, optional float ScaleY)
 {
+	local LinearColor color;
+	color.A = 1;
+	color.R = 1;
+	color.G = 1;
+	color.B = 1;
    if (Icon.Texture != None)
    {
 		
@@ -229,7 +280,7 @@ final function DrawIconStretched(CanvasIcon Icon, float X, float Y, optional flo
 
       // and draw the texture
       Canvas.DrawTileStretched(Icon.Texture, Abs(Icon.UL) * ScaleX, Abs(Icon.VL) * ScaleY,
-                           Icon.U, Icon.V, Icon.UL, Icon.VL,, true, true);
+                           Icon.U, Icon.V, Icon.UL, Icon.VL,color, true, true);
    }
 }
 
@@ -322,9 +373,20 @@ function DrawMessage2( CanvasIcon Icon, float X, float Y, optional float ScaleX,
 
 function DrawGameHud()
 {
-	if(bShowFinishGamePicture)
+	if(bShowCredits)
 	{
-		DrawIconStretched( thankYouPicture, 0, 0, );
+		if( creditsIndex == 1 )
+		{
+			DrawIconStretched( cred1, 0, 0, );
+		}
+		else if ( creditsIndex == 2 )
+		{
+			DrawIconStretched( cred2, 0, 0, );
+		}
+		else if ( creditsIndex == 3 )
+		{
+			DrawIconStretched( cred3, 0, 0, );
+		}
 	}
 	UpdateDamage();
 	//DisplayLocalMessages();
@@ -335,7 +397,10 @@ function DrawGameHud()
 
 function ShowFinishGamePicture()
 {
-	bShowFinishGamePicture = true;
+	
+	pCamera = HCamera(HPlayerController( GetALocalPlayerController() ).PlayerCamera);
+	pCamera.FadeToBlack( 3 );
+	bShowCredits = true;
 }
 
 function DrawMessageText(HudLocalizedMessage LocalMessage, float ScreenX, float ScreenY)
@@ -370,6 +435,10 @@ DefaultProperties
 {
 	helpMessageTime = 0;
 	helpMessageTimeMax = 5;
+
+	creditsIndex = 0;
+	creditsTime = 4;
+
 	activeMessageId = 0;
 	bDdrawHelpMessage = false;
 	bFadeInHitEffect = false;
@@ -384,4 +453,8 @@ DefaultProperties
 	tut7 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial7');
 	tut8 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial8');
 	tut9 = (Texture=Texture2D'HIDE_Assets.helptut.Tutorial9');
+
+	cred1 = (Texture=Texture2D'MenuPackage.screen01');
+	cred2 = (Texture=Texture2D'MenuPackage.screen02');
+	cred3 = (Texture=Texture2D'MenuPackage.screen03');
 }

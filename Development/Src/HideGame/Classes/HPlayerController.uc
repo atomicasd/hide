@@ -423,9 +423,16 @@ function CheckJumpOrDuck()
 
 function FinishGame()
 {
+	local HPawn_Monster p;
 	hGame.ShowFinishGamePicture();
 	IgnoreInput(true);
 	bFinishedGame = true;
+
+	//Reset all monster on map to default settings.
+	foreach WorldInfo.AllPawns(class'HPawn_Monster', p)
+	{
+		p.Reset();
+	}
 }
 
 /**
@@ -571,7 +578,7 @@ DefaultProperties
 	bCanJump=true
 
 	bFinishedGame = false
-	timeTillMainMenu = 8.0f
+	timeTillMainMenu = 23.0f
 
 	DeathSounds[0] = SoundCue'SoundPackage.Enviroment.monsterChewing01_Cue';
 	DeathSounds[1] = SoundCue'SoundPackage.Enviroment.monsterChewing02_Cue';

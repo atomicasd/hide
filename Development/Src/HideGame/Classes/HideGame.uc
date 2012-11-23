@@ -55,6 +55,8 @@ state GameInProgress
 				}else{
 					HPC.IgnoreInput(false);
 				}
+				MakeMapTransparent();
+				MakeMapSolid();
 				HPC.InitConfig();
 				HPlayer=HPC;
 				HPlayer.hGame = self;
@@ -220,9 +222,11 @@ function MakeMapSolid()
 
 function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smActor, int i) 
 { 
+	local int k;
     local MaterialInstanceConstant matInstanceConstant; 
     local MaterialInstanceConstant oldMat; 
     local Material matApp; 
+	local bool foundMat;
     local float opacity; 
 	local name matGroupName;
     local name matName; 
@@ -305,6 +309,7 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
 
     materialClassName = string(packageName) $ "." $ string(matGroupName) $ "." $ matName; 
 
+
 	//Check if there is a transparent version of the material
 
     if(InStr(matName, "_Translucent") == -1) 
@@ -322,7 +327,20 @@ function MaterialInstanceConstant CreateTransparentMaterial(StaticMeshActor smAc
         matInstanceConstant.SetTextureParameterValue('NormalDetail', textureValue); 
         oldMat.GetTextureParameterValue('Spec', textureValue); 
         matInstanceConstant.SetTextureParameterValue('Spec', textureValue); 
-        matApp = Material(DynamicLoadObject(materialClassName, class'Material')); 
+        
+		for( k = 0; k < PulseMat.Length; k++)
+		{
+			if( InStr( materialClassName, PulseMat[k].Name ) == 0 )
+			{
+				matApp = PulseMat[k];
+				foundMat = true;
+				break;
+			}
+		}
+		if( !foundMat )
+		{
+			matApp = Material(DynamicLoadObject(materialClassName, class'Material')); 
+		}
         //ITA: lo swap effettivo! Baso il material instant constant su uno shader trasparente 
         //ENG: The actual swap! I set the parent of the material instant constant on the transparent shader (shader_base_translucent) 
 
@@ -586,7 +604,6 @@ DefaultProperties
 	isMapTransparent = false;
 
 	mapOpacity = 0.0;
-
 	PulseMat[0] = Material'HIDE_Lvl01.Level1_V5.07-Default_Translucent'
 	PulseMat[1] = Material'HIDE_Lvl01.Level1_V5.08-Default_Translucent'
 	PulseMat[2] = Material'HIDE_Lvl01.Level1_V5.Concrete_5_Translucent'

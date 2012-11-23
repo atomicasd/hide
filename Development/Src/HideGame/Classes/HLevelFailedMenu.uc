@@ -47,7 +47,7 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 function onRestartButtonPress( GFxClikWidget.EventData ev )
 {
 	LevelFailedMusic.Stop();
-	ConsoleCommand( "RestartLevel" );
+	ConsoleCommand( "Open HG-" $ HPlayer.OnCurrentLevel  );
 }
 
 function onMenuButtonPress( GFxClikWidget.EventData ev )
@@ -64,7 +64,7 @@ function onExitButtonPress( GFxClikWidget.EventData ev )
 
 DefaultProperties
 {
-	WidgetBindings.Add( ( WidgetName="btn_restart", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_restartLevel", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_quitToMenu", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_exitgameYeah", WidgetClass=class'GFxClikWidget' ) )
 

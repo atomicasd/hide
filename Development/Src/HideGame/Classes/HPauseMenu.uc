@@ -139,7 +139,7 @@ event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 function onRestartButtonPress( GFxClikWidget.EventData ev )
 {
 	saveToConfig();
-	ConsoleCommand( "RestartLevel" );
+	ConsoleCommand( "Open HG-" $ HPlayer.OnCurrentLevel );
 }
 
 function callconsolecommand( String cmd ) {
@@ -295,7 +295,7 @@ function onResetButtonPress( GFxClikWidget.EventData ev )
 
 defaultproperties
 {
-	WidgetBindings.Add( ( WidgetName="btn_restart", WidgetClass=class'GFxClikWidget' ) )
+	WidgetBindings.Add( ( WidgetName="btn_restartLevel", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_quitToMenu", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_exitgameYeah", WidgetClass=class'GFxClikWidget' ) )
 	WidgetBindings.Add( ( WidgetName="btn_resetToDefault", WidgetClass=class'GFxClikWidget' ) )

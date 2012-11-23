@@ -238,7 +238,6 @@ state Chaseplayer
   Begin:
 	aiPawn.SetAnimState(MS_Run);
 	SetRunAnimSpeed();
-	aiPawn.SetAnimRateScale( 3 );
 	bChasePlayer=true;
 	aiPawn.SetAttacking(false);
     Pawn.Acceleration = vect(0,0,1);
@@ -353,7 +352,8 @@ state GoToLastSeenPlayer
 		}
     }
 Begin:
-	aiPawn.SetAnimState(MS_Investigate);
+	aiPawn.SetAnimState(MS_Walk);
+	SetWalkAnimSpeed();
 	playerSeen = true;
 	while(playerSeen)
 	{
